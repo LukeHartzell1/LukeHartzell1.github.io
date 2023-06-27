@@ -136,6 +136,20 @@ h1 {
     padding-left: 20px
 }
 
+.language-box {
+    margin-top: 0px;
+    padding: 0px; /* Add padding around the paragraph */
+    background-color: #2600fd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Apply a box shadow with blur effect */
+    display: inline-block;
+    border-radius: 20px;
+    padding-bottom: 0px;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    padding-top: 5px;
+    margin-bottom: 1vh;
+}
+
 .row {
     margin-left: 0;
     margin-right: 0;
@@ -196,33 +210,7 @@ h1 {
 #contact {
     padding-bottom: 4rem;
 }
-/* about section image css */
-.imageAboutPage {
-    width: 100%;
-}
 
-
-/* services section css */
-.servicesText.card {
-    height: 280px;
-    background-color: rgb(35, 33, 33);
-
-    cursor: pointer;
-  }
-.servicesIcon {
-    font-size: 36px;
-    text-align: center;
-    width: 100%;
-}
-.card-title {
-    text-align: center;
-}
-.card:hover .servicesIcon {
-    color: #008000;
-}
-.servicesText:hover {
-    border: 1px solid #07008b;
-}
 
 /* social media icons styling */
 .social-icons {
@@ -234,6 +222,10 @@ h1 {
 }
 .fab {
     color: #ffffff;
+}
+
+.far {
+    color:#ffffff;
 }
 /* footer styling */
 #footer {

@@ -10,7 +10,8 @@
    <!-- linking css file -->
    <link rel="stylesheet" href="style.css">
   <!-- font awesome -->
-  <script src="https://kit.fontawesome.com/31149d48b0.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/3c67ff8016.js" crossorigin="anonymous"></script>
+
  <!-- parallax background -->
  <script> 
     window.addEventListener('scroll', function() {
@@ -18,14 +19,6 @@
       parallax.style.backgroundPositionY = -(window.pageYOffset * 2) + 'px';
     });
   </script>
-  <!-- parallax overlay -->
-  <!-- <script> 
-    window.addEventListener('scroll', function() {
-      var parallax = document.querySelector('.bg2overlay');
-      parallax.style.backgroundPositionY = -(window.pageYOffset / 2) + 'px';
-    });
-  </script> -->
-  <!-- parallax using invisible window -->
   <script>
     function handleScroll(event) {
       var scrollableBox = event.target;
@@ -105,49 +98,16 @@
 
                 <div class="d-inline-block" style="padding-right: 4vh">
                     <div style="margin-top: 2vh; color:white; text-shadow: 2px 2px 4px #000000;">
-                    <p> Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged
+                    <p> I'm a Computer Science student from Chicago, Illinois. I always try to learn as much as I can from both classes and online Computer Science courses. When I'm not coding or learning about Computer Science, I'm usually at the gym, researching fitness, or talking and playing with friends online. I also enjoy doing graphic design from time to time. 
                     </div>    
                     </p>
                     
                     <div class="row mt-3">
-                        <!-- <div class="col-md-6">
-                            <ul>
-                                <li>Name: David Parker</li>
-                                <li>Age: 28</li>
-                                <li>Occupation: Web Developer</li>
-
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <ul>
-                                <li>Name: David Parker</li>
-                                <li>Age: 28</li>
-                                <li>Occupation: Web Developer</li>
-
-                            </ul>
-                        </div> -->
                     </div>
-                    <!-- <div class="row mt-3">
-                        <p> Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                        </p>
-                    </div> -->
                 </div>
             </div>
             <div class="col-lg-6 px-0 mx-auto">
                     <div class="invisible-box" onscroll="handleScroll(event)" style="padding-left: 2vh">
-                        <!-- <p> hello
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                        </p> -->
                         <section id="education">
                             <h2> Education </h2>
                             <div class="blurred-box" style="margin-top: 5px; width: 100%">
@@ -198,25 +158,85 @@
                         <section id="projects">
                             <h2 style="margin-top: 4vh"> Projects </h2>
                             <div class="blurred-box" style="margin-top: 5px">
-                                <h4> Virtual Twenty-Four Game</h4>
-                                <h6> Expected Graduation May 2026</h6>
-                                <p>
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                </p>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Virtual Twenty-Four Game</h4>
+                                    <a href="https://github.com/LukeHartzell1/Virtual-Twenty-Four-Game" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                  </div>
+                                <div class="language-box">
+                                <h6> C</h6>
+                                </div>
+                                <p>There are two versions of this text-based virtual implementation of the Twenty-Four Game, a game where you have 4 numbers, and using mathematical operators, have to try and come up with a way to make an equation that equates to 24. Each version focuses on a different aspect of coding.</p>
+                                <h6>First Version</h6>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Simpler version of the game, simply input the operators in the order you want them used.</li>
+                                    <li>Implemented features such as easy mode, debug mode, and operator input validation.</li>
+                                    <li>Generated and stored a set of 3188 solutions using a brute-force algorithm for debugging and hard mode.</li>
+                                </ul>
+                                <h6>Second Version</h6>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>More advanced version, input the full expression you want used, can include parenthesis as well.</li>
+                                    <li>Focuses on order of operations with parenthesis, stack implementation with linked lists (pop, isEmpty, push, peek, etc.), run-time, and preventing memory leaks.</li>
+                                    <li>Implemented a debug mode and designed an algorithm that found all possible solutions to the game.</li>
+                                    <li>Includes lots of error handling for matching parenthesis, correct numbers used, all numbers used, valid operators, etc.</li>
+                                    
+                                </ul>
                             </div>
                             <div class="blurred-box">
-                                <h4> Bridges Game</h4>
-                                <h6> August 2022 - Spring 2023</h6>
-                                <p>
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                </p>
-                            </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Spell-Checker Optimization</h4>
+                                    <a href="https://github.com/LukeHartzell1/Spell-Checker-Optimization" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                  </div>
+                                <div class="language-box">
+                                    <h6> C</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Loads a dictionary into memory, checks words against the dictionary, determines dictionary size, and unloads the dictionary. The spell-checker reads a text file, identifies misspelled words, and reports the results.</li>
+                                        <li>Utilizes time measurement and benchmarking to aid the process of optimizing runtime dictionary load and spell-check.</li>
+                                        <li>Implemented robust error handling, input validation, and Valgrind checks to ensure correct behavior and prevent memory leaks.</li>
+                                    </ul>
+                                </div>
+                                <div class="blurred-box">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <h4 style="margin-right: auto;">Weaver Clone</h4>
+                                        <a href="https://github.com/LukeHartzell1/Weaver-Clone" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                      </div>
+                                    <div class="language-box">
+                                    <h6> C</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Text-based version of the online game <a href="https://weavergame.org/" style="text-decoration:none"><i>Weaver</i></a>, allowing users to find a path from a starting word to an ending word by changing one letter at a time.</li>
+                                        <li>Implemented a dynamic array to store words of a specific user-selected length by reading and copying from a "dictionary" file, ensuring efficient runtime performance.</li>
+                                        <li>Created functions for word validation, checking length and dictionary inclusion, as well as game input verification, ensuring the user's word is of the correct length and differs by only one character.</li>
+                                        <li>Provided an intuitive user experience by offering options to play again, play with a different word length, or exit the game, with a strong emphasis on memory management to prevent any memory leaks.</li>
+                                    </ul>
+                                </div>
+                                <div class="blurred-box">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <h4 style="margin-right: auto;">Mock Database</h4>
+                                        <a href="https://github.com/LukeHartzell1/Database-of-Students" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                      </div>
+                                    <div class="language-box">
+                                    <h6> C</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Developed a student database system in C for managing student information, using linked lists for efficient data storage and retrieval.</li>
+                                        <li>Implemented functions for inserting in order, searching, and deleting student records based on ID, name, and GPA, ensuring accurate and fast data manipulation.</li>
+                                        <li>Implemented choice menus to provide users with clear options for inserting, searching, and deleting student records, along with a read menu to facilitate easy navigation within the database system.</li>
+                                        <li>Designed memory management techniques to properly allocate and deallocate memory for student data structures, preventing memory leaks and optimizing resource utilization.</li>
+                                    </ul>
+                                </div>
                             <div class="blurred-box">
-                                <h4> Spell-Checker Optimization</h4>
-                                <h6> August 2018 - May 2022</h6>
-                                <p>
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                </p>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Bridges Game</h4>
+                                  </div>
+                                <div class="language-box">
+                                <h6> Java</h6>
+                                </div>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Designed and implemented a text-based memory game where users could progress to higher levels by making correct choices and return to the start upon incorrect choices.</li>
+                                    <li>Generated randomized contents for each level, ensuring unique gameplay experiences while maintaining consistent level progression until program termination.</li>
+                                    <li>Incorporated recursion and graphics to enhance the gameplay experience, providing an engaging and interactive environment for players.</li>
+                                </ul>
                             </div>
                         </section>
                         <section id="work">
@@ -224,16 +244,18 @@
                             <div class="blurred-box" style="margin-top: 0px">
                                 <h4> Panera</h4>
                                 <h6> Associate</h6>
-                                <p>
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                </p>
+                            <ul style="list-style-type: square; margin-bottom: 2vh">
+                                <li>Trained associates on the preparation of food orders and on overseeing and directing the food line.</li>
+                                <li>Delegated various food-making tasks to associates to improve efficiency.</li>
+                                <li>Accurately cooked and presented food orders for customers in a timely manner.</li>
+                                <li>Effectively communicated with and resolved issues with customers.</li>
                             </div>
                         </section>
 
                         <section id="skills-and-interests">
                             <h2 style="margin-top: 4vh;">Skills and Interests</h2>
                             <div class="row row-cols-2 mt-3">
-                                <div class="blurred-box" style="margin-top: 0px">
+                                <div class="blurred-box" style="margin-top: 0px;">
                                     <h4>Tech I Love</h4>
                                     <h6>Some tech that I love or have built with:</h6>
                                     <div class="row">
@@ -307,7 +329,7 @@
                         <section id="contact" class="text-center" style="margin-top: 20px;">
                             <div class="blurred-box" style="border-radius: 5px;">
                                 <h2>Contact Me</h2>
-                                <p  style="padding-right: 10px"> The best way to contact me is through email. Give me a shout here:</p>
+                                <p  style="padding-right: 10px"> The best way to contact me is through email. You can reach me here:</p>
                                 <p> Email: <a href="mailto:lukedhartzell@gmail.com">lukedhartzell@gmail.com</a></p>
                                 <p> Linkedin: <a href="https://www.linkedin.com/in/luke-hartzell/">@LukeHartzell</a></p>
                             </div>
@@ -319,221 +341,6 @@
             </div>
         </div>
     </section>
-
-    <!-- services section-->
-    <!-- <section id="services" style="margin-top: 20px">
-        <div class="container">
-            <h1 class="text-center">Services</h1>
-            <div class="row">
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class="fas servicesIcon fa-clock"></i>
-                            <h4 class="card-title mt-3">Website Development</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class='fas servicesIcon fa-layer-group'></i>
-                            <h4 class="card-title mt-3">Website Design</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class='far servicesIcon fa-check-circle'></i>
-                            <h4 class="card-title mt-3">Website Deployment</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-            </div> -->
-
-            <!-- <div class="row">
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class='fas servicesIcon fa-search'></i>
-                            <h4 class="card-title mt-3">SEO</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class='fas servicesIcon fa-shield-alt'></i>
-                            <h4 class="card-title mt-3">DevOps</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card servicesText">
-                        <div class="card-body">
-                            <i class='fas servicesIcon fa-wrench'></i>
-                            <h4 class="card-title mt-3">QA</h4>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the bulk of the card's content.
-                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                    </div>  
-                </div>
-            </div> -->
-        </div>
-    </section>
-
-    <!-- portfolio section-->
-    <!-- <section id="portfolio">
-        <div class="container mt-3">
-            <h1 class="text-center">Portfolio</h1>
-            <div class="row">
-                <div class="col-lg-4 mt-4">
-                    <div class="card">
-                        <img class="card-img-top" src="images/portfolioImage1.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">YouTube Clone</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card portfolioContent">
-                        <img class="card-img-top" src="images/portfolioImage4.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">Quiz App</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card portfolioContent">
-                        <img class="card-img-top" src="images/portfolioImage3.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">Product Landing Page</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-lg-4 mt-4">
-                    <div class="card portfolioContent">
-                        <img class="card-img-top" src="images/portfolioImage4.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">Messaging Service</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card portfolioContent">
-                        <img class="card-img-top" src="images/portfolioImage1.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">Twitter Clone</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mt-4">
-                    <div class="card portfolioContent">
-                        <img class="card-img-top" src="images/portfolioImage4.jpg" alt="Card image" style="width:100%">
-                        <div class="card-body">
-                            <h4 class="card-title">Blog App</h4>
-                            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <div class="text-center">
-                                <a href="#" class="btn btn-success">Link</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </section> -->
-
-    <!-- contact section old-->
-    <!-- <section id="contact">
-        <div class="container mt-3 contactContent">
-            <h1 class="text-center">Contact Me</h1>
-
-            <div class="row mt-4">
-                <div class="col-lg-3">
-                    <div style="max-width:100%;overflow:hidden;color:red;width:500px;height:500px;
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <form>
-                        <input type="text" class="form-control form-control-lg" placeholder="Name">
-                        <input type="email" class="form-control mt-3" placeholder="Email">
-                        <input type="text" class="form-control mt-3" placeholder="Subject">
-                        <div class="mb-3 mt-3">
-                            <textarea class="form-control" rows="5" id="comment" name="text" placeholder="Project Details"></textarea>
-                        </div>
-                    </form>
-                    <div class="text-center">
-                    <button type="button" class="btn btn-success mt-3">Contact Me</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-
-
-    
-
-
-    <!-- footer section-->
-    <!-- <footer id="footer">
-        <div class="container-fluid">
-
-            <div class="social-icons mt-4">
-                <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://www.twitch.tv/" target="_blank"><i class="fab fa-twitch"></i></a>
-            </div>
-        </div>
-    </footer> -->
 
     <!-- load javascript after loading all html content -->
     <script src="script/script.js"></script>
