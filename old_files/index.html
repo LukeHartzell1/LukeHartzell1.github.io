@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Portfolio Website-Luke</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- linking css file -->
+   <link rel="stylesheet" href="style.css">
+  <!-- font awesome -->
+  <script src="https://kit.fontawesome.com/3c67ff8016.js" crossorigin="anonymous"></script>
+
+ <!-- parallax background -->
+ <script> 
+    window.addEventListener('scroll', function() {
+      var parallax = document.querySelector('.bgimage');
+      parallax.style.backgroundPositionY = -(window.pageYOffset * 2) + 'px';
+    });
+  </script>
+  <script>
+    function handleScroll(event) {
+      var scrollableBox = event.target;
+      var parallax = document.querySelector('.bg2overlay');
+      var parallax2 = document.querySelector('.bg3overlay');
+      parallax.style.backgroundPositionY = -(scrollableBox.scrollTop / 4) + 'px';
+      parallax2.style.backgroundPositionY = -(scrollableBox.scrollTop / 2) + 'px';
+    }
+  </script>
+
+</head>
+
+<body id="bootstrap-overrides">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark navbarScroll">
+        <div class="container">
+            <a class="navbar-brand" href="#">Luke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#education">Education</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills-and-interests">Misc</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+    <!-- main banner -->
+    <section class="bgimage" id="home">
+        <div class="bgimageoverlay"></div>
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hero-text">
+                <h2 class="hero_title">Hey, I'm Luke Hartzell</h2>
+                <p class="hero_desc">I am a Computer Science student at Georgia Tech</p>
+            </div>
+            </div>
+        </div> 
+    </section>
+
+    <!-- about section-->
+    <div class="bg2overlay">
+    <section class="bg3overlay" id="about" style="margin-bottom: 10vh; margin-top: 10vh">
+        <div class="container mt-4 pt-4">
+            <div class="row mt-4">
+                <div class="col-md-6 px-0 mx-auto">
+                    <h1 style="margin-top: 15vh">Hey, I'm Luke.</h1>
+                <div class="container-fluid" style="padding-left: 0">
+                    <!-- social media icons -->
+                    <div class="social-icons mt-4">
+                        <a href="https://github.com/LukeHartzell1" target="_blank" style="margin-right: 10px"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank" style="margin-right: 10px"><i class="fab fa-linkedin"></i></a>
+                        <a href="mailto:lukedhartzell@gmail.com" target="_blank"><i class="fab fa-google"></i></a>
+                    </div>
+                </div>
+
+                <div class="d-inline-block" style="padding-right: 4vh">
+                    <div style="margin-top: 2vh; color:white; text-shadow: 2px 2px 4px #000000;">
+                    <p> I'm a Computer Science student from Chicago, Illinois. I love new challenges and I am passionate about learning. Through Computer Science, I aspire to make a positive impact on as many people as I can, possibly through education. When I'm not coding or learning about Computer Science, I'm usually at the gym, researching fitness, or talking and playing with friends online. I also enjoy doing graphic design from time to time. 
+                    </div>    
+                    </p>
+                    
+                    <div class="row mt-3">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 px-0 mx-auto">
+                    <div class="invisible-box" onscroll="handleScroll(event)" style="padding-left: 2vh">
+                        <section id="education">
+                            <h2> Education </h2>
+                            <div class="blurred-box" style="margin-top: 5px; width: 100%">
+                                <h4> Georgia Institute of Technology</h4>
+                                <h6> Expected Graduation May 2026</h6>
+                                <p>
+                                    Currently majoring in Computer Science 
+                                </p>
+                            </div>
+                            <div class="blurred-box">
+                                <h4> University of Illinois at Chicago</h4>
+                                <h6> August 2022 - Spring 2023 </h6>
+                                <p>
+                                    Studied Computer Science with a concentration in Software Engineering. I made the College of Engineering Dean's List for Fall 2022 with a 4.0/4.0 GPA for my time there.
+                                </p>
+                                <h6> Association for Computing Machinery - Member </h6>
+                                <ul style="list-style-type: square;">
+                                    <li>Designed and developed a website for a college hackathon utilizing Tailwind CSS, HTML, and JavaScript</li>
+                                </ul>
+                                <h6> Engineers for a Sustainable World - Member </h6>
+                                <ul style="list-style-type: square;">
+                                    <li>Researched, designed, and constructed two self-sustaining hydroponics systems</li>
+                                </ul>
+                            </div>
+                            <div class="blurred-box">
+                                <h4> Plainfield Central High School</h4>
+                                <h6> August 2018 - May 2022</h6>
+                                <p>
+                                    Graduated Salutatorian and <i>summa cum laude</i>. Garnered many awards including NMSQT National Merit Commended, Illinois State Scholar, and AP Scholar with Distinction (Junior and Senior Year).
+                                </p>
+                                <h6> Asian American Culture Club - Co-Leader </h6>
+                                <ul style="list-style-type: square; margin-bottom: 5px">
+                                    <li>Organized, presented, and led presentations, activities, and cooking days related to Asian culture.</li>
+                                </ul>
+                                <h6> Math Team - Co-Leader </h6>
+                                <ul style="list-style-type: square; margin-bottom: 5px">
+                                    <li>Created competition strategies and taught underclassman these strategies and other math concepts. Led a team that qualified for state.</li>
+                                </ul>
+                                <h6 style="margin-top: 0px"> Varsity Tennis - Co-Captain </h6>
+                                <ul style="list-style-type: square; margin-bottom: 2px">
+                                    <li>Designed the team shirts and helped decide which spots teammates played at.</li>
+                                </ul>
+                                <h6> Scholastic Bowl (Trivia team) </h6>
+                                <h6> National Honors Society </h6>
+                                <h6 style="margin-bottom: 2vh"> World Youth in Science and Engineering </h6>
+                            </div>
+                        </section>
+                        <section id="projects">
+                            <h2 style="margin-top: 4vh"> Projects </h2>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">IdentifAI</h4>
+                                    <a href="https://www.youtube.com/watch?v=IKsSfN8OJ2o" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:red">YouTube Demo <i class="fas fa-arrow-up-right-from-square" style="color: red;"></i></a>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> Kotlin</h6>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> AWS Rekognition</h6>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> Google Firebase</h6>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> Android Studio</h6>
+                                    </div>    
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li> Developed IdentifAI, an Android app using Kotlin, empowering Alzheimer's patients with facial recognition capabilities via AWS Rekognition and secure user profile storage in Google Firebase, conceived and executed during HackGTX in a team of three
+                                        </li>
+                                    </ul>
+                                </div>
+                            <div class="blurred-box" style="margin-top: 5px">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Virtual Twenty-Four Game</h4>
+                                    <a href="https://github.com/LukeHartzell1/Virtual-Twenty-Four-Game" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                  </div>
+                                <div class="language-box">
+                                <h6> C</h6>
+                                </div>
+                                <p>There are two versions of this text-based virtual implementation of the Twenty-Four Game, a game where you have 4 numbers, and using mathematical operators, have to try and come up with a way to make an equation that equates to 24. Each version focuses on a different aspect of coding.</p>
+                                <h6>First Version</h6>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Simpler version of the game, simply input the operators in the order you want them used.</li>
+                                    <li>Implemented features such as easy mode, debug mode, and operator input validation.</li>
+                                    <li>Generated and stored a set of 3188 solutions using a brute-force algorithm for debugging and hard mode.</li>
+                                </ul>
+                                <h6>Second Version</h6>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>More advanced version, input the full expression you want used, can include parenthesis as well.</li>
+                                    <li>Focuses on order of operations with parenthesis, stack implementation with linked lists (pop, isEmpty, push, peek, etc.), run-time, and preventing memory leaks.</li>
+                                    <li>Implemented a debug mode and designed an algorithm that found all possible solutions to the game.</li>
+                                    <li>Includes lots of error handling for matching parenthesis, correct numbers used, all numbers used, valid operators, etc.</li>
+                                </ul>
+                            </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">TicTacToe vs AI</h4>
+                                    <a href="https://github.com/LukeHartzell1/TicTacToe-vs-AI" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> Python</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Created a text-based Tic Tac Toe game with a user-friendly interface, enhanced error handling, a game loop, and adjustable AI difficulty levels using the Minimax algorithm</li>
+                                    </ul>
+                                </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Mock Database</h4>
+                                    <a href="https://github.com/LukeHartzell1/Database-of-Students" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                  </div>
+                                <div class="language-box">
+                                <h6> C</h6>
+                                </div>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Developed a student database system in C for managing student information, using linked lists for efficient data storage and retrieval.</li>
+                                    <li>Implemented functions for inserting in order, searching, and deleting student records based on ID, name, and GPA, ensuring accurate and fast data manipulation.</li>
+                                    <li>Implemented choice menus to provide users with clear options for inserting, searching, and deleting student records, along with a read menu to facilitate easy navigation within the database system.</li>
+                                    <li>Designed memory management techniques to properly allocate and deallocate memory for student data structures, preventing memory leaks and optimizing resource utilization.</li>
+                                </ul>
+                            </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Weaver Clone</h4>
+                                    <a href="https://github.com/LukeHartzell1/Weaver-Clone" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                    </div>
+                                <div class="language-box">
+                                <h6> C</h6>
+                                </div>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Text-based version of the online game <a href="https://weavergame.org/" style="text-decoration:none"><i>Weaver</i></a>, allowing users to find a path from a starting word to an ending word by changing one letter at a time.</li>
+                                    <li>Implemented a dynamic array to store words of a specific user-selected length by reading and copying from a "dictionary" file, ensuring efficient runtime performance.</li>
+                                    <li>Created functions for word validation, checking length and dictionary inclusion, as well as game input verification, ensuring the user's word is of the correct length and differs by only one character.</li>
+                                    <li>Provided an intuitive user experience by offering options to play again, play with a different word length, or exit the game, with a strong emphasis on memory management to prevent any memory leaks.</li>
+                                </ul>
+                            </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Roblox Obstacle Course Game</h4>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> Lua</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Leveraged Roblox Studio for design and Lua scripting to implement features commonly found in popular Roblox games </li>
+                                    </ul>
+                                </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Spell-Checker Optimization</h4>
+                                    <a href="https://github.com/LukeHartzell1/Spell-Checker-Optimization" style="margin-left: auto; margin-right: 2vh; margin-top: 5px; text-decoration: none; color:aquamarine">Github Link <i class="fas fa-arrow-up-right-from-square" style="color: aquamarine;"></i></a>
+                                    </div>
+                                <div class="language-box">
+                                    <h6> C</h6>
+                                    </div>
+                                    <ul style="list-style-type: square; margin-bottom: 2vh">
+                                        <li>Loads a dictionary into memory, checks words against the dictionary, determines dictionary size, and unloads the dictionary. The spell-checker reads a text file, identifies misspelled words, and reports the results.</li>
+                                        <li>Utilizes time measurement and benchmarking to aid the process of optimizing runtime dictionary load and spell-check.</li>
+                                        <li>Implemented robust error handling, input validation, and Valgrind checks to ensure correct behavior and prevent memory leaks.</li>
+                                    </ul>
+                                </div>
+                            <div class="blurred-box">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 style="margin-right: auto;">Bridges Game</h4>
+                                  </div>
+                                <div class="language-box">
+                                <h6> Java</h6>
+                                </div>
+                                <ul style="list-style-type: square; margin-bottom: 2vh">
+                                    <li>Designed and implemented a text-based memory game where users could progress to higher levels by making correct choices and return to the start upon incorrect choices.</li>
+                                    <li>Generated randomized contents for each level, ensuring unique gameplay experiences while maintaining consistent level progression until program termination.</li>
+                                    <li>Incorporated recursion and graphics to enhance the gameplay experience, providing an engaging and interactive environment for players.</li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section id="work">
+                            <h2 style="margin-top: 4vh;"> Work</h2>
+                            <div class="blurred-box" style="margin-top: 0px">
+                                <h4> Panera</h4>
+                                <h6> Associate</h6>
+                            <ul style="list-style-type: square; margin-bottom: 2vh">
+                                <li>Trained associates on the preparation of food orders and on overseeing and directing the food line.</li>
+                                <li>Delegated various food-making tasks to associates to improve efficiency.</li>
+                                <li>Accurately cooked and presented food orders for customers in a timely manner.</li>
+                                <li>Effectively communicated with and resolved issues with customers.</li>
+                            </div>
+                        </section>
+
+                        <section id="skills-and-interests">
+                            <h2 style="margin-top: 4vh;">Skills and Interests</h2>
+                            <div class="row row-cols-2 mt-3">
+                                <div class="blurred-box" style="margin-top: 0px;">
+                                    <h4>Tech I Love</h4>
+                                    <h6>Some tech that I love or have built with:</h6>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <ul style="list-style-type: square">
+                                                <li>C</li>
+                                                <li>Python</li>
+                                                <li>Java</li>
+                                                <li>SQL</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ul style="list-style-type: square">
+                                                <li>JavaScript</li>
+                                                <li>HTML</li>
+                                                <li>CSS</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+        
+                            <div class="blurred-box" style="margin-top: 15px">
+                                <h4> Graphic Design</h4>
+                                <h6> Back in late 2016, I found a passion for graphic design and making gaming YouTube videos. It never really went anywhere -- I only ever gained around 1,000 subscribers and 75,000 total views -- but I was passionate about it and enjoyed it a lot. I stopped making YouTube videos a long time ago, but I never fully stopped graphic design. Even as recently as March I was entering t-shirt design contests for my previous college. Although my YouTube thumbnails may look tacky now, they were good for their time, and even at the young age of 12, my skills were improving rapidly (as seen in the last image which I made just 4 months before all the others). </h6>
+                                <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                                        <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                                        <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                                        <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
+                                        <li data-bs-target="#myCarousel" data-bs-slide-to="4"></li>
+                                    </ol>
+                                
+                                    <!-- Slides -->
+                                    <div class="carousel-inner" style="object-fit: scale-down; height: 80%; width: 80%; margin-left:auto; margin-right:auto; padding-bottom: 5vh; padding-top: 2vh">
+                                        <div class="carousel-item active">
+                                            <img src="images/bo3 update.jpg" class="d-block w-100" alt="Image 1">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/cod ww2 beta thumb.jpg" class="d-block w-100" alt="Image 2">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/kn44 thumb.jpg" class="d-block w-100" alt="Image 3">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/triple play for sub thumb.jpg" class="d-block w-100" alt="Image 4">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/type 2 gold thumb.jpg" class="d-block w-100" alt="Image 5">
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Controls -->
+                                    <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        
+                        <!--new contact section-->
+                        <section id="contact" class="text-center" style="margin-top: 20px;">
+                            <div class="blurred-box" style="border-radius: 5px;">
+                                <h2>Contact Me</h2>
+                                <p  style="padding-right: 10px"> The best way to contact me is through email. You can reach me here:</p>
+                                <p> Email: <a href="mailto:lukedhartzell@gmail.com">lukedhartzell@gmail.com</a></p>
+                                <p> Linkedin: <a href="https://www.linkedin.com/in/luke-hartzell/">@LukeHartzell</a></p>
+                            </div>
+                    </section>
+
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- load javascript after loading all html content -->
+    <script src="script/script.js"></script>
+</body>
+
+</html>
