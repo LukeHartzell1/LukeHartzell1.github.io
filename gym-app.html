@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Gym App with AI Coach | Luke Hartzell</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Project-specific styles */
+    .project-header {
+      padding: 150px 0 100px;
+      background: var(--gradient-dark);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0, 217, 255, 0.05) 0%, rgba(8, 13, 26, 0.8) 70%);
+      z-index: 0;
+    }
+    
+    .project-title {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .meta-label {
+      font-size: 0.9rem;
+      color: var(--accent-color);
+      margin-bottom: 5px;
+    }
+    
+    .meta-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .project-highlights {
+      background: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 50px;
+      border: 1px solid rgba(110, 87, 224, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .highlight-item {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .highlight-item::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+    
+    .project-section {
+      padding: 80px 0;
+    }
+    
+    .project-section:nth-child(even) {
+      background: var(--gradient-dark);
+    }
+    
+    .section-title {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title::after {
+      content: "";
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background: var(--gradient-accent);
+      bottom: -10px;
+      left: 0;
+    }
+    
+    .project-image {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+      border: 1px solid rgba(110, 87, 224, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .project-image:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+      border-color: var(--accent-color);
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: auto;
+      max-height: 500px; /* Added max-height to make screenshots smaller */
+      object-fit: contain; /* Ensures the image maintains its aspect ratio */
+    }
+    
+    .project-text {
+      margin-bottom: 30px;
+    }
+    
+    .project-text p {
+      margin-bottom: 20px;
+      font-size: 1.05rem;
+    }
+    
+    .project-text ul {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .project-text ul li {
+      margin-bottom: 10px;
+    }
+    
+    .project-nav {
+      padding: 50px 0;
+      background: var(--gradient-darker);
+      text-align: center;
+    }
+    
+    .project-nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+    
+    .nav-link-item {
+      padding: 15px 30px;
+      background: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      border: 1px solid rgba(110, 87, 224, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+      box-shadow: 0 10px 20px rgba(0, 217, 255, 0.2);
+    }
+    
+    .nav-link-item a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .nav-link-item a:hover {
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Cursor Effects -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-outline" id="cursor-outline"></div>
+
+  <!-- Background Effects -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="bg-noise"></div>
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand glitch-text" href="index.html" data-text="LUKE">LUKE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#education">Education</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#experience">Experience</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#projects">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#skills">Skills</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link hover-underline-animation" href="index.html#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Project Header -->
+  <header class="project-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h1 class="project-title text-gradient">LiftIQ: Gym App with AI Coach</h1>
+          <div class="project-meta justify-content-center">
+            <div class="meta-item">
+              <span class="meta-label">Role</span>
+              <span class="meta-value">UX Researcher + Designer</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Year</span>
+              <span class="meta-value">2025</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Type</span>
+              <span class="meta-value">Educational Technology</span>
+            </div>
+          </div>
+          <div class="project-highlights">
+            <h3>Highlights</h3>
+            <div class="highlight-item">Gym-goers often lack proper guidance on form and technique, increasing injury risk.</div>
+            <div class="highlight-item">Conducted iterative user testing to refine AI coach and multimedia instruction.</div>
+            <div class="highlight-item">Designed an intuitive mobile interface combining AI motion tracking, instructional videos, and written resources.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Part I: Background & Pain Points -->
+  <section class="project-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-title text-gradient">Background & Pain Points</h2>
+          <h3>Proper Form & Hypertrophy Training</h3>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="project-text">
+            <p>Improper form and ineffective training techniques are common among beginner to intermediate gym-goers (ages 16-30), especially those lacking access to personal trainers. Common issues include:</p>
+            <ul>
+              <li>Increased injury risk due to incorrect exercise execution.</li>
+              <li>Confusion from conflicting online fitness information.</li>
+              <li>Difficulty in tracking exercise progression and form improvements.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="project-image">
+            <img src="images/gym-app-home.png" alt="Gym App home screen showing AI Coach, Progress Tracking, Videos, and Articles sections">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part II: UX Research -->
+  <section class="project-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-title text-gradient">UX Research</h2>
+          <h3>Responsibilities + Data Collection & Analysis</h3>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="project-image">
+            <img src="images/gym-app-wireframes.png" alt="Initial wireframes and user flow diagrams for the Gym App">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="project-text">
+            <p>As UX lead for the LiftIQ Gym App with AI Coach, my responsibilities included:</p>
+            <ul>
+              <li>Initial conceptual design grounded in fitness science.</li>
+              <li>Conducting detailed user tests and contextual inquiries.</li>
+              <li>Analyzing user feedback for iterative improvements.</li>
+            </ul>
+            <p>Primary methods of data collection:</p>
+            <ul>
+              <li>Think-aloud protocol during user interactions with prototypes.</li>
+              <li>Qualitative interviews focusing on fitness habits, challenges, and app interaction.</li>
+            </ul>
+            <p>Analysis methods included:</p>
+            <ul>
+              <li>Thematic analysis to identify patterns and common usability issues.</li>
+              <li>Direct feedback integration for user-centered design improvements.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part III: Design Solutions & Iterative Prototyping -->
+  <section class="project-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-title text-gradient">Design Solutions & Iterative Prototyping</h2>
+        </div>
+      </div>
+      
+      <!-- Initial Prototype -->
+      <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+          <div class="project-text">
+            <h3>Initial Prototype</h3>
+            <p>Key Features:</p>
+            <ul>
+              <li>AI Coach providing real-time camera analysis and audio feedback.</li>
+              <li>Video walkthroughs with descriptive captions and form cues.</li>
+              <li>Progress tracking and detailed instructional articles.</li>
+            </ul>
+            <p>User feedback praised the AI Coach, clear UI design, and instructional videos. However, feedback highlighted navigation difficulties due to small and inconsistent back buttons.</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="project-image">
+            <img src="images/gym-app-videos.png" alt="Videos section showing exercise categories and training videos">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mid-Fidelity Prototype -->
+      <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+          <div class="project-image">
+            <img src="images/gym-app-ai-coach.png" alt="AI Coach feature showing real-time form analysis with highlighted muscle engagement">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="project-text">
+            <h3>Mid-Fidelity Prototype Improvements</h3>
+            <ul>
+              <li>Enlarged and standardized back/navigation buttons for improved usability.</li>
+              <li>Added detailed instructional breakdowns (setup, execution, correction) based on user safety concerns.</li>
+              <li>Incorporated customizable playback speed for instructional videos.</li>
+            </ul>
+            <p>Feedback indicated high user satisfaction with improved interactivity and navigational consistency.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- High-Fidelity Prototype -->
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="project-text">
+            <h3>High-Fidelity Prototype (Final Design)</h3>
+            <p>Final iteration enhancements:</p>
+            <ul>
+              <li>Advanced AI feedback system with highlighted visual cues.</li>
+              <li>Expanded instructional resources emphasizing proper form and hypertrophy techniques.</li>
+              <li>Enhanced progress logging for measurable improvement tracking.</li>
+              <li>User-friendly interface with consistent design across all screens.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="project-image">
+            <img src="images/gym-app-workout-log.png" alt="Workout log showing performance metrics and form analysis">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part IV: Justification & Learning Science Integration -->
+  <section class="project-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="section-title text-gradient">Justification & Learning Science Integration</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="project-text">
+            <p>The LiftIQ Gym App leverages several key educational principles and theories:</p>
+            <ul>
+              <li><strong>Mayer's Multimedia Principles:</strong> Incorporates dual-channel theory by providing both visual (video tutorials, highlighted muscles) and audio coaching to reduce cognitive overload.</li>
+              <li><strong>Embodied Cognition & Motor Learning:</strong> Encourages active physical engagement during lessons, enhancing memory and skill acquisition.</li>
+              <li><strong>Immediate Feedback:</strong> Uses real-time AI analysis for instant form corrections, significantly reducing risk and improving learning outcomes.</li>
+              <li><strong>Chunking Principle:</strong> Breaks down complex exercises into manageable phases (setup, execution, correction) to facilitate easier learning.</li>
+              <li><strong>Signaling Principle:</strong> Employs visual cues to guide users' attention to critical areas, improving the effectiveness of instructional feedback.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-lg-8 mx-auto">
+          <div class="project-image">
+            <img src="images/liftiq-logo.png" alt="LiftIQ Logo" style="max-width: 300px; margin: 0 auto; display: block;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Navigation -->
+  <div class="project-nav">
+    <div class="container">
+      <div class="project-nav-links">
+        <div class="nav-link-item">
+          <a href="beelinguapp-redesign.html"><i class="fas fa-arrow-left"></i> Previous Project</a>
+        </div>
+        <div class="nav-link-item">
+          <a href="index.html#projects"><i class="fas fa-th"></i> All Projects</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-info">
+            <h3>Luke Hartzell</h3>
+            <p>Computer Science Student<br>Georgia Institute of Technology</p>
+            <div class="social-links">
+              <a href="https://github.com/LukeHartzell1" target="_blank"><i class="fab fa-github"></i></a>
+              <a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank"><i class="fab fa-linkedin"></i></a>
+              <a href="mailto:lukedhartzell@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-links">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="index.html#home">Home</a></li>
+              <li><a href="index.html#about">About</a></li>
+              <li><a href="index.html#education">Education</a></li>
+              <li><a href="index.html#experience">Experience</a></li>
+              <li><a href="index.html#projects">Projects</a></li>
+              <li><a href="index.html#skills">Skills</a></li>
+              <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12">
+          <div class="footer-newsletter">
+            <h4>Let's Connect</h4>
+            <p>Feel free to reach out for collaborations, opportunities, or just to say hello!</p>
+            <a href="index.html#contact" class="btn btn-outline-light btn-sm">Contact Me</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="copyright">
+          &copy; <span id="current-year"></span> <strong>Luke Hartzell</strong>. All Rights Reserved
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" id="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Set current year in footer
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+    
+    // Navbar scroll effect
+    const navbar = document.getElementById("mainNav");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+    
+    // Back to top button
+    const backToTopButton = document.getElementById("back-to-top");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add("active");
+      } else {
+        backToTopButton.classList.remove("active");
+      }
+    });
+    
+    backToTopButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    
+    // Custom cursor
+    const cursorDot = document.getElementById("cursor-dot");
+    const cursorOutline = document.getElementById("cursor-outline");
+    
+    window.addEventListener("mousemove", (e) => {
+      const posX = e.clientX;
+      const posY = e.clientY;
+      
+      cursorDot.style.left = `${posX}px`;
+      cursorDot.style.top = `${posY}px`;
+      
+      cursorOutline.animate(
+        {
+          left: `${posX}px`,
+          top: `${posY}px`,
+        },
+        { duration: 500, fill: "forwards" },
+      );
+    });
+  </script>
+</body>
+</html>
