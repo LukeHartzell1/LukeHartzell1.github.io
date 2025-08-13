@@ -116,9 +116,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const typed = new Typed(".typing", {
         strings: [
           "Computer Science Student at Georgia Tech",
-          "Software Developer",
           "TikTok Effect Creator",
-          "Project Manager",
+          "Product",
+          "Founder",
+          "Builder",
+          "Software Developer",
           "Teaching Assistant",
         ],
         typeSpeed: 50,
