@@ -261,12 +261,12 @@ export function gopu(env) {
   const at = (px, py) => new THREE.Vector3((px / 1024 - 0.5) * 4.0, 0, (py / 732 - 0.5) * 2.86);
   const spots = [[150, 120], [300, 250], [470, 180], [560, 420], [700, 120], [760, 400], [905, 250], [330, 470], [905, 470]].map(([x, y]) => at(x, y));
   const hits = new Set([1, 3, 5]);
-  const grey = new THREE.Color('#AEB4C0');
+  const grey = new THREE.Color('#8B93A1');
   const blue = new THREE.Color('#2F7BF6');
   const wcTex = textTex('WC', { w: 128, h: 128, size: 58, weight: 800, color: '#ffffff', bg: '#2F7BF6', radius: 64 });
   const pins = spots.map((p, i) => {
     const g = new THREE.Group();
-    const mat = M.gloss('#AEB4C0');
+    const mat = M.gloss('#8B93A1', { clearcoat: 0.5, roughness: 0.3 });
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 28, 20), mat);
     head.position.y = 0.42;
     const tip = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.32, 24), mat);
