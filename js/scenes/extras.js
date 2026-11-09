@@ -1,7 +1,7 @@
 /* Skills keyboard + contact paper plane. */
 import {
   THREE, C, M, stage, rig, damp, clamp, lerp, seg, loop, easeOut, easeInOut, easeOutBack,
-  rbox, textTex, label, tag, shadow, sparkles, rng,
+  rbox, textTex, label, tag, shadow, sparkles, rng, canvasTex,
 } from '../kit.js';
 import { paperPlane } from './builders.js';
 
@@ -144,16 +144,29 @@ export function plane(env) {
   ship.add(pp);
   pp.scale.setScalar(0.85);
   scene.add(ship);
-  const cloudMat = M.ceramic('#ffffff', { roughness: 0.55, clearcoat: 0.2 });
-  const clouds = [[-2.8, 1.3, -1.5, 1.0], [2.7, -0.6, -1.2, 0.85], [0.6, 2.1, -3, 0.7]].map(([x, y, z, k], ci) => {
+  // Little planets for the plane to fly between (the same sky as the hero).
+  const clouds = [
+    [-2.8, 1.3, -1.5, 0.62, ['#E0634B', '#FFC2A8', '#FF8A6A', '#FFE0D2'], true],
+    [2.7, -0.6, -1.2, 0.5, ['#1C8A80', '#A6F0E6', '#2EC4B6', '#0F5E58'], false],
+    [0.6, 2.1, -3, 0.38, ['#3D7FD6', '#DDEFFF', '#7CC4FF', '#B9DAFF'], false],
+  ].map(([x, y, z, r, cols, ringed], ci) => {
     const g = new THREE.Group();
     const rr = rng(40 + ci);
-    for (let i = 0; i < 5; i++) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(0.45 + rr() * 0.3, 32, 24), cloudMat);
-      m.position.set((i - 2) * 0.42, Math.sin(i * 1.3) * 0.12 + (i === 2 ? 0.18 : 0), (rr() - 0.5) * 0.3);
-      g.add(m);
+    const tex = canvasTex(256, 128, (c, w, h) => {
+      for (let yy = 0; yy < h; yy += 4) {
+        c.fillStyle = cols[Math.floor((Math.sin(yy * 0.09 + rr() * 0.6) * 0.5 + 0.5) * cols.length) % cols.length];
+        c.fillRect(0, yy, w, 4);
+      }
+    });
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.7 })));
+    if (ringed) {
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(r * 1.35, r * 1.9, 96),
+        new THREE.MeshBasicMaterial({ color: '#FFD2C2', transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false }),
+      );
+      ring.rotation.set(-Math.PI / 2 + 0.45, 0, 0.25);
+      g.add(ring);
     }
-    g.scale.setScalar(k);
     g.position.set(x, y, z);
     g.userData.base = g.position.clone();
     scene.add(g);
@@ -163,10 +176,10 @@ export function plane(env) {
   const trailPos = new Float32Array(N * 3);
   const trailGeo = new THREE.BufferGeometry();
   trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
-  const trail = new THREE.Line(trailGeo, new THREE.LineDashedMaterial({ color: C.violet, dashSize: 0.12, gapSize: 0.1, transparent: true, opacity: 0.55 }));
+  const trail = new THREE.Line(trailGeo, new THREE.LineDashedMaterial({ color: '#9FC2FF', dashSize: 0.12, gapSize: 0.1, transparent: true, opacity: 0.6 }));
   scene.add(trail);
   const hist = [];
-  const dust = sparkles(40, 4, { color: C.violet, size: 0.05, opacity: 0.4, seed: 9 });
+  const dust = sparkles(60, 4.5, { color: '#CFE0FF', size: 0.05, opacity: 0.6, seed: 9 });
   scene.add(dust);
   const P = new THREE.Vector3();
   const Q = new THREE.Vector3();
@@ -214,6 +227,7 @@ export function plane(env) {
       clouds.forEach((c, i) => {
         c.position.x = c.userData.base.x + Math.sin(s.time * 0.2 + i) * 0.3;
         c.position.y = c.userData.base.y + Math.sin(s.time * 0.5 + i * 2) * 0.08;
+        c.children[0].rotation.y = s.time * (0.2 + i * 0.05);
       });
       dust.rotation.y = s.time * 0.04;
     },

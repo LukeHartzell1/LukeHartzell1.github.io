@@ -369,5 +369,6 @@ export function createEngine() {
     },
     /* Jump every scene's clock forward (used by screenshot tests). */
     advance(sec) { clock += sec; },
+    get clock() { return clock; },
   };
 }

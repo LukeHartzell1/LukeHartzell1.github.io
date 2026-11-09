@@ -5,27 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Not found | Luke Hartzell</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#EDEDEA">
+  <meta name="theme-color" content="#05070F">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
   <link rel="stylesheet" href="/style.css">
   <style>
+    body.lost-page {
+      position: relative; isolation: isolate; color: #EEF1FA;
+      background: radial-gradient(50vw 50vh at 72% 40%, rgba(46, 75, 255, 0.2), transparent 70%), #05070F;
+    }
     .lost { min-height: 100svh; display: grid; align-content: center; gap: 28px; padding: 48px var(--gutter); }
-    .lost__code { margin: 0; font-size: clamp(7rem, 30vw, 22rem); font-weight: 800; font-stretch: 125%; line-height: 0.8; letter-spacing: -0.05em; }
-    .lost .label { max-width: 26rem; margin: 0; padding: 14px 18px 15px; border-radius: 2px; background: #fff; box-shadow: 0 10px 24px -16px rgba(17, 17, 20, 0.45); }
+    .lost__code {
+      margin: 0; font-size: clamp(7rem, 30vw, 22rem); font-weight: 800; font-stretch: 125%; line-height: 0.8; letter-spacing: -0.05em;
+      color: transparent; background: linear-gradient(180deg, #FFFFFF 30%, #BBD5FF 100%); -webkit-background-clip: text; background-clip: text;
+    }
+    .lost .label {
+      max-width: 26rem; margin: 0; padding: 14px 18px 15px; border-radius: 8px; background: rgba(14, 19, 36, 0.82);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), inset 3px 0 0 #FF8A6A;
+    }
     .lost .label b { display: block; font-size: 1.05rem; font-weight: 750; }
-    .lost .label span { display: block; margin-top: 6px; font-size: 0.95rem; font-style: italic; color: var(--muted); }
+    .lost .label span { display: block; margin-top: 6px; font-size: 0.95rem; color: #8B94AD; }
     .lost__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin: 0; }
+    .lost .btn { color: #0A0D1A; background: #F4F6FF; }
+    .lost .btn:hover { color: #fff; background: var(--signal); }
+    .lost .link { color: #EEF1FA; text-decoration-color: #FF8A6A; }
   </style>
 </head>
-<body>
+<body class="lost-page space-sky">
   <main class="lost">
     <h1 class="lost__code">404</h1>
     <p class="label">
-      <b>Nothing in this world</b>
-      <span>This page wandered off, probably to research the optimal workout split.</span>
+      <b>Lost in space</b>
+      <span>This page drifted out of orbit, probably to research the optimal workout split.</span>
     </p>
     <p class="lost__cta"><a class="btn" href="/">Back home</a><a class="link" href="/#projects">See the projects</a></p>
   </main>

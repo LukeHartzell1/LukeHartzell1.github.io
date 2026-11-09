@@ -1,6 +1,6 @@
-/* Page behaviour: the hero's lights-up moment, the worlds' entrances, the nav
-   that takes on the colors of the world under it, the RPG dialogue, the quiz,
-   the holo card, the projects gallery, 8-bit mode, and booting the 3D engine.
+/* Page behaviour: the hero's reveal and word reel, the worlds' entrances, the
+   nav that takes on the colors of the world under it, the tour of my room, the
+   quiz, the holo card, the projects gallery, 8-bit mode, and booting the 3D engine.
    Works on the case-study pages too (anything missing is simply skipped). */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -27,43 +27,238 @@ function toast(msg) {
   toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 2600);
 }
 
-/* ---------- hero: the lights come up once the page has painted ---------- */
-requestAnimationFrame(() => requestAnimationFrame(() => $('.hero')?.classList.add('is-in')));
-
-/* ---------- hero: "I'm a ..." cycles through worlds ----------
-   Each word is styled like its world; the 3D scene hears 'hero-role' and swings
-   the matching miniature to the front. Hovering the "In orbit" legend picks one. */
+/* ---------- hero: the universe, the headline, and the "I'm a ..." reel ----------
+   The 3D scene dives in and says 'hero-arrive' as its star ignites. The
+   headline then assembles letter by letter and the reel spins, slows, and
+   lands on the first word (the planets whirl with it). From then on it rolls
+   to the next word every few seconds, and each landing tells the scene which
+   planet to bring forward ('hero-role'). Hovering a planet's label picks it. */
+const hero = $('.hero');
 const iam = $('[data-iam]');
-if (iam) {
-  const words = $$('.iam__word', iam);
-  const legend = $$('[data-legend]');
-  let at = -1;
-  let held = false;
-  const show = (i) => {
-    if (i === at) return;
-    const prev = words[at];
-    at = i;
-    words.forEach((w, k) => {
-      w.classList.toggle('is-on', k === i);
-      w.classList.toggle('is-off', w === prev);
+let reel = null;
+if (hero) {
+  const name = $('.hero__name', hero);
+  if (name) {
+    const plain = name.textContent.replace(/\s+/g, ' ').trim();
+    let k = 0;
+    $$('.line', name).forEach((line) => {
+      const text = line.textContent.trim();
+      line.textContent = '';
+      line.setAttribute('aria-hidden', 'true');
+      [...text].forEach((ch) => {
+        const s = document.createElement('span');
+        s.className = 'ch';
+        s.style.setProperty('--k', String(k++));
+        s.textContent = ch;
+        line.appendChild(s);
+      });
     });
-    legend.forEach((a) => a.classList.toggle('is-on', Number(a.dataset.legend) === i));
+    const sr = document.createElement('span');
+    sr.className = 'sr-only';
+    sr.textContent = plain;
+    name.prepend(sr);
+  }
+}
+
+// Text that decodes itself from noise into place.
+function scramble(el, dur = 950) {
+  const final = el.textContent;
+  const glyphs = '<>/[]{}=+*#01_-';
+  const t0 = performance.now();
+  const step = (now) => {
+    const k = Math.min(1, (now - t0) / dur);
+    const n = Math.floor(final.length * k);
+    el.textContent = final.slice(0, n) + [...final.slice(n)]
+      .map((c) => (c === ' ' || c === '/' ? c : glyphs[Math.floor(Math.random() * glyphs.length)])).join('');
+    if (k < 1) requestAnimationFrame(step);
+    else el.textContent = final;
+  };
+  requestAnimationFrame(step);
+}
+
+const easeIO = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+function makeReel(el) {
+  const words = $$('.iam__word', el).map((w) => ({ text: w.textContent, cls: w.className }));
+  const N = words.length;
+  const orbits = $$('[data-orbit]');
+  el.textContent = '';
+  const win = document.createElement('span');
+  win.className = 'reel__win';
+  const items = [0, 1, 2, 3].map(() => {
+    const it = document.createElement('span');
+    it.className = 'reel__item';
+    it.appendChild(document.createElement('span'));
+    win.appendChild(it);
+    return it;
+  });
+  const meter = document.createElement('span');
+  meter.className = 'reel__measure';
+  words.forEach((w) => {
+    const m = document.createElement('span');
+    m.className = w.cls;
+    m.textContent = w.text;
+    meter.appendChild(m);
+  });
+  el.append(win, meter);
+  el.classList.add('is-built');
+
+  let widths = [];
+  let p = 0; // reel position, in words (k shows words[k mod N])
+  let cur = 0;
+  let wide = false; // full width while spinning through every word
+  let busy = false;
+  let landed = false;
+  let held = false;
+  const wordAt = (k) => ((k % N) + N) % N;
+  const measure = () => { widths = [...meter.children].map((m) => m.getBoundingClientRect().width); };
+  const setWidth = () => {
+    if (!widths.length) return;
+    el.style.setProperty('--w', `${(wide ? Math.max(...widths) : widths[cur]).toFixed(1)}px`);
+  };
+  const render = () => {
+    const base = Math.floor(p) - 1;
+    items.forEach((it, j) => {
+      const k = base + j;
+      if (it.__k !== k) {
+        it.__k = k;
+        const w = words[wordAt(k)];
+        it.firstChild.className = w.cls;
+        it.firstChild.textContent = w.text;
+      }
+      it.style.transform = `translate3d(0, ${((k - p) * 100).toFixed(3)}%, 0)`;
+      it.classList.toggle('is-cur', k === Math.round(p));
+    });
+  };
+  const announce = (i) => {
+    cur = i;
+    orbits.forEach((a) => a.classList.toggle('is-on', Number(a.dataset.orbit) === i));
     window.__heroRole = i;
     window.dispatchEvent(new CustomEvent('hero-role', { detail: i }));
   };
-  show(0);
+  // Roll to position `to`: decelerate past it a touch, then settle back.
+  const roll = (to, dur, overshoot, done) => {
+    if (reduced || dur <= 0) {
+      p = to;
+      render();
+      done?.();
+      return;
+    }
+    const p0 = p;
+    const t0 = performance.now();
+    let lastT = t0;
+    let lastP = p0;
+    busy = true;
+    el.classList.remove('is-settled');
+    const tick = (now) => {
+      const u = Math.min(1, (now - t0) / dur);
+      const A = 0.84;
+      p = u < A
+        ? p0 + (to - p0 + overshoot) * (1 - Math.pow(1 - u / A, 4))
+        : to + overshoot * (1 - easeIO((u - A) / (1 - A)));
+      const vel = Math.abs(p - lastP) / Math.max(0.001, (now - lastT) / 1000);
+      lastT = now;
+      lastP = p;
+      win.style.filter = vel > 2 ? `blur(${Math.min(4.5, vel * 0.16).toFixed(2)}px)` : '';
+      window.dispatchEvent(new CustomEvent('hero-spin', { detail: Math.min(1, vel / 16) }));
+      render();
+      if (u < 1) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      p = to;
+      render();
+      win.style.filter = '';
+      busy = false;
+      el.classList.add('is-settled');
+      window.dispatchEvent(new CustomEvent('hero-spin', { detail: 0 }));
+      done?.();
+    };
+    requestAnimationFrame(tick);
+  };
+  const land = () => {
+    landed = true;
+    wide = false;
+    announce(wordAt(Math.round(p)));
+    setWidth();
+    hero?.classList.add('is-landed');
+    window.__heroLanded = true;
+    window.dispatchEvent(new Event('hero-landed'));
+  };
+  const step = (to, dur) => {
+    const i = wordAt(to);
+    cur = i;
+    setWidth();
+    announce(i);
+    roll(to, dur, 0.08);
+  };
+  measure();
+  setWidth();
+  render();
+  el.classList.add('is-settled');
+  document.fonts?.ready.then(() => { measure(); setWidth(); });
+  window.addEventListener('resize', () => { measure(); setWidth(); });
+
+  // The rest of the time: one word every few seconds while it's on screen.
+  let visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(el);
   if (!reduced) {
-    let visible = true;
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(iam);
-    setInterval(() => { if (visible && !held && !document.hidden) show((at + 1) % words.length); }, 2600);
+    setInterval(() => {
+      if (landed && visible && !held && !busy && !document.hidden) step(Math.round(p) + 1, 760);
+    }, 2600);
   }
-  legend.forEach((a) => {
-    const pick = () => { held = true; show(Number(a.dataset.legend)); };
+  orbits.forEach((a) => {
+    const pick = () => {
+      if (!landed) return;
+      held = true;
+      const ahead = wordAt(Number(a.dataset.orbit) - cur);
+      if (ahead) step(Math.round(p) + ahead, 420 + ahead * 110);
+    };
     a.addEventListener('mouseenter', pick);
     a.addEventListener('focus', pick);
     a.addEventListener('mouseleave', () => { held = false; });
     a.addEventListener('blur', () => { held = false; });
   });
+
+  return {
+    // The opening spin: three times round, then the first word.
+    spin(delay) {
+      if (reduced || delay < 0) {
+        land();
+        return;
+      }
+      setTimeout(() => {
+        wide = true;
+        setWidth();
+        roll(N * 3, 2700, 0.24, land);
+      }, delay);
+    },
+  };
+}
+if (iam) reel = makeReel(iam);
+
+if (hero) {
+  let revealed = false;
+  const reveal = (instant = false) => {
+    if (revealed) return;
+    revealed = true;
+    window.__heroRevealed = true;
+    hero.classList.add('is-revealed');
+    const role = $('[data-scramble]', hero);
+    if (role && !reduced && !instant) scramble(role);
+    reel?.spin(instant ? -1 : 650);
+  };
+  // Arriving mid-page (a link or a restored scroll) skips the opening.
+  const deep = (location.hash && location.hash !== '#top') || window.scrollY > window.innerHeight * 0.3;
+  if (reduced || deep) {
+    window.__heroSkip = true;
+    reveal(true);
+  }
+  window.addEventListener('hero-arrive', () => reveal());
+  // If the 3D never starts (or is slow to), show the page anyway.
+  let introAt = 0;
+  window.addEventListener('hero-intro', () => { introAt = performance.now(); });
+  setTimeout(() => { if (!introAt) reveal(true); }, 4200);
+  setTimeout(() => reveal(), 9000);
 }
 
 /* ---------- worlds: number the steps, play each entrance once ---------- */
@@ -104,6 +299,7 @@ let tintedBy = null;
 function tint(el) {
   if (!nav || !el || el === tintedBy) return;
   tintedBy = el;
+  nav.classList.toggle('is-clear', el.hasAttribute('data-nav-clear'));
   const cs = getComputedStyle(el);
   const bg = cs.getPropertyValue('--band-bg').trim() || '#EDEDEA';
   nav.style.setProperty('--nav-bg', bg);
@@ -138,6 +334,7 @@ function setMenu(open) {
   if (!menuBtn || !sheet) return;
   menuBtn.setAttribute('aria-expanded', String(open));
   sheet.hidden = !open;
+  root.classList.toggle('menu-open', open);
   document.body.style.overflow = open ? 'hidden' : '';
 }
 menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
@@ -155,52 +352,117 @@ $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
   }
 }));
 
-/* ---------- about: an RPG dialogue box ---------- */
-const dialog = $('[data-dialog]');
-if (dialog) {
-  const lines = $$('[data-line]', dialog);
-  const page = $('.dialog__page', dialog);
-  const next = $('.dialog__next', dialog);
-  const texts = lines.map((p) => p.textContent.trim());
+/* ---------- about: a tour of my room ----------
+   The markers in the 3D room are tabs. Each opens a line of my story in the
+   caption, typed out like game dialogue, and the scene lights that spot up.
+   Until someone picks a spot, the room gives itself a slow tour (it pauses
+   while the pointer is over the room). */
+const roomEl = $('.room');
+if (roomEl) {
+  const tabs = $$('.spot', roomEl);
+  const panels = $$('.say__panel', roomEl);
+  const say = $('[data-say]', roomEl);
+  const count = $('.say__count', roomEl);
+  const N = tabs.length;
+  const texts = panels.map((p) => $('.say__text', p)?.textContent.trim() || '');
   let at = 0;
-  let timer = 0;
-  let typing = false;
-  const show = (i, animate) => {
-    clearInterval(timer);
-    at = i;
-    lines.forEach((p, k) => { p.hidden = k !== i; });
-    if (page) page.textContent = `${i + 1}/${lines.length}`;
-    const p = lines[i];
-    const full = texts[i];
-    if (!animate || reduced) {
-      p.textContent = full;
-      typing = false;
-      dialog.classList.add('is-waiting');
+  let typer = 0;
+  let touring = !reduced;
+  let tourTimer = 0;
+  let inView = false;
+  let hovering = false;
+  let built = false;
+  const typeOut = (el, full) => {
+    clearInterval(typer);
+    if (!el) return;
+    if (reduced) {
+      el.textContent = full;
       return;
     }
-    // Type it out, keeping the untyped rest in place (transparent) so the
-    // box never changes size mid-sentence.
-    typing = true;
-    dialog.classList.remove('is-waiting');
+    // Keep the untyped rest in place (transparent) so the box never jumps.
     const on = document.createElement('span');
     const off = document.createElement('span');
     off.className = 'tw-off';
-    p.replaceChildren(on, off);
+    el.replaceChildren(on, off);
     let n = 0;
     const draw = () => { on.textContent = full.slice(0, n); off.textContent = full.slice(n); };
     draw();
-    timer = setInterval(() => {
+    typer = setInterval(() => {
       n = Math.min(full.length, n + 2);
       draw();
-      if (n >= full.length) { clearInterval(timer); typing = false; p.textContent = full; dialog.classList.add('is-waiting'); }
-    }, 16);
+      if (n >= full.length) {
+        clearInterval(typer);
+        el.textContent = full;
+      }
+    }, 18);
   };
-  show(0, false);
-  whenOn(dialog.closest('.band'), () => show(0, true));
-  next?.addEventListener('click', () => {
-    if (typing) { clearInterval(timer); typing = false; lines[at].textContent = texts[at]; dialog.classList.add('is-waiting'); return; }
-    show((at + 1) % lines.length, true);
+  const schedule = () => {
+    clearTimeout(tourTimer);
+    say.classList.remove('is-touring');
+    if (!touring || !built) return;
+    const ms = panels[at].classList.contains('say__panel--list') ? 8000 : Math.max(5200, 2400 + texts[at].length * 40);
+    say.style.setProperty('--dwell', `${ms}ms`);
+    void say.offsetWidth; // restart the progress bar
+    say.classList.add('is-touring');
+    tourTimer = setTimeout(() => {
+      if (inView && !hovering && !document.hidden) open(at + 1);
+      else schedule();
+    }, ms);
+  };
+  function open(i, { focus = false } = {}) {
+    at = ((i % N) + N) % N;
+    tabs.forEach((t, k) => {
+      t.setAttribute('aria-selected', String(k === at));
+      t.tabIndex = k === at ? 0 : -1;
+    });
+    panels.forEach((p, k) => { p.hidden = k !== at; });
+    say.style.setProperty('--c', tabs[at].style.getPropertyValue('--c'));
+    if (count) count.textContent = `${at + 1} / ${N}`;
+    window.__roomSpot = at;
+    window.dispatchEvent(new CustomEvent('room-focus', { detail: at }));
+    const panel = panels[at];
+    if (panel.classList.contains('say__panel--list')) {
+      clearInterval(typer);
+      $$('li', panel).forEach((li, k) => li.style.setProperty('--k', String(k)));
+      panel.classList.add('is-typing');
+      requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.remove('is-typing')));
+    } else {
+      typeOut($('.say__text', panel), texts[at]);
+    }
+    if (focus) tabs[at].focus();
+    schedule();
+  }
+  const choose = (i, o) => {
+    touring = false;
+    open(i, o);
+  };
+  tabs.forEach((t, k) => t.addEventListener('click', () => choose(k)));
+  $('.spots', roomEl)?.addEventListener('keydown', (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (step) {
+      e.preventDefault();
+      choose(at + step, { focus: true });
+    } else if (e.key === 'Home' || e.key === 'End') {
+      e.preventDefault();
+      choose(e.key === 'Home' ? 0 : N - 1, { focus: true });
+    }
   });
+  $('[data-say-prev]', roomEl)?.addEventListener('click', () => choose(at - 1));
+  $('[data-say-next]', roomEl)?.addEventListener('click', () => choose(at + 1));
+  window.addEventListener('room-pick', (e) => choose(Number(e.detail)));
+  const view = $('.room__view', roomEl);
+  view?.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') hovering = true; });
+  view?.addEventListener('pointerleave', () => { hovering = false; });
+  new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.3 }).observe(roomEl);
+  const start = () => {
+    if (built) return;
+    built = true;
+    roomEl.classList.add('is-built');
+    open(at);
+  };
+  window.addEventListener('room-built', start);
+  // Without the 3D room (or if it's slow to build), the tour starts anyway.
+  whenOn(roomEl.closest('.band'), () => setTimeout(start, root.classList.contains('no-webgl') ? 0 : 6500));
 }
 
 /* ---------- counters (the creator stats) ---------- */
@@ -494,34 +756,38 @@ if (zoomables.length) {
 /* ---------- 3D ---------- */
 async function boot3d() {
   if (!$('.stage')) return;
-  try {
-    await Promise.race([
-      Promise.all([
-        document.fonts.load('600 48px Archivo'),
-        document.fonts.load('800 48px Archivo'),
-        document.fonts.load('500 48px "IBM Plex Mono"'),
-      ]),
-      new Promise((r) => setTimeout(r, 2500)),
-    ]);
-  } catch { /* fonts are a nicety */ }
+  // Scenes that draw text wait (briefly) for the fonts; the hero doesn't.
+  const fontsReady = Promise.race([
+    Promise.all([
+      document.fonts.load('600 48px Archivo'),
+      document.fonts.load('800 48px Archivo'),
+      document.fonts.load('500 48px "IBM Plex Mono"'),
+    ]).catch(() => {}),
+    new Promise((r) => setTimeout(r, 2500)),
+  ]);
   let mods;
   try {
     mods = await Promise.all([import('./engine.js'), import('./scenes/index.js')]);
   } catch (err) {
     console.warn('[luke] 3D failed to load, keeping the static page.', err);
     root.classList.add('no-webgl');
+    window.dispatchEvent(new Event('hero-arrive'));
     return;
   }
   const [{ createEngine }, { registry }] = mods;
   engine = createEngine();
-  if (!engine) { root.classList.add('no-webgl'); return; }
+  if (!engine) {
+    root.classList.add('no-webgl');
+    window.dispatchEvent(new Event('hero-arrive'));
+    return;
+  }
   engine.setPixel(root.classList.contains('pixel'));
   window.__luke = engine;
   const make = (name) => {
     try { return registry[name]?.(engine.envMap) || null; } catch (err) { console.error(`[luke] scene "${name}" failed`, err); return null; }
   };
   let planeInst = null;
-  $$('.stage[data-scene]').forEach((el) => {
+  const mountAll = (els) => els.forEach((el) => {
     engine.mount(el, {
       onFirstVisible: (tg) => {
         const inst = make(el.dataset.scene);
@@ -531,6 +797,10 @@ async function boot3d() {
       },
     });
   });
+  const stages = $$('.stage[data-scene]');
+  mountAll(stages.filter((el) => el.dataset.scene === 'hero'));
+  await fontsReady;
+  mountAll(stages.filter((el) => el.dataset.scene !== 'hero'));
   $$('[data-send]').forEach((b) => b.addEventListener('click', () => planeInst?.launch?.()));
 }
 boot3d();
