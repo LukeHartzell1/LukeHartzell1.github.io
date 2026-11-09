@@ -1,16 +1,18 @@
-/* The two Georgia Tech VIP roles, each acting out the product I built.
-   studyBuddy: StudyBuddy, the AI note-taking and lecture assistant. A lecture
-     is recorded and its slide OCR-scanned, the capture streams into a GPU rack
-     (it ran on Georgia Tech's NVIDIA AI supercomputer), and notes write
-     themselves (summary and tags included), then go out to students' phones.
-   tutor: the AI-enhanced Data Structures & Algorithms modules. A student's
-     BST insert is missing its base case; the tutor bot hints in chat, the fix
-     types in and the tests pass, the key drops into the tree, and a quiz card
-     checks the idea. */
+/* The two Georgia Tech VIP roles, each showing what the product is like to
+   use, not how it's built.
+   studyBuddy: StudyBuddy, an AI note-taker for lectures. In a little lecture
+     room, the buddy (a book with a face) reads the slide while the professor
+     talks, flies over the class leaving notes with every student, then lands
+     by your phone: notes, a summary, and topics, ready to go.
+   tutor: AI study modules for data structures. A student's practice code is
+     missing a case; the tutor bot nudges them in plain words, the fix goes in
+     and the checks pass, 42 drops into its spot in the tree, and a quiz card
+     asks which way smaller numbers go. */
 import {
   THREE, M, rig, stage, damp, clamp, lerp, seg, loop, easeOut, easeInOut, easeOutBack,
-  rbox, canvasTex, dotTex, sprite, shadow, rng, roundRectPath, setInst, FONT, MONO,
+  rbox, canvasTex, dotTex, sprite, shadow, roundRectPath, FONT, MONO,
 } from '../kit.js';
+import { person } from './builders.js';
 
 const TAU = Math.PI * 2;
 
@@ -78,267 +80,303 @@ function pill(text, { color = '#2E4BFF', bg = '#ffffff', w = 1.2, h = 0.32, size
 }
 
 /* ======================================================================
-   STUDYBUDDY
+   STUDYBUDDY: a study buddy in the lecture hall
    ====================================================================== */
-function lectureTex() {
+function slideTex(part) {
   return canvasTex(1024, 640, (g, w, h) => {
     g.fillStyle = '#ffffff';
     g.fillRect(0, 0, w, h);
     g.fillStyle = '#2E5BFF';
     g.font = `600 30px ${MONO}`;
-    g.fillText('LEC 14', 70, 92);
+    g.fillText(part ? 'LECTURE 14 · PART 2' : 'LECTURE 14', 70, 92);
     g.fillStyle = '#121A2B';
-    g.font = `700 70px ${FONT}`;
-    g.fillText('Hash Tables', 70, 172);
-    // Handwritten-ish notes on the slide.
-    g.strokeStyle = '#B7C2DA';
+    g.font = `700 66px ${FONT}`;
+    g.fillText(part ? 'Putting it together' : "Today's big idea", 70, 172);
+    for (let i = 0; i < 3; i++) {
+      g.fillStyle = '#2E5BFF';
+      g.beginPath();
+      g.arc(84, 262 + i * 74, 9, 0, TAU);
+      g.fill();
+      g.fillStyle = '#CFD8EC';
+      roundRectPath(g, 112, 250 + i * 74, 360 - i * 70 + (part ? 40 : 0), 24, 12);
+      g.fill();
+    }
+    if (part) {
+      // A little diagram: three ideas joined up.
+      g.strokeStyle = '#2E5BFF';
+      g.lineWidth = 7;
+      const pts = [[640, 300], [860, 300], [750, 480]];
+      g.beginPath();
+      pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+      g.closePath();
+      g.stroke();
+      pts.forEach(([x, y], i) => {
+        g.fillStyle = ['#2E5BFF', '#4BE3A6', '#FF8A6A'][i];
+        g.beginPath();
+        g.arc(x, y, 40, 0, TAU);
+        g.fill();
+      });
+    } else {
+      // A simple chart.
+      [150, 230, 190, 290].forEach((bh, i) => {
+        g.fillStyle = i === 3 ? '#2E5BFF' : '#AFC0F0';
+        roundRectPath(g, 620 + i * 80, 520 - bh, 54, bh, 10);
+        g.fill();
+      });
+      g.fillStyle = '#121A2B';
+      g.fillRect(600, 522, 320, 5);
+    }
+  });
+}
+
+/* The StudyBuddy app, drawn in parts so it can fill in. */
+function appTex(kind) {
+  const W = 512;
+  const H = { head: 132, title: 120, row: 132, chips: 96 }[kind];
+  return canvasTex(W, H, (g, w, h) => {
+    if (kind === 'head') {
+      g.fillStyle = '#2E5BFF';
+      g.fillRect(0, 0, w, h);
+      g.fillStyle = '#4BE3A6';
+      g.beginPath();
+      g.arc(52, h / 2, 14, 0, TAU);
+      g.fill();
+      g.fillStyle = '#ffffff';
+      g.font = `700 50px ${FONT}`;
+      g.textBaseline = 'middle';
+      g.fillText('StudyBuddy', 82, h / 2 + 3);
+    } else if (kind === 'title') {
+      g.fillStyle = '#121A2B';
+      g.font = `700 46px ${FONT}`;
+      g.textBaseline = 'middle';
+      g.fillText('Lecture 14', 34, h * 0.42);
+      g.fillStyle = '#1F9D74';
+      g.font = `600 30px ${FONT}`;
+      g.fillText('Your notes are ready', 34, h * 0.82);
+    }
+  });
+}
+
+function appRow(label, sub, color) {
+  return canvasTex(512, 132, (g, w, h) => {
+    g.fillStyle = '#F2F5FC';
+    roundRectPath(g, 18, 10, w - 36, h - 20, 22);
+    g.fill();
+    g.fillStyle = color;
+    g.beginPath();
+    g.arc(70, h / 2, 26, 0, TAU);
+    g.fill();
+    g.strokeStyle = '#ffffff';
     g.lineWidth = 7;
     g.lineCap = 'round';
-    const r = rng(5);
-    for (let y = 250; y < 560; y += 62) {
-      g.beginPath();
-      g.moveTo(70, y);
-      let x = 70;
-      const end = 420 + r() * 160;
-      while (x < end) {
-        const nx = x + 22 + r() * 26;
-        g.quadraticCurveTo((x + nx) / 2, y - 9 + r() * 18, nx, y);
-        x = nx;
-      }
-      g.stroke();
-    }
-    // The diagram: keys hashed into buckets.
-    g.strokeStyle = '#2E5BFF';
-    g.lineWidth = 6;
-    g.font = `500 28px ${MONO}`;
-    for (let i = 0; i < 5; i++) {
-      const y = 240 + i * 66;
-      g.strokeRect(700, y, 150, 48);
-      g.fillStyle = '#2E5BFF';
-      g.fillText(String(i), 670, y + 33);
-      if (i === 1 || i === 3) {
-        g.beginPath();
-        g.moveTo(850, y + 24);
-        g.lineTo(900, y + 24);
-        g.stroke();
-        g.strokeRect(900, y + 6, 54, 36);
-      }
-    }
-  });
-}
-
-function rackTex() {
-  return canvasTex(256, 64, (g, w, h) => {
-    g.fillStyle = '#0E1322';
-    g.fillRect(0, 0, w, h);
-    g.fillStyle = '#7EF0C6';
-    g.font = `600 30px ${MONO}`;
-    g.textBaseline = 'middle';
-    g.fillText('GPU', 18, h / 2 + 2);
-    g.fillStyle = '#3B4566';
-    for (let i = 0; i < 9; i++) g.fillRect(110 + i * 15, 18, 8, 28);
-  });
-}
-
-function phoneNoteTex() {
-  return canvasTex(128, 256, (g, w, h) => {
-    g.fillStyle = '#ffffff';
-    g.fillRect(0, 0, w, h);
-    g.fillStyle = '#2E5BFF';
-    g.fillRect(0, 0, w, 46);
-    g.fillStyle = '#ffffff';
-    g.fillRect(14, 18, 54, 10);
+    g.beginPath();
+    g.moveTo(58, h / 2 + 1);
+    g.lineTo(67, h / 2 + 10);
+    g.lineTo(84, h / 2 - 9);
+    g.stroke();
     g.fillStyle = '#121A2B';
-    g.fillRect(14, 66, 86, 14);
-    g.fillStyle = '#C8D0E2';
-    for (let i = 0; i < 5; i++) g.fillRect(14, 100 + i * 24, 60 + ((i * 37) % 40), 9);
-    g.fillStyle = '#E3EBFF';
-    g.fillRect(10, 222, w - 20, 22);
+    g.font = `700 38px ${FONT}`;
+    g.textBaseline = 'middle';
+    g.fillText(label, 116, h / 2 - 16);
+    g.fillStyle = '#5A6680';
+    g.font = `500 28px ${FONT}`;
+    g.fillText(sub, 116, h / 2 + 22);
   });
+}
+
+function noteCardTex() {
+  return canvasTex(128, 160, (g, w, h) => {
+    g.fillStyle = '#ffffff';
+    roundRectPath(g, 0, 0, w, h, 14);
+    g.fill();
+    g.fillStyle = '#2E5BFF';
+    g.fillRect(0, 0, w, 34);
+    g.fillStyle = '#4BE3A6';
+    g.beginPath();
+    g.arc(20, 17, 7, 0, TAU);
+    g.fill();
+    g.fillStyle = '#C9D3EA';
+    for (let i = 0; i < 4; i++) g.fillRect(16, 52 + i * 24, 96 - (i % 2) * 30, 10);
+  });
+}
+
+/* The buddy: a little book with a face and a bookmark tail. */
+function buddyBook() {
+  const g = new THREE.Group();
+  const body = new THREE.Group();
+  g.add(body);
+  put(body, box(0.62, 0.78, 0.2, M.gloss('#2E5BFF', { roughness: 0.25 }), 0.06));
+  put(body, box(0.56, 0.72, 0.17, M.ceramic('#FBFAF6', { roughness: 0.6 }), 0.03), 0.04, 0, 0.0);
+  put(body, box(0.1, 0.8, 0.22, M.gloss('#2347D6', { roughness: 0.3 }), 0.04), -0.3, 0, 0);
+  const eyeW = M.flat('#ffffff');
+  const pupil = M.flat('#121A2B');
+  const eyes = [-0.11, 0.13].map((x) => {
+    const e = put(body, new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 14), eyeW), x, 0.1, 0.1);
+    e.scale.z = 0.4;
+    put(e, new THREE.Mesh(new THREE.SphereGeometry(0.038, 14, 10), pupil), 0, -0.01, 0.06);
+    return e;
+  });
+  const smile = put(body, new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.012, 8, 20, Math.PI), M.flat('#ffffff')), 0.02, -0.05, 0.104);
+  smile.rotation.z = Math.PI;
+  const ribbon = put(body, box(0.06, 0.3, 0.01, M.gloss('#FF8A6A'), 0.01), 0.14, 0.48, -0.02);
+  return { group: g, body, eyes, ribbon };
 }
 
 export function studyBuddy(env) {
   const { scene, camera } = stage(env, { fov: 28 });
-  const cam = rig(camera, { pos: [0.3, 1.6, 13.2], look: [0.15, 0.1, 0], fit: 0.9 });
+  const cam = rig(camera, { pos: [1.2, 4.4, 12.3], look: [0.05, 1.0, 0.3], fit: 0.9 });
   const root = new THREE.Group();
   scene.add(root);
 
-  // 1. The lecture: a slide being recorded, its audio, and the OCR beam.
-  const lecture = put(root, new THREE.Group(), -1.55, 1.3, 0);
-  put(lecture, box(2.62, 1.66, 0.08, M.ceramic('#ffffff', { roughness: 0.35 }), 0.06));
-  const slide = put(lecture, new THREE.Mesh(new THREE.PlaneGeometry(2.5, 1.56), new THREE.MeshBasicMaterial({ map: lectureTex(), toneMapped: false })), 0, 0, 0.042);
-  const rec = put(lecture, new THREE.Group(), -0.95, 0.98, 0.06);
-  put(rec, box(0.56, 0.2, 0.04, M.gloss('#121A2B'), 0.08));
-  const recDot = put(rec, new THREE.Mesh(new THREE.CircleGeometry(0.045, 24), M.flat('#FF4D4D')), -0.17, 0, 0.022);
-  const recTxt = put(rec, new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.1), new THREE.MeshBasicMaterial({
-    map: runsTex([['REC', '#ffffff', 600]], { w: 192, h: 64, size: 40, pad: 6 }), transparent: true, toneMapped: false,
-  })), 0.06, 0, 0.022);
-  recTxt.renderOrder = 1;
-  const beam = put(lecture, new THREE.Mesh(new THREE.PlaneGeometry(2.56, 0.05), M.glow('#4BE3A6', { opacity: 0 })), 0, 0, 0.07);
-  const beamGlow = put(beam, sprite(dotTex(), 2.9, 0.4, { color: '#4BE3A6', opacity: 0, blending: THREE.AdditiveBlending }), 0, 0, 0.01);
-  const WAVE = 26;
-  const wave = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), M.gloss('#2E5BFF'), WAVE);
-  put(lecture, wave, 0, -1.08, 0);
-  const setBar = (i, hgt) => setInst(wave, i, -1.2 + (i / (WAVE - 1)) * 2.4, 0, 0, 0, 0, 0, 0.05, Math.max(0.0001, hgt), 0.05);
+  // The room: a floor, the lecture screen, the professor.
+  put(root, box(7.4, 0.16, 5.6, M.ceramic('#E3E8F3', { roughness: 0.6 }), 0.08), 0.1, -0.08, 0.1);
+  const screen = put(root, new THREE.Group(), -1.95, 1.75, -1.55);
+  screen.rotation.y = 0.42;
+  put(screen, box(2.7, 1.72, 0.08, M.gloss('#1A2034', { roughness: 0.3 }), 0.05));
+  const slides = [slideTex(0), slideTex(1)];
+  const slide = put(screen, new THREE.Mesh(new THREE.PlaneGeometry(2.56, 1.6), new THREE.MeshBasicMaterial({ map: slides[0], toneMapped: false })), 0, 0, 0.045);
+  put(screen, box(0.08, 1.0, 0.08, M.chrome()), 0, -1.3, -0.05);
+  const prof = put(root, person({ color: '#2E5BFF' }), -2.85, 0, -0.45);
+  prof.rotation.y = 1.1;
+  const talk = [0, 1, 2].map(() => put(root, new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.012, 8, 40, Math.PI * 0.9), M.flat('#2E5BFF', { transparent: true, opacity: 0 })), -2.7, 1.0, -0.38));
+  talk.forEach((r) => { r.rotation.set(0, 1.1 + Math.PI / 2, -Math.PI * 0.45); });
 
-  // 2. The GPU rack it all runs on.
-  const rack = put(root, new THREE.Group(), -1.45, -1.55, 0.1);
-  put(rack, box(1.55, 1.05, 0.95, M.ceramic('#1A2034', { roughness: 0.45 }), 0.07));
-  put(rack, new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.2), new THREE.MeshBasicMaterial({ map: rackTex(), toneMapped: false })), -0.32, 0.36, 0.48);
-  const leds = [];
-  for (let i = 0; i < 4; i++) {
-    put(rack, box(1.3, 0.13, 0.04, M.ceramic('#262E48', { roughness: 0.4 }), 0.02), 0, 0.15 - i * 0.19, 0.49);
-    const led = put(rack, box(0.5, 0.035, 0.02, new THREE.MeshBasicMaterial({ color: '#7EF0C6', toneMapped: false, transparent: true, opacity: 0.25 }), 0.01), 0.3, 0.15 - i * 0.19, 0.52);
-    leds.push(led);
+  // The class: two rows of students with laptops, facing the screen.
+  const pastel = ['#FFB38A', '#7CC4FF', '#9BE3C7', '#FFD1DC', '#C9D3EA', '#FF8A6A', '#6CB6FF', '#B8E2D2'];
+  const students = [];
+  let n = 0;
+  for (const z of [0.15, 1.35]) {
+    for (let i = 0; i < 4; i++) {
+      const g = put(root, new THREE.Group(), -0.75 + i * 1.0 + (z > 1 ? 0.35 : 0), 0, z);
+      g.lookAt(screen.position.x, 0, screen.position.z);
+      const p = put(g, person({ color: pastel[n % pastel.length] }), 0, 0, -0.05);
+      p.scale.setScalar(0.72);
+      put(g, box(0.62, 0.05, 0.4, M.ceramic('#F7F8FB'), 0.02), 0, 0.5, 0.42);
+      put(g, box(0.05, 0.5, 0.05, M.chrome(), 0.01), 0, 0.25, 0.42);
+      const lid = put(g, box(0.36, 0.24, 0.02, M.gloss('#1A2034'), 0.015), 0, 0.64, 0.5);
+      lid.rotation.x = -0.25;
+      const glow = put(lid, new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.19), M.flat('#7CA6FF', { transparent: true, opacity: 0 })), 0, 0, -0.012);
+      glow.rotation.y = Math.PI;
+      const card = put(root, new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.425), new THREE.MeshBasicMaterial({ map: noteCardTex(), transparent: true, toneMapped: false, depthWrite: false })), 0, 0, 0);
+      card.renderOrder = 3;
+      students.push({ g, glow, card, at: 0 });
+      n++;
+    }
   }
-  const rackGlow = put(rack, sprite(dotTex(), 2.6, 1.6, { color: '#4BE3A6', opacity: 0, blending: THREE.AdditiveBlending }), 0, 0, 0.55);
 
-  // 3. The notes StudyBuddy writes.
-  const notes = put(root, new THREE.Group(), 1.5, 0.45, 0.35);
-  notes.rotation.y = -0.18;
-  put(notes, box(2.25, 2.85, 0.06, M.ceramic('#ffffff', { roughness: 0.4 }), 0.07));
-  const head = put(notes, new THREE.Mesh(new THREE.PlaneGeometry(2.1, 0.32), new THREE.MeshBasicMaterial({
-    map: runsTex([['● ', '#4BE3A6', 700], ['StudyBuddy', '#ffffff', 600]], { w: 672, h: 104, size: 46, mono: false, pad: 30, bg: '#2E5BFF' }), transparent: true, toneMapped: false,
-  })), 0, 1.18, 0.035);
-  head.renderOrder = 1;
-  const L = -0.95;
-  const lines = [
-    { m: strip(runsTex([['Hash Tables', '#121A2B', 700]], { size: 50, mono: false, w: 512, h: 64 }), 1.95, 0.244), y: 0.76, at: 3.0 },
-    { m: strip(runsTex([['• ', '#2E5BFF', 700], ['keys → buckets', '#37425A']], { size: 38, mono: false, w: 512, h: 64 }), 1.95, 0.244), y: 0.42, at: 3.45 },
-    { m: strip(runsTex([['• ', '#2E5BFF', 700], ['lookup: O(1)', '#37425A']], { size: 38, mono: false, w: 512, h: 64 }), 1.95, 0.244), y: 0.14, at: 3.85 },
-    { m: strip(runsTex([['• ', '#2E5BFF', 700], ['collisions chain', '#37425A']], { size: 38, mono: false, w: 512, h: 64 }), 1.95, 0.244), y: -0.14, at: 4.25 },
+  // Your phone, up close, where it all lands.
+  const phone = put(root, new THREE.Group(), 2.3, 0.85, 2.45);
+  phone.rotation.set(-0.16, -0.3, 0.05);
+  put(phone, box(1.2, 2.3, 0.08, M.ceramic('#F4F6FA', { roughness: 0.3 }), 0.14));
+  put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.08, 2.14), M.flat('#FFFFFF')), 0, 0, 0.045);
+  put(phone, box(0.3, 0.05, 0.01, M.gloss('#1A2034'), 0.02), 0, 0.98, 0.05);
+  const app = [
+    { m: put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.08, 0.28), new THREE.MeshBasicMaterial({ map: appTex('head'), transparent: true, toneMapped: false })), 0, 0.79, 0.047), at: 0 },
+    { m: put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.234), new THREE.MeshBasicMaterial({ map: appTex('title'), transparent: true, toneMapped: false })), 0, 0.46, 0.047), at: 6.55 },
+    { m: put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.258), new THREE.MeshBasicMaterial({ map: appRow('Notes', 'everything from class', '#2E5BFF'), transparent: true, toneMapped: false })), 0, 0.16, 0.047), at: 6.9 },
+    { m: put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.258), new THREE.MeshBasicMaterial({ map: appRow('Summary', 'the lecture in a minute', '#1F9D74'), transparent: true, toneMapped: false })), 0, -0.14, 0.047), at: 7.25 },
+    { m: put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.258), new THREE.MeshBasicMaterial({ map: appRow('Topics', 'tagged to find later', '#FF8A6A'), transparent: true, toneMapped: false })), 0, -0.44, 0.047), at: 7.6 },
   ];
-  lines.forEach((ln) => put(notes, ln.m, L, ln.y, 0.036));
-  const sumBox = put(notes, new THREE.Group(), 0, -0.68, 0.036);
-  put(sumBox, new THREE.Mesh(new THREE.PlaneGeometry(1.95, 0.72), M.flat('#E8EEFF')));
-  put(sumBox, new THREE.Mesh(new THREE.PlaneGeometry(0.035, 0.72), M.flat('#2E5BFF')), -0.96, 0, 0.001);
-  const sumText = put(sumBox, strip(runsTex([['Summary', '#2E5BFF', 700]], { size: 36, mono: false, w: 512, h: 64 }), 1.75, 0.219), -0.86, 0.15, 0.002);
-  const sumText2 = put(sumBox, strip(runsTex([['avg O(1), worst O(n)', '#121A2B', 600]], { size: 36, mono: false, w: 512, h: 64 }), 1.75, 0.219), -0.86, -0.13, 0.002);
-  const tags = [['#hashing', '#2E5BFF'], ['#O(1)', '#1F9D74'], ['#collisions', '#D6457A']].map(([t, c], i) => {
-    const p = pill(t, { color: c, bg: '#ffffff', border: c, w: 1.05, h: 0.28, size: 34 });
-    p.userData.to = new THREE.Vector3(-0.78 + i * 0.86, 1.72 + (i % 2) * 0.14, 0.1);
-    put(notes, p, 0, 0.6, 0.1);
-    return p;
-  });
 
-  // 4. The students: phones that light up as the notes arrive.
-  const PH = 5;
-  const noteTex = phoneNoteTex();
-  const phones = [...Array(PH)].map((_, i) => {
-    const g = put(root, new THREE.Group(), 0.35 + i * 0.62, -1.95 + Math.sin(i * 1.3) * 0.04, 0.9 + (i % 2) * 0.12);
-    g.rotation.set(-0.2, -0.3 + i * 0.06, (i - 2) * -0.04);
-    put(g, box(0.4, 0.76, 0.05, M.ceramic('#F4F6FA', { roughness: 0.3 }), 0.07));
-    const scr = put(g, new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.66), new THREE.MeshBasicMaterial({ color: '#C9D3EA', toneMapped: false })), 0, 0, 0.027);
-    put(g, box(0.1, 0.025, 0.01, M.gloss('#1A2034'), 0.01), 0, 0.3, 0.03);
-    const lit = put(g, new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.66), new THREE.MeshBasicMaterial({ map: noteTex, transparent: true, opacity: 0, toneMapped: false })), 0, 0, 0.029);
-    const fly = put(root, new THREE.Mesh(new THREE.PlaneGeometry(0.26, 0.34), new THREE.MeshBasicMaterial({ map: noteTex, transparent: true, opacity: 0, toneMapped: false, side: THREE.DoubleSide })), 0, 0, 0);
-    return { g, scr, lit, fly, at: 6.2 + i * 0.2 };
+  // The buddy, and its flight: read the slide, visit every student, then you.
+  const buddy = buddyBook();
+  root.add(buddy.group);
+  const home = new THREE.Vector3(-1.25, 2.35, -0.85);
+  const stops = [home.clone()];
+  students.forEach((s) => {
+    stops.push(s.g.position.clone().add(new THREE.Vector3(0, 1.75, 0)));
   });
-
-  // Streams: lecture to rack, rack to notes.
-  const curves = [
-    new THREE.CatmullRomCurve3([new THREE.Vector3(-1.55, 0.25, 0.1), new THREE.Vector3(-1.75, -0.4, 0.4), new THREE.Vector3(-1.45, -0.98, 0.6)]),
-    new THREE.CatmullRomCurve3([new THREE.Vector3(-0.66, -1.45, 0.6), new THREE.Vector3(-0.1, -1.0, 0.8), new THREE.Vector3(0.45, -0.1, 0.5)]),
-  ];
-  const SN = 30;
-  const streams = curves.map((c, k) => {
-    const pos = new Float32Array(SN * 3);
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const pts = new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 0.11, map: dotTex(), color: k ? '#2E5BFF' : '#4BE3A6', transparent: true, opacity: 0, depthWrite: false, toneMapped: false,
-    }));
-    pts.frustumCulled = false;
-    root.add(pts);
-    return { c, pos, geo, pts };
+  stops.push(new THREE.Vector3(1.55, 2.35, 2.0));
+  const flight = new THREE.CatmullRomCurve3(stops, false, 'centripetal');
+  const sparks = [...Array(14)].map((_, i) => {
+    const sp = put(root, sprite(dotTex(), 0.16, 0.16, { color: i % 2 ? '#4BE3A6' : '#7CA6FF', opacity: 0, blending: THREE.AdditiveBlending }));
+    sp.userData.ph = i / 14;
+    return sp;
   });
-  const floor = shadow(8, 3.4, 0.16, '#1B2A55');
-  floor.position.y = -2.4;
+  const floor = shadow(9, 6.5, 0.18, '#1B2A55');
+  floor.position.y = -0.18;
   scene.add(floor);
 
-  const P = 9.6;
+  const P = 11;
+  const FLY0 = 1.9;
+  const FLY1 = 6.2;
   const tmp = new THREE.Vector3();
-  const tmp2 = new THREE.Vector3();
+  const ahead = new THREE.Vector3();
+  const slideW = new THREE.Vector3();
   return {
     scene,
     camera,
-    posterT: 0.4 + 6.9,
+    posterT: 0.4 + 8.2,
     update(s) {
       cam(s);
-      const tt = s.reduced ? 6.9 : loop(Math.max(0, s.t - 0.4), P) * P;
+      const tt = s.reduced ? 8.2 : loop(Math.max(0, s.t - 0.4), P) * P;
       const kin = easeOutBack(seg(s.t, 0, 0.9), 1.3);
       root.scale.setScalar(Math.max(0.0001, kin));
-      root.rotation.y = s.px * 0.12 + Math.sin(s.time * 0.3) * 0.05;
-      const out = 1 - easeInOut(seg(tt, 8.6, 0.8)); // everything resets at the end
+      root.rotation.y = s.px * 0.1 + Math.sin(s.time * 0.3) * 0.04;
+      const out = 1 - easeInOut(seg(tt, 9.8, 0.8));
 
-      // Recording + OCR.
-      const recOn = tt < 2.6;
-      recDot.material.color.set(recOn && Math.sin(s.time * 6) > -0.2 ? '#FF4D4D' : '#5A2430');
-      for (let i = 0; i < WAVE; i++) {
-        const n = 0.5 + 0.5 * Math.sin(s.time * 7 + i * 1.7) * Math.sin(s.time * 3.1 + i * 0.6);
-        setBar(i, recOn ? 0.06 + n * 0.32 : 0.04);
+      // The lecture: the professor talks, the slide changes halfway.
+      slide.material.map = slides[tt > 5 && tt < 10 ? 1 : 0];
+      talk.forEach((r, i) => {
+        const ph = (s.time * 0.8 + i / 3) % 1;
+        r.scale.setScalar(0.6 + ph * 1.6);
+        r.material.opacity = (1 - ph) * 0.6;
+      });
+
+      // The buddy reads, flies the rows, and lands by your phone.
+      const fu = seg(tt, FLY0, FLY1 - FLY0);
+      const back = seg(tt, 9.6, 1.2);
+      if (tt < FLY0) {
+        tmp.copy(home).add({ x: Math.sin(s.time * 2) * 0.05, y: Math.sin(s.time * 3) * 0.06, z: 0 });
+      } else if (back > 0) {
+        flight.getPointAt(1, tmp).lerp(home, easeInOut(back));
+        tmp.y += Math.sin(Math.PI * back) * 0.8;
+      } else {
+        const e = easeInOut(fu);
+        flight.getPointAt(Math.min(1, e), tmp);
+        tmp.y += Math.sin(e * Math.PI * 14) * 0.08;
+        if (fu >= 1) tmp.add({ x: Math.sin(s.time * 2) * 0.05, y: Math.sin(s.time * 3) * 0.06, z: 0 });
       }
-      wave.instanceMatrix.needsUpdate = true;
-      const sc = seg(tt, 0.3, 1.8);
-      beam.position.y = 0.76 - easeInOut(sc) * 1.52;
-      beam.material.opacity = sc > 0 && sc < 1 ? 0.95 : 0;
-      beamGlow.material.opacity = sc > 0 && sc < 1 ? 0.35 : 0;
-      lecture.position.y = 1.3 + Math.sin(s.time * 1.1) * 0.03;
+      buddy.group.position.copy(tmp);
+      flight.getPointAt(Math.min(1, easeInOut(fu) + 0.02), ahead);
+      const moving = tt > FLY0 && fu < 1;
+      const turn = moving ? Math.atan2(ahead.x - tmp.x, ahead.z - tmp.z) * 0.35 : 0.5;
+      buddy.group.rotation.y = damp(buddy.group.rotation.y, turn, 5, s.dt || 1);
+      buddy.body.rotation.z = moving ? Math.sin(s.time * 9) * 0.12 : Math.sin(s.time * 2) * 0.05;
+      const flip = seg(tt, 7.9, 0.7);
+      buddy.body.rotation.y = flip * TAU;
+      buddy.ribbon.rotation.z = Math.sin(s.time * 7) * 0.4;
+      const blink = Math.sin(s.time * 2.7) > 0.97 ? 0.15 : 1;
+      buddy.eyes.forEach((e) => { e.scale.y = blink; });
+      // Reading: sparks drift from the slide into the buddy.
+      screen.updateMatrixWorld();
+      slideW.set(0, 0, 0.1).applyMatrix4(screen.matrixWorld);
+      root.worldToLocal(slideW);
+      const reading = seg(tt, 0.3, 0.3) * (1 - seg(tt, FLY0 - 0.2, 0.3));
+      sparks.forEach((sp) => {
+        const ph = (s.time * 0.9 + sp.userData.ph) % 1;
+        sp.position.lerpVectors(slideW, tmp, ph);
+        sp.position.y += Math.sin(ph * Math.PI) * 0.3;
+        sp.material.opacity = reading * Math.sin(ph * Math.PI);
+      });
 
-      // Streams and the GPU.
-      streams.forEach((st, k) => {
-        const on = k ? seg(tt, 2.5, 0.3) * (1 - seg(tt, 4.6, 0.5)) : seg(tt, 0.6, 0.3) * (1 - seg(tt, 3.0, 0.5));
-        st.pts.material.opacity = on * 0.95;
-        for (let q = 0; q < SN; q++) {
-          const u = (q / SN + s.time * 0.55) % 1;
-          st.c.getPointAt(u, tmp);
-          st.pos[q * 3] = tmp.x;
-          st.pos[q * 3 + 1] = tmp.y + Math.sin(q * 3.1 + s.time * 4) * 0.02;
-          st.pos[q * 3 + 2] = tmp.z;
-        }
-        st.geo.attributes.position.needsUpdate = true;
+      // Each student's notes arrive as the buddy passes.
+      students.forEach((st, i) => {
+        const at = FLY0 + (FLY1 - FLY0) * ((i + 1) / (students.length + 1));
+        const k = easeOutBack(seg(tt, at, 0.45), 1.6) * out;
+        st.card.position.copy(st.g.position).add({ x: 0, y: 1.35 + k * 0.12 + Math.sin(s.time * 2 + i) * 0.03 * k, z: 0 });
+        st.card.quaternion.copy(camera.quaternion);
+        st.card.scale.setScalar(Math.max(0.0001, k));
+        st.glow.material.opacity = Math.min(1, k) * 0.9;
       });
-      const busy = seg(tt, 1.1, 0.4) * (1 - seg(tt, 4.8, 0.6));
-      leds.forEach((led, i) => {
-        const k = seg(tt, 1.2 + i * 0.35, 0.3) * (1 - seg(tt, 4.8, 0.6));
-        led.material.opacity = 0.25 + 0.75 * k * (0.75 + 0.25 * Math.sin(s.time * 12 + i * 2));
-        led.scale.x = 0.4 + 0.6 * k;
-      });
-      rackGlow.material.opacity = busy * (0.22 + Math.sin(s.time * 5) * 0.04);
 
-      // The notes write themselves.
-      lines.forEach((ln) => ln.m.reveal(easeOut(seg(tt, ln.at, 0.55)) * out));
-      sumBox.visible = tt > 4.6 && out > 0.01;
-      sumBox.scale.set(1, Math.max(0.0001, easeOutBack(seg(tt, 4.6, 0.45)) * out), 1);
-      sumText.reveal(easeOut(seg(tt, 4.9, 0.4)) * out);
-      sumText2.reveal(easeOut(seg(tt, 5.15, 0.5)) * out);
-      tags.forEach((p, i) => {
-        const k = easeOutBack(seg(tt, 5.3 + i * 0.22, 0.5), 1.5) * out;
-        p.position.lerpVectors(tmp2.set(0, 0.6, 0.1), p.userData.to, k);
-        p.position.y += Math.sin(s.time * 1.6 + i) * 0.03 * k;
-        p.scale.setScalar(Math.max(0.0001, k));
+      // Your phone fills in.
+      app.forEach((a, i) => {
+        const k = i === 0 ? 1 : easeOutBack(seg(tt, a.at, 0.4), 1.5) * out;
+        a.m.scale.set(Math.max(0.0001, k), Math.max(0.0001, k), 1);
+        a.m.material.opacity = Math.min(1, k * 1.5);
       });
-      notes.position.y = 0.45 + Math.sin(s.time * 0.9 + 1) * 0.03;
-
-      // Out to the students.
-      notes.updateMatrixWorld();
-      phones.forEach((ph, i) => {
-        const k = seg(tt, ph.at, 0.7);
-        const arrived = k >= 1 && out > 0.01;
-        tmp.set(0.3, 0.2, 0.1).applyMatrix4(notes.matrixWorld);
-        root.worldToLocal(tmp);
-        ph.g.updateMatrixWorld();
-        tmp2.setFromMatrixPosition(ph.g.matrixWorld);
-        root.worldToLocal(tmp2);
-        const e = easeInOut(k);
-        ph.fly.position.lerpVectors(tmp, tmp2, e);
-        ph.fly.position.y += Math.sin(Math.PI * e) * 0.55;
-        ph.fly.rotation.set(-0.2, -0.3, (1 - e) * 0.6);
-        ph.fly.scale.setScalar(1 - e * 0.25);
-        ph.fly.material.opacity = k > 0 && k < 1 ? 1 : 0;
-        ph.lit.material.opacity = damp(ph.lit.material.opacity, arrived ? 1 : 0, 6, s.dt || 1);
-        ph.g.position.y = -1.95 + Math.sin(i * 1.3) * 0.04 + (arrived ? Math.max(0, Math.sin(Math.PI * seg(tt, ph.at + 0.7, 0.35))) * 0.08 : 0);
-      });
+      phone.position.y = 0.85 + Math.sin(s.time * 1.1) * 0.04;
     },
   };
 }
@@ -360,6 +398,27 @@ const CODE = [
   [['  ', TX], ['return ', KW], ['node', TX]],
 ];
 
+/* Code drawn as colored dashes: it reads as code without asking anyone to read it. */
+function codeBarsTex(runs, { w = 1024, h = 64, charW = 22, pad = 10 } = {}) {
+  return canvasTex(w, h, (g) => {
+    let x = pad;
+    for (const [txt, col] of runs) {
+      for (const word of txt.split(/(\s+)/)) {
+        if (!word) continue;
+        const ww = word.length * charW;
+        if (word.trim()) {
+          g.fillStyle = col;
+          g.globalAlpha = col === TX ? 0.55 : 0.9;
+          roundRectPath(g, x + 2, h / 2 - 9, Math.max(8, ww - 6), 18, 9);
+          g.fill();
+        }
+        x += ww;
+      }
+    }
+    g.globalAlpha = 1;
+  });
+}
+
 function editorChromeTex() {
   return canvasTex(1024, 80, (g, w, h) => {
     g.fillStyle = '#1A1E29';
@@ -373,11 +432,11 @@ function editorChromeTex() {
     g.fillStyle = '#C9CFDC';
     g.font = `500 30px ${MONO}`;
     g.textBaseline = 'middle';
-    g.fillText('bst.py', 150, h / 2 + 2);
+    g.fillText('Practice', 150, h / 2 + 2);
     g.fillStyle = '#8A93AB';
     g.font = `500 26px ${MONO}`;
     g.textAlign = 'right';
-    g.fillText('data structures', w - 26, h / 2 + 2);
+    g.fillText('binary trees', w - 26, h / 2 + 2);
   });
 }
 
@@ -422,10 +481,10 @@ function quizTex() {
   return canvasTex(1024, 300, (g, w) => {
     g.fillStyle = '#1F5FD6';
     g.font = `600 30px ${MONO}`;
-    g.fillText('QUIZ', 44, 64);
+    g.fillText('QUICK CHECK', 44, 64);
     g.fillStyle = '#1B1E26';
     g.font = `700 50px ${FONT}`;
-    g.fillText('Search a balanced BST?', 44, 128);
+    g.fillText('Smaller numbers go...', 44, 128);
   });
 }
 
@@ -446,7 +505,7 @@ export function tutor(env) {
   const top = H / 2 - 0.55;
   const left = -W / 2 + 0.36;
   const codeLines = CODE.map((runs, i) => {
-    const m = strip(runsTex(runs, { size: 38, w: 1024, h: 64 }), 3.25, 0.2);
+    const m = strip(codeBarsTex(runs), 3.25, 0.2);
     put(ed, m, left, top - i * LH, 0.054);
     const num = put(ed, new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.16), new THREE.MeshBasicMaterial({
       map: runsTex([[String(i + 1), '#4C556E']], { w: 64, h: 64, size: 30, pad: 14 }), transparent: true, toneMapped: false,
@@ -459,10 +518,10 @@ export function tutor(env) {
   const errDot = put(ed, new THREE.Mesh(new THREE.CircleGeometry(0.045, 20), M.flat('#FF5A5A', { transparent: true, opacity: 0 })), -W / 2 + 0.06, 0, 0.056);
   const cursor = put(ed, new THREE.Mesh(new THREE.PlaneGeometry(0.03, 0.2), M.flat('#7CC4FF')), left, top - LH, 0.057);
   const testsFail = put(ed, new THREE.Mesh(new THREE.PlaneGeometry(1.55, 0.26), new THREE.MeshBasicMaterial({
-    map: runsTex([['✗ ', '#FF5A5A', 700], ['test_insert_empty', '#FFB3AE']], { w: 640, h: 108, size: 44, pad: 28, bg: '#3A1A20' }), transparent: true, toneMapped: false,
+    map: runsTex([['✗ ', '#FF5A5A', 700], ['1 check failing', '#FFB3AE']], { w: 640, h: 108, size: 44, pad: 28, bg: '#3A1A20', mono: false }), transparent: true, toneMapped: false,
   })), W / 2 - 0.92, -H / 2 + 0.25, 0.056);
   const testsPass = put(ed, new THREE.Mesh(new THREE.PlaneGeometry(1.55, 0.26), new THREE.MeshBasicMaterial({
-    map: runsTex([['✓ ', '#4BE3A6', 700], ['3/3 tests pass', '#BDF5DE']], { w: 640, h: 108, size: 44, pad: 28, bg: '#123528' }), transparent: true, opacity: 0, toneMapped: false,
+    map: runsTex([['✓ ', '#4BE3A6', 700], ['All checks pass', '#BDF5DE']], { w: 640, h: 108, size: 44, pad: 28, bg: '#123528', mono: false }), transparent: true, opacity: 0, toneMapped: false,
   })), W / 2 - 0.92, -H / 2 + 0.25, 0.057);
 
   // 2. The tutor bot.
@@ -482,8 +541,8 @@ export function tutor(env) {
     put(root, m, 0.95, 2.82, 0.6);
     return m;
   };
-  const hint = bubble('What if node is None?');
-  const cheer = bubble("Nice! That's the base case.");
+  const hint = bubble('Almost! One case is missing.');
+  const cheer = bubble('Nailed it! Look at the tree.');
   const dots = put(root, new THREE.Group(), 1.55, 2.82, 0.6);
   put(dots, new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.38), new THREE.MeshBasicMaterial({ map: bubbleTex('', { w: 320, h: 196 }), transparent: true, toneMapped: false, depthWrite: false })));
   const dotMeshes = [-0.13, 0, 0.13].map((x) => put(dots, new THREE.Mesh(new THREE.CircleGeometry(0.035, 16), M.flat('#8A93AB')), x, 0.03, 0.01));
@@ -518,12 +577,12 @@ export function tutor(env) {
   quiz.rotation.x = -0.12;
   put(quiz, box(3.0, 1.15, 0.06, M.ceramic('#ffffff', { roughness: 0.35 }), 0.08));
   put(quiz, new THREE.Mesh(new THREE.PlaneGeometry(2.9, 0.85), new THREE.MeshBasicMaterial({ map: quizTex(), transparent: true, toneMapped: false })), 0, 0.2, 0.033);
-  const opts = ['O(n)', 'O(log n)', 'O(1)'].map((t, i) => {
+  const opts = ['Left', 'Right', 'Either'].map((t, i) => {
     const plain = pill(t, { color: '#1B1E26', bg: '#ffffff', border: '#1B1E26', w: 0.86, h: 0.27, size: 34 });
     put(quiz, plain, -0.95 + i * 0.95, -0.3, 0.035);
     return plain;
   });
-  const right = put(quiz, pill('✓ O(log n)', { color: '#ffffff', bg: '#1F9D55', w: 0.86, h: 0.27, size: 32 }), 0, -0.3, 0.04);
+  const right = put(quiz, pill('✓ Left', { color: '#ffffff', bg: '#1F9D55', w: 0.86, h: 0.27, size: 34 }), -0.95, -0.3, 0.04);
   const pointer = put(root, new THREE.Group(), 0, 0, 0);
   const arrow = new THREE.Shape();
   arrow.moveTo(0, 0);
@@ -636,9 +695,9 @@ export function tutor(env) {
       const correct = seg(tt, 8.75, 0.15);
       right.material.opacity = correct;
       right.scale.setScalar(1 + Math.sin(Math.PI * seg(tt, 8.75, 0.35)) * 0.15);
-      opts[1].material.opacity = 1 - correct;
+      opts[0].material.opacity = 1 - correct;
       quiz.updateMatrixWorld();
-      tmp.set(0.12, -0.36, 0.1).applyMatrix4(quiz.matrixWorld);
+      tmp.set(-0.83, -0.36, 0.1).applyMatrix4(quiz.matrixWorld);
       root.worldToLocal(tmp);
       pointer.position.set(lerp(tmp.x + 1.4, tmp.x, easeInOut(pick)), lerp(tmp.y - 0.6, tmp.y, easeInOut(pick)), tmp.z);
       pointer.scale.setScalar(Math.max(0.0001, qk) * (correct > 0 && correct < 1 ? 0.9 : 1));

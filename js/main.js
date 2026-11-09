@@ -486,7 +486,7 @@ $$('[data-quiz]').forEach((q) => {
     const right = b.dataset.answer === 'yes';
     buttons.forEach((x) => x.classList.remove('is-wrong'));
     b.classList.add(right ? 'is-right' : 'is-wrong');
-    if (fb) fb.textContent = right ? 'Yes. Each step cuts the search space in half.' : 'Not quite. Think about what each comparison rules out.';
+    if (fb) fb.textContent = right ? (q.dataset.yes || 'Yes!') : (q.dataset.no || 'Not quite. Try again.');
   }));
 });
 

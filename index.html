@@ -457,7 +457,7 @@
         </div>
       </article>
 
-      <!-- 6. AI Makerspace Nexus: scanned lecture notes -->
+      <!-- 6. AI Makerspace Nexus: StudyBuddy, an AI note-taker for lectures -->
       <article class="band theme-scan" id="xp-nexus" data-band aria-labelledby="xp6">
         <div class="band__in wrap">
           <div class="stage band__stage" data-scene="studyBuddy" aria-hidden="true"></div>
@@ -468,19 +468,19 @@
               <p class="band__who">Georgia Tech VIP, AI Makerspace Nexus, Atlanta, GA</p>
               <p class="band__when">Aug 2024 – present</p>
             </header>
-            <div class="band__ui scan">
-              <div class="scan__page" aria-hidden="true">
-                <p class="scan__h"><b>LEC 14</b> Hash Tables</p>
-                <i style="--w:92%"></i><i style="--w:74%"></i><i style="--w:86%"></i><i style="--w:58%"></i>
-                <span class="scan__beam"></span>
-              </div>
-              <div class="scan__out">
-                <p class="scan__sum"><b>Summary</b>keys → buckets; average O(1), worst case O(n)</p>
-                <ul class="scan__tags"><li data-step>#hashing</li><li data-step>#O(1) lookup</li><li data-step>#collisions</li><li data-step>#load factor</li></ul>
+            <div class="band__ui buddy">
+              <p class="band__text buddy__pitch">StudyBuddy is an AI note-taker for lectures. It turns each class into clean notes, a quick summary, and topics students can come back to, so they can pay attention instead of copying slides.</p>
+              <div class="buddy__app">
+                <p class="buddy__head"><b>StudyBuddy</b><span>Lecture 14 · notes ready</span></p>
+                <ul aria-label="What students get after each lecture">
+                  <li data-step style="--c:#2E5BFF"><i aria-hidden="true"></i><b>Notes</b><span>Everything from class, cleaned up</span></li>
+                  <li data-step style="--c:#1F9D74"><i aria-hidden="true"></i><b>Summary</b><span>The lecture in a minute</span></li>
+                  <li data-step style="--c:#E0663F"><i aria-hidden="true"></i><b>Topics</b><span>Tagged so they're easy to find later</span></li>
+                </ul>
               </div>
               <ul class="band__list">
-                <li>Led product for StudyBuddy, an AI note-taking and lecture assistant running on Georgia Tech's NVIDIA AI supercomputer.</li>
-                <li>Built modular OCR, summarization, and tagging pipelines, and piloted it in 2 sections (~160 students).</li>
+                <li>Led product for StudyBuddy and piloted it with ~160 students across 2 class sections.</li>
+                <li>Built the pieces that turn lecture slides into notes, summaries, and topics, running on Georgia Tech's AI supercomputer.</li>
               </ul>
             </div>
           </div>
@@ -499,18 +499,18 @@
               <p class="band__when">Jan – May 2024</p>
             </header>
             <div class="band__ui board">
-              <div class="quiz" data-quiz>
-                <p class="quiz__q" id="quiz-q">Quick check: searching a balanced binary search tree takes…</p>
+              <div class="quiz" data-quiz data-yes="Yes! Smaller to the left, bigger to the right. That's what makes searching quick." data-no="Not quite. Look at where 12 sits next to 25.">
+                <p class="quiz__q" id="quiz-q">Quick check: in a binary search tree, where do smaller numbers go?</p>
                 <div class="quiz__opts" role="group" aria-labelledby="quiz-q">
-                  <button type="button" data-answer="no">O(n)</button>
-                  <button type="button" data-answer="yes">O(log n)</button>
-                  <button type="button" data-answer="no">O(1)</button>
+                  <button type="button" data-answer="yes">Left</button>
+                  <button type="button" data-answer="no">Right</button>
+                  <button type="button" data-answer="no">Anywhere</button>
                 </div>
                 <p class="quiz__fb" aria-live="polite"></p>
               </div>
               <ul class="band__list">
-                <li>Built AI-enhanced Data Structures &amp; Algorithms modules: a chatbot, interactive coding feedback, and quizzes like this one.</li>
-                <li>Led a team of 4 through design, planning, and Agile development.</li>
+                <li>Built AI study modules for learning data structures: a tutor students can chat with, instant feedback on their code, and quick quizzes like this one.</li>
+                <li>Led a team of 4 through design, planning, and development.</li>
               </ul>
             </div>
           </div>

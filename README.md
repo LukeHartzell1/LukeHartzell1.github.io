@@ -15,7 +15,7 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | `js/main.js` | Page behavior: the hero's reveal and word reel, each world's one-time entrance, the nav that takes the colors of the world under it, the tour of my room, the quiz, the card, the projects gallery, booting the 3D |
 | `js/engine.js` | The shared renderer, stage mounting, crossfades, input, and adaptive quality |
 | `js/kit.js` | Shared palette, easing, materials, text labels, shadows, and the camera rig |
-| `js/scenes/` | The scenes: `hero.js`, `room.js` (About), `work.js` (education + experience), `vip.js` (the two Georgia Tech VIP roles), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
+| `js/scenes/` | The scenes: `hero.js`, `room.js` (About), `work.js` (education + experience), `vip.js` (StudyBuddy and the tutoring modules), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
 | `vendor/three/` | three.js r169 (only the files the site imports) |
 | `gym-app.html`, `beelinguapp-redesign.html` | UX case studies |
 | `images/opt/` | Optimized images the site loads (originals in `images/`) |
@@ -33,8 +33,8 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | TikTok effects | `arPhone` | My face on a phone; pixel shades drop on cue |
 | AWS | `router` | Events stream in, a λ router drops the noise before on-call |
 | Chamberlain | `garage` | A garage door of test cases: scan, escalate 2 bugs, ship |
-| AI Makerspace Nexus | `studyBuddy` | StudyBuddy at work: a lecture is recorded and its slide OCR-scanned, the capture streams into a GPU rack, and notes write themselves (summary and tags too) before going out to students' phones |
-| Intelligent Tutoring | `tutor` | A student's BST insert is missing its base case: the tutor bot hints in chat, the fix types in, the tests pass, 42 drops into the tree, and a quiz card checks the idea |
+| AI Makerspace Nexus | `studyBuddy` | StudyBuddy, the AI note-taker: in a little lecture room the buddy (a book with a face) reads the slide, leaves notes with every student, and fills your phone with notes, a summary, and topics |
+| Intelligent Tutoring | `tutor` | The AI study modules: the tutor bot nudges a student's practice code in plain words, the checks pass, 42 lands in the tree, and a quick check asks which way smaller numbers go |
 | Teaching assistant | `hall` | 900 students; help ripples out from the front |
 | Projects | `spotify`, `identifai`, `gopu`, `fog`, `book`, `squat` | A record with a live EQ ring, a recognition reticle naming faces, restroom pins filtered down on a city map, you hidden among decoy personas, a story book with greetings, and a squat with an AI form coach |
 | Skills | `keyboard` | A keyboard where every keycap is a skill (type on yours to press them) |
