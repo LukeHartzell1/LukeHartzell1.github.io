@@ -15,7 +15,7 @@ export function hero(env) {
   scene.add(root);
 
   const uTime = { value: 0 };
-  const coreMat = enhance(M.pearl('#E7DFFF', {
+  const coreMat = enhance(M.pearl('#EEF0F6', {
     roughness: 0.06, iridescenceIOR: 1.8, iridescenceThicknessRange: [100, 820], metalness: 0.18,
   }), { uTime, liquid: [0.045, 0.75], holo: 0.85 });
   const core = new THREE.Mesh(new THREE.SphereGeometry(1.15, 160, 120), coreMat);
@@ -25,7 +25,7 @@ export function hero(env) {
     { R: 2.5, rot: new THREE.Euler(1.2, 0.0, -0.34), speed: 0.17 },
     { R: 3.3, rot: new THREE.Euler(1.34, 0.0, 0.46), speed: -0.115 },
   ];
-  const orbitMat = M.chrome('#d6ccff', { transparent: true, opacity: 0.5 });
+  const orbitMat = M.chrome('#cdd3df', { transparent: true, opacity: 0.5 });
   for (const r of rings) {
     const torus = new THREE.Mesh(new THREE.TorusGeometry(r.R, 0.008, 8, 300), orbitMat);
     torus.rotation.copy(r.rot);

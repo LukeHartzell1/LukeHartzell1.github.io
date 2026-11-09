@@ -16,10 +16,10 @@ export function keyboard(env) {
   scene.add(root);
   const base = new THREE.Mesh(rbox(7.9, 0.44, 3.35, 0.22), M.ceramic('#ffffff', { roughness: 0.28 }));
   base.position.y = -0.24;
-  const plate = new THREE.Mesh(rbox(7.5, 0.06, 2.95, 0.04), M.ceramic('#ECE6FB'));
+  const plate = new THREE.Mesh(rbox(7.5, 0.06, 2.95, 0.04), M.ceramic('#E9EBF0'));
   plate.position.y = 0.0;
   root.add(base, plate);
-  const L = { lang: '#ffffff', fw: '#EFE8FF', ai: '#E2EDFF', pm: '#FFE8F2', sp: C.lilac };
+  const L = { lang: '#ffffff', fw: '#EDEFF4', ai: '#E2EAFF', pm: '#FFE9E2', sp: C.violet };
   const rows = [
     [['Java', 'lang'], ['JavaScript', 'lang'], ['Python', 'lang'], ['C', 'lang'], ['SQL', 'lang'], ['HTML/CSS', 'lang'], ['Lua', 'lang'], ['Kotlin', 'lang']],
     [['React', 'fw'], ['Node.js', 'fw'], ['Playwright', 'fw'], ['Cucumber', 'fw'], ['Firebase', 'fw'], ['Bootstrap', 'fw'], ['Git', 'fw'], ['Jira', 'fw']],
@@ -36,8 +36,8 @@ export function keyboard(env) {
       const cw = w * U - 0.08;
       const g = new THREE.Group();
       const cap = new THREE.Mesh(rbox(cw, 0.34, U - 0.08, 0.12), kind === 'sp' ? M.gloss(L.sp) : M.ceramic(L[kind], { roughness: 0.26 }));
-      const size = name.length > 9 ? 40 : name.length > 6 ? 48 : 58;
-      const txt = label(textTex(name, { w: Math.round(256 * w), h: 256, size, weight: 600, color: kind === 'sp' ? '#ffffff' : C.ink }), cw * 0.94, (U - 0.08) * 0.94);
+      const size = kind === 'sp' ? 70 : name.length > 9 ? 40 : name.length > 6 ? 48 : 58;
+      const txt = label(textTex(name, { w: Math.round(256 * w), h: 256, size, weight: kind === 'sp' ? 700 : 600, color: kind === 'sp' ? '#ffffff' : C.ink }), cw * 0.94, (U - 0.08) * 0.94);
       txt.rotation.x = -Math.PI / 2;
       txt.position.y = 0.171;
       g.add(cap, txt);

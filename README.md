@@ -1,6 +1,6 @@
 # lukehartzell1.github.io
 
-My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), but every project and role gets its own little 3D world, built in code with three.js.
+My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), laid out like a small exhibition: each section is a room with its own wall color, every project and role is a 3D sculpture built in code with three.js, and each sculpture has a museum-style placard.
 
 Hand-written HTML, CSS, and vanilla JS. No build step, no frameworks, no trackers. GitHub Pages serves it straight from the repo.
 
@@ -11,8 +11,8 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | File | What it is |
 | --- | --- |
 | `index.html` | The page: hero, about (with a holographic trading card), education, experience, projects, skills, contact |
-| `style.css` | All styles, in numbered sections (tokens at the top) |
-| `js/main.js` | Page behavior: reveals, nav, counters, the card, the experience scroll story, 8-bit mode, booting the 3D |
+| `style.css` | All styles, in numbered sections (tokens at the top: wall, ink, graphite, cobalt, signal orange, silver; one type family, Archivo) |
+| `js/main.js` | Page behavior: the hero's lights-up moment, the nav that takes the color of the room under it, the card, the experience scroll story, the projects gallery, 8-bit mode, booting the 3D |
 | `js/engine.js` | The shared renderer, stage mounting, crossfades, input, adaptive quality, and the 8-bit pixel pass |
 | `js/kit.js` | Shared palette, easing, materials, text labels, shadows, and the camera rig |
 | `js/scenes/` | The scenes: `hero.js`, `work.js` (education + experience), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
@@ -37,7 +37,7 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | Teaching assistant | `hall` | 900 students; help ripples out from the front |
 | Projects | `spotify`, `identifai`, `gopu`, `fog`, `book`, `squat` | A record with a live EQ ring, a recognition reticle naming faces, an assistant scheduling a calendar, you hidden among decoy personas, a story book with greetings, and a squat with an AI form coach |
 | Skills | `keyboard` | A keyboard where every keycap is a skill (type on yours to press them) |
-| Contact | `plane` | A paper plane; "Send email" launches it |
+| Contact | `plane` | A paper plane; "Email me" launches it |
 
 ## Easter eggs
 
@@ -48,7 +48,7 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 
 - **Copy:** it's all in `index.html`.
 - **A new 3D scene:** add a function to one of the files in `js/scenes/` that returns `{ scene, camera, update(state) }` (use `stage()` and `rig()` from `js/kit.js`), register it in `js/scenes/index.js`, then put `<div class="stage" data-scene="yourName"></div>` in the page.
-- **A new role:** copy an `<li class="role">` in `index.html` and set `data-role` (its scene) and `data-badge-text` (the caption in the sticky panel).
+- **A new role:** copy an `<li class="role placard">` in `index.html` and set `data-role` (its scene) and `data-badge-text` (the placard's medium line, shown under the sticky sculpture).
 
 ## Run it locally
 

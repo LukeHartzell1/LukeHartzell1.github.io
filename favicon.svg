@@ -1,11 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#B9A5FF"/>
-      <stop offset="0.55" stop-color="#F7B6D8"/>
-      <stop offset="1" stop-color="#A6C8FF"/>
-    </linearGradient>
-  </defs>
-  <circle cx="32" cy="32" r="30" fill="url(#g)"/>
-  <text x="32" y="41" text-anchor="middle" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="-1.5" fill="#15111F">LH</text>
+  <rect width="64" height="64" rx="9" fill="#1D3BF0"/>
+  <text x="32" y="42.5" text-anchor="middle" font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="27" font-weight="800" letter-spacing="-1" fill="#FFFFFF">LH</text>
+  <rect x="13" y="50" width="12" height="3.5" fill="#FF5A2C"/>
 </svg>

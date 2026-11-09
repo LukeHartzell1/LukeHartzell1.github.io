@@ -3,29 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Not found · Luke Hartzell</title>
+  <title>Not found | Luke Hartzell</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#FBFAFF">
+  <meta name="theme-color" content="#EDEDEA">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
   <link rel="stylesheet" href="/style.css">
   <style>
-    .lost { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 22px; padding: 40px var(--gutter); text-align: center; }
-    .lost__code { font-size: clamp(6rem, 22vw, 13rem); font-weight: 650; letter-spacing: -0.07em; line-height: 0.8; margin: 0;
-      background: linear-gradient(120deg, var(--violet), #c25fa4 60%, var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .lost p { margin: 0; max-width: 440px; color: var(--ink-2); font-size: 1.1rem; }
+    .lost { min-height: 100svh; display: grid; align-content: center; gap: 28px; padding: 48px var(--gutter); }
+    .lost__code { margin: 0; font-size: clamp(7rem, 30vw, 22rem); font-weight: 800; font-stretch: 125%; line-height: 0.8; letter-spacing: -0.05em; }
+    .lost .placard { max-width: 26rem; padding: 14px 18px 15px; border-radius: 2px; background: #fff; box-shadow: 0 10px 24px -16px rgba(17, 17, 20, 0.45); }
+    .lost .placard__title { font-size: 1.05rem; font-stretch: 100%; }
+    .lost__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin: 0; }
   </style>
 </head>
 <body>
-  <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
   <main class="lost">
-    <p class="eyebrow"><span>404</span>Not found</p>
     <h1 class="lost__code">404</h1>
-    <h2 class="title">This page <em>wandered off</em></h2>
-    <p>Probably researching the optimal workout split. Everything else is back home.</p>
-    <a class="btn btn--dark" href="/">Back home<span aria-hidden="true">→</span></a>
+    <p class="placard">
+      <span class="placard__title">Empty wall, 2026</span>
+      <span class="placard__medium">The piece that hung here has wandered off, probably to research the optimal workout split.</span>
+    </p>
+    <p class="lost__cta"><a class="btn" href="/">Back to the exhibition</a><a class="link" href="/#projects">See the projects</a></p>
   </main>
 </body>
 </html>

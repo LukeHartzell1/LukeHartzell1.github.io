@@ -15,7 +15,7 @@ export function spotify(env) {
   const cam = rig(camera, { pos: [0, 4.6, 9.8], look: [0, 0.15, 0] });
   const plinth = new THREE.Mesh(rbox(3.9, 0.34, 3.2, 0.17), M.ceramic('#ffffff', { roughness: 0.3 }));
   plinth.position.y = -0.17;
-  const platter = new THREE.Mesh(new THREE.CylinderGeometry(1.36, 1.36, 0.08, 96), M.satin('#E4DEF7'));
+  const platter = new THREE.Mesh(new THREE.CylinderGeometry(1.36, 1.36, 0.08, 96), M.satin('#E3E5EB'));
   platter.position.y = 0.04;
   const rec = vinyl({ r: 1.26, t: 0.03 });
   rec.position.y = 0.1;
@@ -28,7 +28,7 @@ export function spotify(env) {
   const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 1.75, 12), M.chrome());
   rod.rotation.x = Math.PI / 2;
   rod.position.z = 0.85;
-  const head = new THREE.Mesh(rbox(0.16, 0.06, 0.26, 0.025), M.gloss('#1b1530'));
+  const head = new THREE.Mesh(rbox(0.16, 0.06, 0.26, 0.025), M.gloss('#131318'));
   head.position.set(0, -0.06, 1.72);
   arm.add(rod, head);
   arm.rotation.y = -0.5;
@@ -36,7 +36,7 @@ export function spotify(env) {
 
   const N = 44;
   const bars = new THREE.InstancedMesh(rbox(0.1, 1, 0.1, 0.035), M.gloss('#ffffff'), N);
-  const stops = [C.lilac, C.pink, C.sky, C.mint, C.lilac].map((h) => new THREE.Color(h));
+  const stops = [C.violet, C.sky, C.mint, C.pink, C.violet].map((h) => new THREE.Color(h));
   const tmp = new THREE.Color();
   for (let i = 0; i < N; i++) {
     const f = (i / N) * 4;
@@ -113,19 +113,19 @@ function faceTex(bg, skin, hair, style, seed) {
     if (style === 1) { g.ellipse(w / 2, 200, 138, 110, 0, Math.PI * 0.95, Math.PI * 2.05); g.fill(); g.fillRect(w / 2 - 138, 200, 50, 180); g.fillRect(w / 2 + 88, 200, 50, 180); }
     if (style === 2) { g.ellipse(w / 2, 170, 98, 46, 0, Math.PI, TAU); g.fill(); }
     if (style === 3) { g.arc(w / 2, 150, 70, 0, TAU); g.fill(); g.beginPath(); g.ellipse(w / 2, 195, 118, 70, 0, Math.PI, TAU); g.fill(); }
-    g.fillStyle = 'rgba(26,21,48,0.75)';
+    g.fillStyle = 'rgba(19,19,24,0.75)';
     g.beginPath();
     g.arc(w / 2 - 40, 262, 10, 0, TAU);
     g.arc(w / 2 + 40, 262, 10, 0, TAU);
     g.fill();
-    g.strokeStyle = 'rgba(26,21,48,0.55)';
+    g.strokeStyle = 'rgba(19,19,24,0.55)';
     g.lineWidth = 7;
     g.lineCap = 'round';
     g.beginPath();
     g.arc(w / 2, 300, 34, 0.2 * Math.PI, 0.8 * Math.PI);
     g.stroke();
     if (seed % 2) {
-      g.strokeStyle = 'rgba(26,21,48,0.6)';
+      g.strokeStyle = 'rgba(19,19,24,0.6)';
       g.lineWidth = 5;
       g.strokeRect(w / 2 - 72, 244, 56, 38);
       g.strokeRect(w / 2 + 16, 244, 56, 38);
@@ -136,11 +136,11 @@ export function identifai(env) {
   const { scene, camera } = stage(env, { fov: 28 });
   const cam = rig(camera, { pos: [0, 0.75, 10.4], look: [0, 0.15, 0], fit: 1.3 });
   const people = [
-    { name: 'Mom · 99%', bg: ['#EFE8FF', '#D9CCFF'], skin: '#F4C9A8', hair: '#5B3A29', style: 1 },
-    { name: 'Sam · 97%', bg: ['#E3F0FF', '#C7DBFF'], skin: '#E8B892', hair: '#2A2230', style: 0 },
-    { name: 'Grandpa · 98%', bg: ['#FFE9F3', '#FFCFE4'], skin: '#F1CBB0', hair: '#CFC8D8', style: 2 },
-    { name: 'Dr. Lee · 96%', bg: ['#E6FBF3', '#C4EEDF'], skin: '#C99872', hair: '#1D1724', style: 3 },
-    { name: 'Maya · 97%', bg: ['#FFF1E8', '#FFD9C6'], skin: '#8D5B3E', hair: '#1A1420', style: 1 },
+    { name: 'Mom 99%', bg: ['#EDEFF4', '#D3D9E6'], skin: '#F4C9A8', hair: '#5B3A29', style: 1 },
+    { name: 'Sam 97%', bg: ['#E3F0FF', '#C7DBFF'], skin: '#E8B892', hair: '#2A2230', style: 0 },
+    { name: 'Grandpa 98%', bg: ['#FFE9F3', '#FFCFE4'], skin: '#F1CBB0', hair: '#CFC8D8', style: 2 },
+    { name: 'Dr. Lee 96%', bg: ['#E6FBF3', '#C4EEDF'], skin: '#C99872', hair: '#1F1B1A', style: 3 },
+    { name: 'Maya 97%', bg: ['#FFF1E8', '#FFD9C6'], skin: '#8D5B3E', hair: '#191514', style: 1 },
   ];
   const cards = people.map((p, i) => {
     const g = new THREE.Group();
@@ -160,7 +160,7 @@ export function identifai(env) {
     return { g, nm };
   });
   const ret = new THREE.Group();
-  const bm = M.glow('#7254F0', { opacity: 1, blending: THREE.NormalBlending });
+  const bm = M.glow('#2E4BFF', { opacity: 1, blending: THREE.NormalBlending });
   for (const sx of [-1, 1]) {
     for (const sy of [-1, 1]) {
       const h = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.04, 0.02), bm);
@@ -222,10 +222,10 @@ export function gopu(env) {
     g.fillRect(0, 0, w, h);
     const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
     g.font = `500 30px ${MONO}`;
-    g.fillStyle = '#9a90bd';
+    g.fillStyle = '#8a8f9c';
     g.textAlign = 'center';
     days.forEach((d, i) => g.fillText(d, 132 + i * 190, 52));
-    g.strokeStyle = '#eee9fa';
+    g.strokeStyle = '#ecedf1';
     g.lineWidth = 3;
     for (let r = 0; r <= 5; r++) {
       g.beginPath();
@@ -264,8 +264,8 @@ export function gopu(env) {
     scene.add(g);
     return g;
   });
-  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.2, 40, 28), enhance(M.pearl('#efe8ff'), { holo: 0.9 }));
-  const halo = sprite(dotTex(), 0.9, 0.9, { color: '#b9a5ff', opacity: 0.7 });
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.2, 40, 28), enhance(M.pearl('#edeff4'), { holo: 0.9 }));
+  const halo = sprite(dotTex(), 0.9, 0.9, { color: '#c3cad8', opacity: 0.7 });
   orb.add(halo);
   scene.add(orb);
   const floor = shadow(6.4, 4.6, 0.12);
@@ -314,7 +314,7 @@ export function gopu(env) {
 export function fog(env) {
   const { scene, camera } = stage(env, { fov: 28 });
   const cam = rig(camera, { pos: [0, 2.7, 9.2], look: [0, 0.7, 0] });
-  const disc = new THREE.Mesh(new THREE.CylinderGeometry(2.7, 2.7, 0.12, 96), M.ceramic('#F3EFFD'));
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(2.7, 2.7, 0.12, 96), M.ceramic('#F1F2F5'));
   disc.position.y = -0.06;
   scene.add(disc);
   const personas = ['mom', 'gym bro', 'k-pop stan', 'veteran', 'gamer', 'chef', 'golfer', 'birder'];
@@ -329,7 +329,7 @@ export function fog(env) {
     p.userData = { a, R, you, spd: (i % 2 ? 1 : -1) * (0.08 + (i % 4) * 0.03), mat };
     p.scale.setScalar(you ? 0.9 : 0.82);
     if (!you && i % 2 === 1) {
-      const tg = tag(personas[i - 1], { size: 40, color: '#7a6fa5', scale: 0.95 });
+      const tg = tag(personas[i - 1], { size: 40, color: '#6C6C76', scale: 0.95 });
       tg.position.y = 1.62;
       tg.scale.multiplyScalar(1 / 0.82);
       p.add(tg);
@@ -345,7 +345,7 @@ export function fog(env) {
   }
   const puffs = [];
   const rr = rng(77);
-  const puffMat = new THREE.SpriteMaterial({ map: dotTex(), color: '#efeaff', transparent: true, opacity: 0.16, depthWrite: false, toneMapped: false });
+  const puffMat = new THREE.SpriteMaterial({ map: dotTex(), color: '#edeff4', transparent: true, opacity: 0.16, depthWrite: false, toneMapped: false });
   for (let i = 0; i < 30; i++) {
     const sp = new THREE.Sprite(puffMat.clone());
     const sc = 1.2 + rr() * 1.8;
@@ -391,7 +391,7 @@ export function book(env) {
   const cam = rig(camera, { pos: [0, 4.4, 9.4], look: [0, 0.75, 0] });
   const root = new THREE.Group();
   scene.add(root);
-  const coverMat = M.ceramic(C.lilac, { roughness: 0.35 });
+  const coverMat = M.ceramic(C.rose, { roughness: 0.35 });
   const pageMat = M.ceramic('#fffdf8', { roughness: 0.6, clearcoat: 0.1 });
   const W = 1.7;
   const D = 2.3;
@@ -407,7 +407,7 @@ export function book(env) {
   const lines = canvasTex(512, 700, (g, w, h) => {
     g.fillStyle = '#fffdf8';
     g.fillRect(0, 0, w, h);
-    g.fillStyle = '#c8bdf0';
+    g.fillStyle = '#bdc4d6';
     const rr = rng(8);
     for (let y = 80; y < h - 60; y += 46) {
       const len = 280 + rr() * 140;
@@ -530,7 +530,7 @@ export function squat(env) {
     }
   }
   scene.add(bar);
-  const platform = new THREE.Mesh(rbox(3.0, 0.14, 2.6, 0.06), M.ceramic('#F3EFFD'));
+  const platform = new THREE.Mesh(rbox(3.0, 0.14, 2.6, 0.06), M.ceramic('#F1F2F5'));
   platform.position.y = -0.07;
   scene.add(platform);
   const hudMat = new THREE.LineBasicMaterial({ color: '#2fc996', transparent: true, opacity: 0.95, depthTest: false });

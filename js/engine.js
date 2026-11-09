@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { clamp, damp } from './kit.js';
 
-const PALETTE = ['#221846', '#6247D6', '#B9A5FF', '#F5F1FF'].map((hex) => {
+const PALETTE = ['#0B1033', '#2142E8', '#8EA6FF', '#EEF1FF'].map((hex) => {
   const n = parseInt(hex.slice(1), 16);
   return new THREE.Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
 });
@@ -43,7 +43,7 @@ function studio(renderer) {
   const scene = new THREE.Scene();
   const room = new THREE.Mesh(
     new THREE.BoxGeometry(24, 16, 24),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color('#e9e3fb').multiplyScalar(0.62), side: THREE.BackSide }),
+    new THREE.MeshBasicMaterial({ color: new THREE.Color('#e6e8ec').multiplyScalar(0.62), side: THREE.BackSide }),
   );
   scene.add(room);
   const panel = (w, h, hex, k, pos) => {
@@ -56,11 +56,11 @@ function studio(renderer) {
     scene.add(m);
   };
   panel(12, 4, '#ffffff', 7, [0, 7.5, 1]);
-  panel(5, 9, '#ffc9e6', 3.6, [-10, 1, 3]);
+  panel(5, 9, '#ffe2d4', 3.6, [-10, 1, 3]);
   panel(5, 9, '#bcd3ff', 3.6, [10, 1.5, -2]);
   panel(7, 4, '#ffffff', 4.2, [4, 2.5, 10]);
-  panel(8, 4, '#cbbaff', 2.8, [-3, -0.5, -10]);
-  panel(16, 16, '#d9cff7', 0.9, [0, -7.5, 0]);
+  panel(8, 4, '#c4d0ff', 2.8, [-3, -0.5, -10]);
+  panel(16, 16, '#d8dbe2', 0.9, [0, -7.5, 0]);
   const pm = new THREE.PMREMGenerator(renderer);
   const tex = pm.fromScene(scene, 0.03).texture;
   pm.dispose();

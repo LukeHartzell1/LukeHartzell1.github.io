@@ -1,6 +1,7 @@
-/* Page behaviour: reveals, nav, counters, the holo card, the experience
-   scroll story, 8-bit mode, and booting the 3D engine. Works on the case-study
-   pages too (anything missing is simply skipped). */
+/* Page behaviour: the hero's lights-up moment, the nav that takes on the
+   color of the room under it, the holo card, the experience scroll story,
+   the projects gallery, 8-bit mode, and booting the 3D engine. Works on the
+   case-study pages too (anything missing is simply skipped). */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const root = document.documentElement;
@@ -23,62 +24,34 @@ function toast(msg) {
   toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 2600);
 }
 
-/* ---------- reveal on scroll ---------- */
-const revealIO = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (e.isIntersecting) {
-      e.target.classList.add('is-in');
-      revealIO.unobserve(e.target);
-    }
-  }
-}, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-$$('[data-reveal]').forEach((el) => revealIO.observe(el));
+/* ---------- hero: the lights come up once the page has painted ---------- */
 requestAnimationFrame(() => requestAnimationFrame(() => $('.hero')?.classList.add('is-in')));
 
-/* ---------- counters ---------- */
-const countIO = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (!e.isIntersecting) continue;
-    countIO.unobserve(e.target);
-    const el = e.target;
-    const to = parseFloat(el.dataset.count);
-    const dec = parseInt(el.dataset.decimals || '0', 10);
-    if (reduced) { el.textContent = to.toFixed(dec); continue; }
-    const t0 = performance.now();
-    const tick = (now) => {
-      const k = Math.min(1, (now - t0) / 1500);
-      el.textContent = (to * (1 - Math.pow(1 - k, 4))).toFixed(dec);
-      if (k < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-}, { threshold: 0.6 });
-$$('[data-count]').forEach((el) => countIO.observe(el));
-
-/* ---------- nav: scrolled state, scroll-spy pill, mobile sheet ---------- */
+/* ---------- nav: active room, room color under the bar, mobile sheet ---------- */
 const nav = $('#nav');
 const links = $$('.nav__links a').filter((a) => a.getAttribute('href').startsWith('#'));
-const pill = $('.nav__pill');
 const sections = links.map((a) => $(a.getAttribute('href'))).filter(Boolean);
-function movePill(a) {
-  if (!pill) return;
-  if (!a) { pill.style.opacity = '0'; return; }
-  pill.style.opacity = '1';
-  pill.style.width = `${a.offsetWidth}px`;
-  pill.style.transform = `translateX(${a.offsetLeft}px)`;
-}
+const rooms = $$('main > section[id]');
+const themeMeta = $('meta[name="theme-color"]');
+const ROOM_COLOR = { education: '#DADCE1', experience: '#17171B', projects: '#1D3BF0' };
 let spyRaf = 0;
 function spy() {
   spyRaf = 0;
-  nav?.classList.toggle('is-scrolled', window.scrollY > 12);
   const y = window.innerHeight * 0.38;
   let current = null;
   sections.forEach((sec, i) => { if (sec.getBoundingClientRect().top <= y) current = links[i]; });
   links.forEach((a) => a.classList.toggle('is-active', a === current));
-  movePill(current);
-  // Each section tints the page background a little differently.
-  const wash = current ? current.getAttribute('href').slice(1) : 'top';
-  if (root.dataset.section !== wash) root.dataset.section = wash;
+  // The bar takes the color of whichever room is passing underneath it.
+  const probe = (nav?.offsetHeight || 60) / 2;
+  let under = rooms.length ? 'top' : 'page';
+  for (const sec of rooms) {
+    const r = sec.getBoundingClientRect();
+    if (r.top <= probe && r.bottom > probe) under = sec.id;
+  }
+  if (root.dataset.under !== under) {
+    root.dataset.under = under;
+    themeMeta?.setAttribute('content', ROOM_COLOR[under] || '#EDEDEA');
+  }
 }
 window.addEventListener('scroll', () => { if (!spyRaf) spyRaf = requestAnimationFrame(spy); }, { passive: true });
 window.addEventListener('resize', () => { if (!spyRaf) spyRaf = requestAnimationFrame(spy); });
@@ -212,7 +185,7 @@ if (hs) {
     target = p * maxX;
     hs.classList.toggle('is-pinned', r.top <= 1 && r.bottom >= window.innerHeight - 1);
     bar?.style.setProperty('--p', p.toFixed(4));
-    if (now) now.textContent = String(Math.min(slides.length, Math.round(p * (slides.length - 1)) + 1)).padStart(2, '0');
+    if (now) now.textContent = String(Math.min(slides.length, Math.round(p * (slides.length - 1)) + 1));
   };
   const loop = () => {
     if (!wide.matches) { running = false; return; }
@@ -279,12 +252,12 @@ if (zoomables.length) {
     big.alt = img.alt;
     caption.textContent = img.alt;
     if (btn.dataset.full) {
-      caption.append(' · ');
+      caption.append(' ');
       const a = document.createElement('a');
       a.href = btn.dataset.full;
       a.target = '_blank';
       a.rel = 'noopener';
-      a.textContent = 'Open full resolution ↗';
+      a.textContent = 'Open full resolution';
       caption.appendChild(a);
     }
     box.showModal();
@@ -296,7 +269,7 @@ async function boot3d() {
   if (!$('.stage')) return;
   try {
     await Promise.race([
-      Promise.all([document.fonts.load('600 48px Geist'), document.fonts.load('500 48px "Geist Mono"')]),
+      Promise.all([document.fonts.load('600 48px Archivo'), document.fonts.load('800 48px Archivo')]),
       new Promise((r) => setTimeout(r, 2500)),
     ]);
   } catch { /* fonts are a nicety */ }
@@ -350,7 +323,7 @@ async function boot3d() {
       if (role === current) return;
       current = role;
       roles.forEach((r) => r.classList.toggle('is-active', r === role));
-      const n = String(roles.indexOf(role) + 1).padStart(2, '0');
+      const n = String(roles.indexOf(role) + 1);
       if (countNow) countNow.textContent = n;
       if (xpNum) {
         xpNum.classList.add('is-swapping');

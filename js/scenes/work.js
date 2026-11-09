@@ -39,13 +39,13 @@ export function education(env) {
 
   const medalTex = canvasTex(512, 512, (g, w) => {
     const grd = g.createLinearGradient(0, 0, w, w);
-    grd.addColorStop(0, '#F3EEFF');
-    grd.addColorStop(1, '#D8CCFF');
+    grd.addColorStop(0, '#F0F1F5');
+    grd.addColorStop(1, '#D6DBE6');
     g.fillStyle = grd;
     g.beginPath();
     g.arc(w / 2, w / 2, w / 2, 0, TAU);
     g.fill();
-    g.strokeStyle = 'rgba(114,84,240,0.35)';
+    g.strokeStyle = 'rgba(46,75,255,0.35)';
     g.lineWidth = 10;
     g.beginPath();
     g.arc(w / 2, w / 2, w / 2 - 34, 0, TAU);
@@ -60,7 +60,7 @@ export function education(env) {
     g.fillText('GPA', w / 2, w / 2 + 110);
   });
   const medalFace = new THREE.MeshPhysicalMaterial({ map: medalTex, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.1 });
-  const medal = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 0.09, 64), [M.chrome('#E7DEFF'), medalFace, medalFace]);
+  const medal = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 0.09, 64), [M.chrome('#E6E9F0'), medalFace, medalFace]);
   medal.rotation.set(Math.PI / 2, Math.PI / 2, 0);
   const medalHolder = new THREE.Group();
   medalHolder.add(medal);
@@ -102,13 +102,13 @@ export function education(env) {
 /* The two CoCo skills I built, as little props. */
 function clapperboard() {
   const g = new THREE.Group();
-  const slate = new THREE.Mesh(rbox(1.1, 0.78, 0.09, 0.06), M.gloss('#201a33', { roughness: 0.32 }));
+  const slate = new THREE.Mesh(rbox(1.1, 0.78, 0.09, 0.06), M.gloss('#17171d', { roughness: 0.32 }));
   const face = label(textTex(['TAKE 01', 'auto-cut ✓'], { w: 512, h: 320, size: 62, weight: 600, mono: true, color: '#ffffff', lineHeight: 1.55 }), 0.95, 0.6);
   face.position.z = 0.047;
   const stripes = canvasTex(512, 96, (c, w, h) => {
     c.fillStyle = '#ffffff';
     c.fillRect(0, 0, w, h);
-    c.fillStyle = '#201a33';
+    c.fillStyle = '#17171d';
     for (let x = -h; x < w + h; x += 96) {
       c.beginPath();
       c.moveTo(x, h);
@@ -135,7 +135,7 @@ function demoScreen() {
   const g = new THREE.Group();
   const body = new THREE.Mesh(rbox(1.3, 0.9, 0.07, 0.07), M.ceramic('#ffffff', { roughness: 0.28 }));
   const tex = canvasTex(640, 440, (c, w, h) => {
-    c.fillStyle = '#F6F2FF';
+    c.fillStyle = '#F3F4F7';
     c.fillRect(0, 0, w, h);
     c.fillStyle = '#ffffff';
     c.fillRect(0, 0, w, 56);
@@ -145,22 +145,22 @@ function demoScreen() {
       c.arc(30 + i * 26, 28, 8, 0, TAU);
       c.fill();
     });
-    c.fillStyle = '#9a90bd';
+    c.fillStyle = '#8a8f9c';
     c.font = `500 22px ${MONO}`;
     c.fillText('demo.app', 120, 36);
-    c.fillStyle = '#DCD1FF';
+    c.fillStyle = '#D6DCE8';
     roundRectPath(c, 40, 92, 300, 26, 13);
     c.fill();
-    c.fillStyle = '#EAE3FF';
+    c.fillStyle = '#E4E8F5';
     roundRectPath(c, 40, 132, 220, 18, 9);
     c.fill();
     [0.5, 0.8, 0.62, 0.95, 0.72].forEach((v, i) => {
-      c.fillStyle = i === 3 ? '#7254F0' : '#C9B9FF';
+      c.fillStyle = i === 3 ? '#2E4BFF' : '#B9C6EA';
       const bh = v * 160;
       roundRectPath(c, 40 + i * 58, 400 - bh, 40, bh, 8);
       c.fill();
     });
-    c.fillStyle = '#7254F0';
+    c.fillStyle = '#2E4BFF';
     c.beginPath();
     c.arc(500, 250, 66, 0, TAU);
     c.fill();
@@ -175,7 +175,7 @@ function demoScreen() {
   const screen = label(tex, 1.2, 0.82);
   screen.position.z = 0.037;
   const arrow = canvasTex(128, 128, (c) => {
-    c.fillStyle = '#15111f';
+    c.fillStyle = '#111114';
     c.strokeStyle = '#ffffff';
     c.lineWidth = 8;
     c.beginPath();
@@ -192,7 +192,7 @@ function demoScreen() {
   });
   const cursor = label(arrow, 0.22, 0.22);
   cursor.position.z = 0.05;
-  const ring = new THREE.Mesh(new THREE.RingGeometry(0.05, 0.075, 32), M.glow('#7254F0', { opacity: 0 }));
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.05, 0.075, 32), M.glow('#2E4BFF', { opacity: 0 }));
   ring.position.z = 0.045;
   g.add(body, screen, ring, cursor);
   g.userData = { cursor, ring };
@@ -210,7 +210,7 @@ export function snowflakeRole(env) {
   scene.add(holder);
   const cr = crystal({ arm: 1.95, thick: 0.08, holo: 0.9 });
   holder.add(cr.group);
-  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.01, 8, 256), M.chrome('#cfc3ff', { transparent: true, opacity: 0.45 }));
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.01, 8, 256), M.chrome('#c8cedb', { transparent: true, opacity: 0.45 }));
   holder.add(halo);
   // Gentle snowfall.
   const N = 140;
@@ -226,7 +226,7 @@ export function snowflakeRole(env) {
   const snowGeo = new THREE.BufferGeometry();
   snowGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({
-    size: 0.075, map: dotTex(), color: '#b7a6ff', transparent: true, opacity: 0.75, depthWrite: false, toneMapped: false,
+    size: 0.075, map: dotTex(), color: '#afc0f2', transparent: true, opacity: 0.75, depthWrite: false, toneMapped: false,
   }));
   scene.add(snow);
   const clap = clapperboard();
@@ -329,7 +329,7 @@ export function habitLoop(env) {
     const body = new THREE.Mesh(rbox(0.46, 0.32, 0.07, 0.06), M.gloss('#ffffff'));
     const face = label(textTex(ch, { w: 128, h: 128, size: 78, weight: 700, color: '#ffffff', bg: colr, radius: 30 }), 0.2, 0.2);
     face.position.set(-0.1, 0, 0.037);
-    const line = new THREE.Mesh(rbox(0.16, 0.035, 0.01, 0.012), M.flat('#d8d1ee'));
+    const line = new THREE.Mesh(rbox(0.16, 0.035, 0.01, 0.012), M.flat('#d7dae1'));
     line.position.set(0.1, 0.04, 0.037);
     const line2 = line.clone();
     line2.position.y = -0.03;
@@ -462,14 +462,14 @@ export function router(env) {
   const glass = M.glass('#ffffff', { opacity: 0.22 });
   scene.add(new THREE.Mesh(new THREE.TubeGeometry(cin, 80, 0.15, 20, false), glass));
   scene.add(new THREE.Mesh(new THREE.TubeGeometry(cout, 80, 0.15, 20, false), glass));
-  const box = new THREE.Mesh(rbox(1.3, 1.3, 1.3, 0.3, 6), enhance(M.pearl('#EDE6FF'), { holo: 0.7 }));
+  const box = new THREE.Mesh(rbox(1.3, 1.3, 1.3, 0.3, 6), enhance(M.pearl('#EBEDF2'), { holo: 0.7 }));
   scene.add(box);
   const lam = label(textTex('λ', { w: 256, h: 256, size: 190, weight: 500, color: C.violet }), 0.78, 0.78);
   lam.position.z = 0.66;
   box.add(lam);
   const pager = new THREE.Group();
   const pb = new THREE.Mesh(rbox(0.72, 0.98, 0.24, 0.14), M.ceramic('#ffffff'));
-  const screen = label(textTex(['ON', 'CALL'], { w: 256, h: 300, size: 64, weight: 600, mono: true, color: C.mint, bg: '#1b1530', radius: 36 }), 0.52, 0.6);
+  const screen = label(textTex(['ON', 'CALL'], { w: 256, h: 300, size: 64, weight: 600, mono: true, color: C.mint, bg: '#131318', radius: 36 }), 0.52, 0.6);
   screen.position.z = 0.125;
   pager.add(pb, screen);
   pager.position.set(3.6, -0.62, 0);
@@ -477,7 +477,7 @@ export function router(env) {
   const tray = new THREE.Mesh(rbox(1.25, 0.14, 0.9, 0.06), M.glass('#ffd6e5', { opacity: 0.45 }));
   tray.position.set(0, -1.62, 0);
   scene.add(tray);
-  const noiseTag = tag('noise ↓ dropped', { size: 40, color: '#d0457a', scale: 1.5 });
+  const noiseTag = tag('noise ↓ dropped', { size: 40, color: '#E2461C', scale: 1.5 });
   noiseTag.position.set(0, -2.2, 0.3);
   const evTag = tag('events', { size: 40, scale: 1.5 });
   evTag.position.set(-3.1, 2.05, 0.2);
@@ -560,12 +560,12 @@ export function garage(env) {
   postR.position.x = 1.68;
   const header = new THREE.Mesh(rbox(3.7, 0.42, 0.4, 0.1), frameMat);
   header.position.set(0, 3.42, 0.02);
-  const slab = new THREE.Mesh(rbox(4.6, 0.12, 2.2, 0.05), M.ceramic('#EEE8FF'));
+  const slab = new THREE.Mesh(rbox(4.6, 0.12, 2.2, 0.05), M.ceramic('#ECEEF3'));
   slab.position.set(0, -0.06, 0.2);
   scene.add(postL, postR, header, slab);
   const glowTex = canvasTex(1024, 1024, (g, w, h) => {
     const grd = g.createLinearGradient(0, 0, 0, h);
-    grd.addColorStop(0, '#CDBBFF');
+    grd.addColorStop(0, '#C9D5FF');
     grd.addColorStop(1, '#FFC9E3');
     g.fillStyle = grd;
     g.fillRect(0, 0, w, h);
@@ -581,19 +581,19 @@ export function garage(env) {
   glow.position.set(0, 1.62, -0.25);
   scene.add(glow);
 
-  const grey = new THREE.Color('#d6d0e8');
+  const grey = new THREE.Color('#D3D6DE');
   const mint = new THREE.Color('#41c79a');
-  const rose = new THREE.Color('#ff5c8a');
+  const rose = new THREE.Color('#FF5A3C');
   const slats = [];
   for (let i = 0; i < 8; i++) {
     const g = new THREE.Group();
     const body = new THREE.Mesh(rbox(3.08, 0.36, 0.11, 0.05), M.ceramic('#ffffff', { roughness: 0.3 }));
-    const dotMat = M.gloss('#d6d0e8');
+    const dotMat = M.gloss('#D3D6DE');
     const dot = new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 14), dotMat);
     dot.position.set(-1.28, 0, 0.07);
-    const l1 = new THREE.Mesh(rbox(1.5, 0.05, 0.02, 0.02), M.flat('#e4def3'));
+    const l1 = new THREE.Mesh(rbox(1.5, 0.05, 0.02, 0.02), M.flat('#e3e5ea'));
     l1.position.set(-0.3, 0.05, 0.062);
-    const l2 = new THREE.Mesh(rbox(0.9, 0.05, 0.02, 0.02), M.flat('#ece7f8'));
+    const l2 = new THREE.Mesh(rbox(0.9, 0.05, 0.02, 0.02), M.flat('#eaebef'));
     l2.position.set(-0.6, -0.06, 0.062);
     g.add(body, dot, l1, l2);
     g.userData = { y: 0.24 + i * 0.39, dotMat, bug: i === 2 || i === 5 };
@@ -603,7 +603,7 @@ export function garage(env) {
   const scan = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 0.06), M.glow('#7ef0c6', { opacity: 0.8 }));
   scan.position.z = 0.12;
   scene.add(scan);
-  const bugTag = tag('2 critical bugs escalated', { size: 38, color: '#d0457a', scale: 0.9 });
+  const bugTag = tag('2 critical bugs escalated', { size: 38, color: '#E2461C', scale: 0.9 });
   bugTag.position.set(1.15, 4.05, 0.4);
   scene.add(bugTag);
   const floor = shadow(5, 2.8, 0.16);
@@ -652,17 +652,17 @@ export function garage(env) {
 export function gpuScan(env) {
   const { scene, camera } = stage(env, { fov: 28 });
   const cam = rig(camera, { pos: [0.8, 2.4, 11.2], look: [0.2, 0.5, 0] });
-  const board = new THREE.Mesh(rbox(3.6, 0.16, 2.4, 0.12), M.ceramic('#3a2c86', { roughness: 0.45, sheenColor: new THREE.Color('#9f8cff') }));
+  const board = new THREE.Mesh(rbox(3.6, 0.16, 2.4, 0.12), M.ceramic('#1e2550', { roughness: 0.45, sheenColor: new THREE.Color('#8fa3ff') }));
   board.position.y = -1.15;
-  const die = new THREE.Mesh(rbox(1.25, 0.14, 1.25, 0.08), M.chrome('#EDE7FF'));
+  const die = new THREE.Mesh(rbox(1.25, 0.14, 1.25, 0.08), M.chrome('#ECEEF3'));
   die.position.y = -1.02;
-  const dieLab = label(textTex('NEXUS', { w: 512, h: 128, size: 64, weight: 600, mono: true, color: '#6a54d8' }), 0.9, 0.22);
+  const dieLab = label(textTex('NEXUS', { w: 512, h: 128, size: 64, weight: 600, mono: true, color: '#3550e6' }), 0.9, 0.22);
   dieLab.rotation.x = -Math.PI / 2;
   dieLab.position.set(0, -0.948, 0);
   scene.add(board, die, dieLab);
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * TAU;
-    const m = new THREE.Mesh(rbox(0.38, 0.09, 0.22, 0.04), M.satin('#1d1638'));
+    const m = new THREE.Mesh(rbox(0.38, 0.09, 0.22, 0.04), M.satin('#191b24'));
     m.position.set(Math.cos(a) * 1.35, -1.03, Math.sin(a) * 0.86);
     m.rotation.y = -a;
     scene.add(m);
@@ -670,13 +670,13 @@ export function gpuScan(env) {
   const notes = canvasTex(1024, 640, (g, w, h) => {
     g.fillStyle = '#ffffff';
     g.fillRect(0, 0, w, h);
-    g.fillStyle = '#7254F0';
+    g.fillStyle = '#2E4BFF';
     g.font = `500 34px ${MONO}`;
     g.fillText('LEC 14', 64, 86);
     g.fillStyle = C.ink;
     g.font = `700 64px ${FONT}`;
     g.fillText('Hash Tables', 64, 162);
-    g.strokeStyle = '#b8abef';
+    g.strokeStyle = '#a9b6d6';
     g.lineWidth = 6;
     g.lineCap = 'round';
     const rr = rng(4);
@@ -691,7 +691,7 @@ export function gpuScan(env) {
       }
       g.stroke();
     }
-    g.strokeStyle = '#7254F0';
+    g.strokeStyle = '#2E4BFF';
     g.lineWidth = 5;
     for (let i = 0; i < 5; i++) {
       g.strokeRect(760, 240 + i * 62, 170, 46);
@@ -791,7 +791,7 @@ export function bstTutor(env) {
     nodes.push({ v, m, mat, L, i, pos: m.position.clone() });
   }));
   const idx = (L, i) => (2 ** L) - 1 + i;
-  const edgeMat = M.satin('#cdbfff', { roughness: 0.35 });
+  const edgeMat = M.satin('#c6ccda', { roughness: 0.35 });
   for (let L = 0; L < 3; L++) {
     for (let i = 0; i < 2 ** L; i++) {
       for (const c of [0, 1]) {
@@ -827,7 +827,7 @@ export function bstTutor(env) {
     return out;
   };
   const white = new THREE.Color('#ffffff');
-  const violet = new THREE.Color('#b9a5ff');
+  const violet = new THREE.Color('#c3cad8');
   const mint = new THREE.Color('#8fe2c6');
   const STEP = 0.6;
   const P = 4 * STEP + 1.6;
@@ -888,7 +888,7 @@ export function hall(env) {
   const pal = [C.white, C.white, C.lilac2, C.mist, C.pink, C.sky].map((h) => new THREE.Color(h));
   const rr = rng(13);
   seats.forEach((st) => { st.c = pal[Math.floor(rr() * pal.length)]; });
-  const hot = new THREE.Color('#7254F0');
+  const hot = new THREE.Color('#2E4BFF');
   const hot2 = new THREE.Color('#5ed3a8');
   const tmp = new THREE.Color();
   scene.add(mesh);
@@ -896,7 +896,7 @@ export function hall(env) {
   for (let r = 0; r < rows; r += 2) {
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(radii[r] - 0.12, radii[Math.min(rows - 1, r + 1)] + 0.12, 64, 1, Math.PI / 2 - span / 2 - 0.05, span + 0.1),
-      M.ceramic(r % 4 ? '#f3effd' : '#ece6fb', { side: THREE.DoubleSide }),
+      M.ceramic(r % 4 ? '#f1f2f5' : '#e9ebf0', { side: THREE.DoubleSide }),
     );
     ring.rotation.x = -Math.PI / 2;
     ring.position.y = r * 0.12 - 0.07;

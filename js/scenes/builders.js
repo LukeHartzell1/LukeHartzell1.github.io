@@ -68,7 +68,7 @@ function maskTex() {
   }
   return screenMask;
 }
-export function phone({ w = 1.5, h = 3.05, d = 0.17, body = '#F4F1FF' } = {}) {
+export function phone({ w = 1.5, h = 3.05, d = 0.17, body = '#F2F3F6' } = {}) {
   const group = new THREE.Group();
   group.add(new THREE.Mesh(rbox(w, h, d, 0.24, 6), M.ceramic(body, { roughness: 0.3 })));
   const sw = w - 0.12;
@@ -88,11 +88,11 @@ export function phone({ w = 1.5, h = 3.05, d = 0.17, body = '#F4F1FF' } = {}) {
   const glass = new THREE.Mesh(new THREE.PlaneGeometry(sw, sh), M.glass('#ffffff', { opacity: 0.1, alphaMap: maskTex() }));
   glass.position.z = d / 2 + 0.006;
   group.add(glass);
-  const island = new THREE.Mesh(rbox(0.44, 0.12, 0.02, 0.055), M.gloss('#14101f'));
+  const island = new THREE.Mesh(rbox(0.44, 0.12, 0.02, 0.055), M.gloss('#111114'));
   island.position.set(0, sh / 2 - 0.16, d / 2 + 0.008);
   group.add(island);
   for (const [y, hh] of [[0.62, 0.36], [0.16, 0.36]]) {
-    const b = new THREE.Mesh(rbox(0.04, hh, 0.08, 0.018), M.satin('#E3DCFF'));
+    const b = new THREE.Mesh(rbox(0.04, hh, 0.08, 0.018), M.satin('#E2E5EE'));
     b.position.set(w / 2 + 0.012, y, 0);
     group.add(b);
   }
@@ -111,7 +111,7 @@ export function pixelShades({ px = 0.07, depth = 0.05 } = {}) {
   rows.forEach((row, y) => [...row].forEach((ch, x) => { if (ch !== ' ') cells.push([x, y, ch]); }));
   const geo = new THREE.BoxGeometry(px, px, depth);
   const mesh = new THREE.InstancedMesh(geo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.55, metalness: 0 }), cells.length);
-  const dark = new THREE.Color('#15111f');
+  const dark = new THREE.Color('#111114');
   const light = new THREE.Color('#ffffff');
   cells.forEach(([x, y, ch], i) => {
     setInst(mesh, i, (x - 6.5) * px, (1.5 - y) * px, 0);
@@ -123,7 +123,7 @@ export function pixelShades({ px = 0.07, depth = 0.05 } = {}) {
 }
 
 /* ---------- Dumbbell ---------- */
-export function dumbbell({ color = C.lilac } = {}) {
+export function dumbbell({ color = C.violet } = {}) {
   const group = new THREE.Group();
   const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 2.2, 24), M.chrome());
   bar.rotation.z = Math.PI / 2;
@@ -151,8 +151,8 @@ export function vinylTex() {
     grooves = canvasTex(1024, 1024, (g, w) => {
       const c = w / 2;
       const bg = g.createRadialGradient(c, c, 40, c, c, c);
-      bg.addColorStop(0, '#2a2240');
-      bg.addColorStop(1, '#141020');
+      bg.addColorStop(0, '#26272e');
+      bg.addColorStop(1, '#111114');
       g.fillStyle = bg;
       g.fillRect(0, 0, w, w);
       for (let r = 190; r < 505; r += 3) {
@@ -170,23 +170,23 @@ export function vinylTex() {
         g.stroke();
       }
       const lab = g.createLinearGradient(c - 180, c - 180, c + 180, c + 180);
-      lab.addColorStop(0, '#C9B6FF');
-      lab.addColorStop(0.55, '#F7B6D8');
-      lab.addColorStop(1, '#A6C8FF');
+      lab.addColorStop(0, '#FF5A3C');
+      lab.addColorStop(0.6, '#FF7F57');
+      lab.addColorStop(1, '#FFB08C');
       g.fillStyle = lab;
       g.beginPath();
       g.arc(c, c, 175, 0, Math.PI * 2);
       g.fill();
-      g.fillStyle = '#1A1530';
+      g.fillStyle = '#131318';
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       g.font = `700 54px ${FONT}`;
       g.fillText('WRAPPED', c, c - 58);
       g.font = `500 30px ${MONO}`;
-      g.fillText('anytime · side A', c, c + 62);
+      g.fillText('anytime, side A', c, c + 62);
       g.beginPath();
       g.arc(c, c, 14, 0, Math.PI * 2);
-      g.fillStyle = '#0f0b18';
+      g.fillStyle = '#0f0f12';
       g.fill();
     });
   }
@@ -194,15 +194,15 @@ export function vinylTex() {
 }
 export function vinyl({ r = 1.2, t = 0.04 } = {}) {
   const top = new THREE.MeshPhysicalMaterial({ map: vinylTex(), roughness: 0.28, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.12 });
-  const side = M.gloss('#17121f');
+  const side = M.gloss('#141418');
   const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r, r, t, 128), [side, top, top]);
   return mesh;
 }
 
 /* ---------- Graduation cap ---------- */
-export function gradCap({ color = '#2B2160' } = {}) {
+export function gradCap({ color = '#161A30' } = {}) {
   const group = new THREE.Group();
-  const mat = M.ceramic(color, { roughness: 0.5, sheenColor: new THREE.Color('#8c7bff') });
+  const mat = M.ceramic(color, { roughness: 0.5, sheenColor: new THREE.Color('#8fa3ff') });
   const board = new THREE.Mesh(rbox(1.7, 0.07, 1.7, 0.03), mat);
   board.position.y = 0.42;
   board.rotation.y = Math.PI / 4;

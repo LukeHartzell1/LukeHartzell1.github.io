@@ -6,22 +6,24 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 
 export { THREE };
 
+/* Exhibition palette: porcelain and silver objects with cobalt and signal
+   accents; a few soft colors for states (mint = pass, pink = hearts). */
 export const C = {
-  lilac: '#B9A5FF',
-  lilac2: '#D9CCFF',
-  violet: '#7254F0',
-  deep: '#2B2160',
-  pink: '#F7B6D8',
-  rose: '#FF7EA5',
-  sky: '#A6C8FF',
-  mint: '#8FE2C6',
-  peach: '#FFC6AC',
-  butter: '#FFE8A6',
-  cream: '#FFFDF9',
+  lilac: '#C3CAD8', // silver (kept under the old name the scenes use)
+  lilac2: '#D3D9E6', // light silver
+  violet: '#2E4BFF', // cobalt
+  deep: '#161A30', // ink navy
+  pink: '#FF9DC0',
+  rose: '#FF5A3C', // signal
+  sky: '#8FB2FF', // light cobalt
+  mint: '#72D9B5',
+  peach: '#FFB896',
+  butter: '#FFE29A',
+  cream: '#F7F7F4',
   white: '#FFFFFF',
-  ink: '#1A1530',
-  mist: '#ECE7FB',
-  steel: '#C9C2E3',
+  ink: '#131318',
+  mist: '#E9EBF0',
+  steel: '#B9BEC9',
 };
 
 /* ---------- math & easing ---------- */
@@ -63,8 +65,8 @@ export const M = {
     color, roughness: 0.18, metalness: 0.06, iridescence: 1, iridescenceIOR: 1.5,
     iridescenceThicknessRange: [140, 560], clearcoat: 1, clearcoatRoughness: 0.06, ...o,
   }),
-  chrome: (color = '#EFEBFF', o = {}) => new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: 0.14, ...o }),
-  satin: (color = '#EFEBFF', o = {}) => new THREE.MeshStandardMaterial({ color, metalness: 0.65, roughness: 0.32, ...o }),
+  chrome: (color = '#EEF0F5', o = {}) => new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: 0.14, ...o }),
+  satin: (color = '#EEF0F5', o = {}) => new THREE.MeshStandardMaterial({ color, metalness: 0.65, roughness: 0.32, ...o }),
   glass: (color = '#ffffff', o = {}) => new THREE.MeshPhysicalMaterial({
     color, roughness: 0.03, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.02,
     transparent: true, opacity: 0.2, depthWrite: false, iridescence: 0.5, envMapIntensity: 1.8, ...o,
@@ -85,10 +87,10 @@ export function stage(envMap, { fov = 30, pos = [0, 0, 10], look = [0, 0, 0], en
   camera.position.set(...pos);
   camera.lookAt(...look);
   camera.userData.look = new THREE.Vector3(...look);
-  const h = new THREE.HemisphereLight('#ffffff', '#d8ccff', hemi);
+  const h = new THREE.HemisphereLight('#ffffff', '#d6dbe6', hemi);
   const k = new THREE.DirectionalLight('#ffffff', key);
   k.position.set(4, 7, 6);
-  const r = new THREE.DirectionalLight('#c9b6ff', 0.9);
+  const r = new THREE.DirectionalLight('#bcc8ff', 0.9);
   r.position.set(-6, 3, -5);
   scene.add(h, k, r);
   return { scene, camera, lights: { hemi: h, key: k, rim: r } };
@@ -133,8 +135,8 @@ export function roundRectPath(g, x, y, w, h, r) {
 }
 
 /* ---------- textures ---------- */
-export const FONT = '"Geist", "Inter", system-ui, sans-serif';
-export const MONO = '"Geist Mono", ui-monospace, monospace';
+export const FONT = '"Archivo", system-ui, sans-serif';
+export const MONO = FONT;
 
 export function canvasTex(w, h, draw, { srgb = true } = {}) {
   const c = document.createElement('canvas');
@@ -191,7 +193,7 @@ export function sprite(tex, w, h, o = {}) {
 }
 
 let shadowAlpha = null;
-export function shadow(w = 3, h = w, opacity = 0.32, color = '#5a46b8') {
+export function shadow(w = 3, h = w, opacity = 0.32, color = '#23252e') {
   if (!shadowAlpha) {
     shadowAlpha = canvasTex(128, 128, (g) => {
       const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
@@ -343,9 +345,9 @@ export function enhance(mat, { uTime = { value: 0 }, liquid = null, holo = 0 } =
             vec3 vdir = normalize(vViewPosition);
             float fr = pow(1.0 - clamp(dot(normal, vdir), 0.0, 1.0), 1.6);
             float h = normal.x * 0.35 + normal.y * 0.5 + fr * 0.6 + uTime * 0.04;
-            vec3 c1 = vec3(0.55, 0.42, 1.0);
-            vec3 c2 = vec3(1.0, 0.45, 0.72);
-            vec3 c3 = vec3(0.40, 0.62, 1.0);
+            vec3 c1 = vec3(0.20, 0.34, 1.0);
+            vec3 c2 = vec3(1.0, 0.45, 0.62);
+            vec3 c3 = vec3(0.30, 0.86, 1.0);
             float k1 = 0.5 + 0.5 * sin(6.28318 * h);
             float k2 = 0.5 + 0.5 * sin(6.28318 * (h + 0.37));
             vec3 pastel = mix(mix(c1, c2, k1), c3, k2 * 0.65);
@@ -382,6 +384,6 @@ export function rig(camera, { pos, look = [0, 0, 0], px = 0.45, py = 0.28, fit =
 
 /* Mono caption that floats in the scene (e.g. "on-call"). */
 export function tag(text, { w = 512, h = 128, size = 44, color = C.violet, bg = 'rgba(255,255,255,0.92)', mono = true, weight = 500, scale = 1 } = {}) {
-  const t = textTex(text, { w, h, size, color, bg, radius: h / 2, mono, weight, border: 'rgba(114,84,240,0.18)' });
+  const t = textTex(text, { w, h, size, color, bg, radius: h * 0.12, mono, weight, border: 'rgba(19,19,24,0.16)' });
   return sprite(t, (w / h) * 0.42 * scale, 0.42 * scale);
 }
