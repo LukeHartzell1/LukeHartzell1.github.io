@@ -1,0 +1,805 @@
+/* Education + Experience. Each role gets a small sculpture that acts out what
+   I actually did there. Intros replay every time a chapter becomes active. */
+import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js';
+import {
+  THREE, C, M, stage, rig, damp, clamp, lerp, seg, loop, easeOut, easeInOut, easeOutBack, bounce, smooth,
+  rbox, textTex, label, sprite, tag, shadow, sparkles, setInst, setInstQ, enhance, canvasTex, heartShape, rng, dotTex, FONT, MONO,
+} from '../kit.js';
+import { crystal, phone, pixelShades, gradCap, person } from './builders.js';
+
+const TAU = Math.PI * 2;
+
+/* ======================================================================
+   EDUCATION — Georgia Tech: a 4.0 built one course at a time
+   ====================================================================== */
+export function education(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [2.2, 3.4, 12.6], look: [0, 1.55, 0] });
+  const tower = new THREE.Group();
+  scene.add(tower);
+  const courses = [
+    ['Algorithms', C.lilac], ['Data Structures', C.sky], ['Intro to AI', C.pink],
+    ['Object-Oriented Programming', C.mint], ['UI / UX', C.peach], ['Educational Technology', C.lilac2],
+  ];
+  const blocks = courses.map(([name, color], i) => {
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(rbox(2.7, 0.46, 1.3, 0.13), M.ceramic(color, { roughness: 0.32 }));
+    const txt = label(textTex(name, { w: 1024, h: 160, size: name.length > 20 ? 52 : 64, weight: 600 }), 2.5, 0.39);
+    txt.position.z = 0.652;
+    g.add(body, txt);
+    g.userData.y = 0.25 + i * 0.5;
+    g.userData.r = (i % 2 ? 0.16 : -0.12) + i * 0.02;
+    tower.add(g);
+    return g;
+  });
+  const cap = gradCap();
+  cap.group.scale.setScalar(1.05);
+  tower.add(cap.group);
+  const capY = 0.25 + 5 * 0.5 + 0.24;
+
+  const medalTex = canvasTex(512, 512, (g, w) => {
+    const grd = g.createLinearGradient(0, 0, w, w);
+    grd.addColorStop(0, '#F3EEFF');
+    grd.addColorStop(1, '#D8CCFF');
+    g.fillStyle = grd;
+    g.beginPath();
+    g.arc(w / 2, w / 2, w / 2, 0, TAU);
+    g.fill();
+    g.strokeStyle = 'rgba(114,84,240,0.35)';
+    g.lineWidth = 10;
+    g.beginPath();
+    g.arc(w / 2, w / 2, w / 2 - 34, 0, TAU);
+    g.stroke();
+    g.fillStyle = C.ink;
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.font = `700 170px ${FONT}`;
+    g.fillText('4.0', w / 2, w / 2 - 14);
+    g.font = `500 44px ${MONO}`;
+    g.fillStyle = C.violet;
+    g.fillText('GPA', w / 2, w / 2 + 110);
+  });
+  const medalFace = new THREE.MeshPhysicalMaterial({ map: medalTex, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.1 });
+  const medal = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 0.09, 64), [M.chrome('#E7DEFF'), medalFace, medalFace]);
+  medal.rotation.set(Math.PI / 2, Math.PI / 2, 0);
+  const medalHolder = new THREE.Group();
+  medalHolder.add(medal);
+  medalHolder.position.set(2.45, 2.55, 0.4);
+  scene.add(medalHolder);
+  const floor = shadow(5.2, 3.4, 0.2);
+  floor.position.y = 0.0;
+  scene.add(floor);
+  const dust = sparkles(40, 3.6, { color: C.violet, size: 0.05, opacity: 0.45, seed: 11 });
+  dust.position.set(0, 2, 0);
+  scene.add(dust);
+
+  return {
+    scene, camera, posterT: 5,
+    update(s) {
+      cam(s);
+      const { t } = s;
+      blocks.forEach((b, i) => {
+        const k = bounce(seg(t, 0.1 + i * 0.16, 0.75));
+        b.position.y = b.userData.y + (1 - k) * 6.5;
+        b.rotation.y = b.userData.r + (1 - k) * 0.9;
+        b.visible = t > 0.1 + i * 0.16 - 0.02 || s.reduced;
+      });
+      const kc = easeOutBack(seg(t, 1.15, 0.8), 1.4);
+      cap.group.position.y = capY + (1 - kc) * 4;
+      cap.group.rotation.y = (1 - kc) * 2.4 + Math.sin(s.time * 0.6) * 0.12;
+      cap.group.visible = t > 1.13 || s.reduced;
+      cap.drop.rotation.z = Math.sin(s.time * 2.4) * (0.12 + 0.3 * (1 - seg(t, 1.6, 2)));
+      cap.drop.rotation.x = Math.cos(s.time * 1.7) * 0.08;
+      const km = easeOutBack(seg(t, 1.7, 0.7));
+      medalHolder.scale.setScalar(Math.max(0.0001, km));
+      medalHolder.rotation.y = Math.sin(s.time * 0.9) * 0.45 - 0.2;
+      medalHolder.position.y = 2.55 + Math.sin(s.time * 1.3) * 0.08;
+      tower.rotation.y = Math.sin(s.time * 0.32) * 0.22 + s.px * 0.25;
+    },
+  };
+}
+
+/* ======================================================================
+   SNOWFLAKE — a crystal that grows its branches (adoption, 3×)
+   ====================================================================== */
+export function snowflakeRole(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0, 0.4, 12.2], look: [0, 0, 0] });
+  const holder = new THREE.Group();
+  scene.add(holder);
+  const cr = crystal({ arm: 2.15, thick: 0.085, holo: 0.9 });
+  holder.add(cr.group);
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.75, 0.01, 8, 256), M.chrome('#cfc3ff', { transparent: true, opacity: 0.45 }));
+  holder.add(halo);
+  // Gentle snowfall.
+  const N = 140;
+  const r = rng(5);
+  const pos = new Float32Array(N * 3);
+  const vel = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    pos[i * 3] = (r() - 0.5) * 9;
+    pos[i * 3 + 1] = (r() - 0.5) * 7;
+    pos[i * 3 + 2] = (r() - 0.5) * 4 - 0.5;
+    vel[i] = 0.18 + r() * 0.35;
+  }
+  const snowGeo = new THREE.BufferGeometry();
+  snowGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({
+    size: 0.075, map: dotTex(), color: '#b7a6ff', transparent: true, opacity: 0.75, depthWrite: false, toneMapped: false,
+  }));
+  scene.add(snow);
+  let spin = 0;
+  let tx = 0;
+  let ty = 0;
+  return {
+    scene, camera, posterT: 4,
+    update(s) {
+      cam(s);
+      cr.setGrowth(s.reduced ? 1.3 : seg(s.t, 0, 2.3) * 1.3);
+      spin += s.dt * (s.hover ? 0.5 : 0.12);
+      tx = damp(tx, -s.py * 0.45, 3, s.dt);
+      ty = damp(ty, s.px * 0.6, 3, s.dt);
+      cr.group.rotation.set(tx, ty, spin);
+      halo.rotation.set(tx * 0.6 + 0.2, ty * 0.6, 0);
+      halo.scale.setScalar(0.7 + 0.3 * easeOut(seg(s.t, 0.6, 1.6)));
+      holder.position.y = Math.sin(s.time * 0.8) * 0.06;
+      for (let i = 0; i < N; i++) {
+        let y = pos[i * 3 + 1] - vel[i] * s.dt;
+        if (y < -3.6) y = 3.6;
+        pos[i * 3 + 1] = y;
+        pos[i * 3] += Math.sin(s.time * 0.6 + i) * 0.002;
+      }
+      snowGeo.attributes.position.needsUpdate = true;
+    },
+  };
+}
+
+/* ======================================================================
+   INTERVIEW PREPPER — a habit loop: practice cards riding a Möbius strip
+   ====================================================================== */
+export function habitLoop(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0, 0.6, 12], look: [0, 0, 0] });
+  const R = 1.75;
+  const W = 0.9;
+  const slices = 10;
+  const stacks = 260;
+  const geo = new ParametricGeometry((u, v, out) => {
+    const a = v * TAU;
+    const w = (u - 0.5) * W;
+    out.set((R + w * Math.cos(a / 2)) * Math.cos(a), (R + w * Math.cos(a / 2)) * Math.sin(a), w * Math.sin(a / 2));
+  }, slices, stacks);
+  const stops = [new THREE.Color(C.lilac), new THREE.Color(C.pink), new THREE.Color(C.sky), new THREE.Color(C.lilac)];
+  const col = new Float32Array(geo.attributes.position.count * 3);
+  const tmp = new THREE.Color();
+  for (let i = 0; i < geo.attributes.position.count; i++) {
+    const v = Math.floor(i / (slices + 1)) / stacks;
+    const f = v * 3;
+    const j = Math.min(2, Math.floor(f));
+    tmp.copy(stops[j]).lerp(stops[j + 1], f - j);
+    col.set([tmp.r, tmp.g, tmp.b], i * 3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  const strip = new THREE.Mesh(geo, enhance(M.gloss('#ffffff', { vertexColors: true, side: THREE.DoubleSide, roughness: 0.2 }), { holo: 0.35 }));
+  const group = new THREE.Group();
+  group.add(strip);
+  scene.add(group);
+
+  const kinds = [['Q', C.violet], ['B', '#4f8df0'], ['V', '#e2569b']];
+  const cards = [];
+  for (let i = 0; i < 9; i++) {
+    const [ch, colr] = kinds[i % 3];
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(rbox(0.46, 0.32, 0.07, 0.06), M.gloss('#ffffff'));
+    const face = label(textTex(ch, { w: 128, h: 128, size: 78, weight: 700, color: '#ffffff', bg: colr, radius: 30 }), 0.2, 0.2);
+    face.position.set(-0.1, 0, 0.037);
+    const line = new THREE.Mesh(rbox(0.16, 0.035, 0.01, 0.012), M.flat('#d8d1ee'));
+    line.position.set(0.1, 0.04, 0.037);
+    const line2 = line.clone();
+    line2.position.y = -0.03;
+    line2.scale.x = 0.7;
+    g.add(body, face, line, line2);
+    g.userData.off = i / 9;
+    group.add(g);
+    cards.push(g);
+  }
+  const T = new THREE.Vector3();
+  const Wd = new THREE.Vector3();
+  const Nn = new THREE.Vector3();
+  const P = new THREE.Vector3();
+  const mtx = new THREE.Matrix4();
+  let flow = 0;
+  let speed = 1;
+  const floor = shadow(5, 2.4, 0.14);
+  floor.position.y = -2.6;
+  scene.add(floor);
+
+  return {
+    scene, camera, posterT: 4,
+    update(s) {
+      cam(s);
+      const reveal = s.reduced ? 1 : easeInOut(seg(s.t, 0, 1.6));
+      geo.setDrawRange(0, Math.floor(geo.index.count * reveal / 6) * 6);
+      speed = damp(speed, s.hover ? 2.6 : 1, 3, s.dt);
+      flow += s.dt * 0.055 * speed;
+      group.rotation.set(-0.95 + s.py * 0.2, Math.sin(s.time * 0.3) * 0.2 + s.px * 0.35, s.time * 0.05);
+      cards.forEach((c, i) => {
+        const v = (c.userData.off + flow) % 1;
+        const a = v * TAU;
+        const vis = reveal >= 0.999 ? 1 : 0;
+        P.set(R * Math.cos(a), R * Math.sin(a), 0);
+        T.set(-Math.sin(a), Math.cos(a), 0);
+        Wd.set(Math.cos(a / 2) * Math.cos(a), Math.cos(a / 2) * Math.sin(a), Math.sin(a / 2));
+        Nn.crossVectors(T, Wd).normalize();
+        mtx.makeBasis(T, Wd, Nn);
+        c.quaternion.setFromRotationMatrix(mtx);
+        c.position.copy(P).addScaledVector(Nn, 0.075);
+        const k = easeOutBack(seg(s.t, 1.4 + i * 0.07, 0.5));
+        c.scale.setScalar(Math.max(0.0001, s.reduced ? 1 : k * vis));
+      });
+    },
+  };
+}
+
+/* ======================================================================
+   TIKTOK — my face on a phone, pixel shades dropping on cue, hearts rising
+   ====================================================================== */
+export function arPhone(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0, 0.3, 11.5], look: [0, 0.05, 0] });
+  const ph = phone();
+  const root = new THREE.Group();
+  root.add(ph.group);
+  scene.add(root);
+  const rx = (ph.sw / ph.sh) / (820 / 1024);
+  const off = (1 - rx) / 2;
+  const x1 = (0.321 - off) / rx;
+  const x2 = (0.731 - off) / rx;
+  const shadesW = (x2 - x1) * ph.sw;
+  const shades = pixelShades({ px: shadesW / 14, depth: 0.06 });
+  const shadeHome = new THREE.Vector3(((x1 + x2) / 2 - 0.5) * ph.sw, (0.5 - 0.378) * ph.sh, 0.2);
+  root.add(shades);
+
+  const heartGeo = new THREE.ExtrudeGeometry(heartShape(0.16), { depth: 0.08, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.03, bevelSegments: 3, curveSegments: 18 });
+  heartGeo.center();
+  const hearts = [];
+  const hc = [C.rose, C.pink, '#ff9ec2', C.lilac];
+  for (let i = 0; i < 8; i++) {
+    const m = new THREE.Mesh(heartGeo, M.gloss(hc[i % hc.length]));
+    m.userData.off = i / 8;
+    m.userData.x = 0.95 + (i % 3) * 0.22;
+    scene.add(m);
+    hearts.push(m);
+  }
+  const floor = shadow(3.4, 1.6, 0.2);
+  floor.position.y = -1.9;
+  scene.add(floor);
+  let ry = 0;
+  return {
+    scene, camera, posterT: 2.2,
+    update(s) {
+      cam(s);
+      const { t } = s;
+      const kin = easeOutBack(seg(t, 0, 0.9), 1.3);
+      root.scale.setScalar(Math.max(0.0001, 0.6 + 0.4 * kin));
+      ry = damp(ry, Math.sin(s.time * 0.55) * 0.28 + s.px * 0.35, 3, s.dt);
+      root.rotation.set(-0.06 + s.py * 0.12, ry, 0);
+      root.position.y = Math.sin(s.time * 0.9) * 0.05;
+      // Deal with it: drop, hold, lift. Hovering keeps them on.
+      const cyc = s.reduced ? 0.5 : loop(Math.max(0, t - 0.6), 5.2);
+      let dy = 0;
+      let sc = 1;
+      if (!s.hover) {
+        if (cyc < 0.2) dy = (1 - bounce(cyc / 0.2)) * 2.4;
+        else if (cyc > 0.86) {
+          const k = (cyc - 0.86) / 0.14;
+          dy = easeInOut(k) * 2.4;
+          sc = 1 - k;
+        }
+      }
+      shades.position.set(shadeHome.x, shadeHome.y + dy, shadeHome.z);
+      shades.scale.setScalar(Math.max(0.0001, sc));
+      shades.visible = t > 0.6 || s.reduced;
+      hearts.forEach((h, i) => {
+        const p = loop(s.time * 0.32 + h.userData.off, 1);
+        h.position.set(h.userData.x + Math.sin(p * 9 + i) * 0.12, -1.25 + p * 3.1, 0.3 + (i % 2) * 0.15);
+        const a = Math.sin(Math.PI * p);
+        h.scale.setScalar(Math.max(0.0001, a * (0.8 + (i % 3) * 0.15)) * (s.reduced ? (i < 3 ? 1 : 0.0001) : 1));
+        h.rotation.set(0, Math.sin(p * 6 + i) * 0.5, Math.sin(p * 5) * 0.3);
+      });
+    },
+  };
+}
+
+/* ======================================================================
+   AWS — events stream in, a λ router drops the noise, signal reaches on-call
+   ====================================================================== */
+export function router(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0.4, 1.2, 12.4], look: [0.15, 0.1, 0], fit: 1.35 });
+  const cin = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-3.6, 1.35, 0), new THREE.Vector3(-2.7, 1.25, 0.25), new THREE.Vector3(-1.5, 0.55, 0.2), new THREE.Vector3(-0.66, 0.08, 0),
+  ]);
+  const cout = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0.66, -0.05, 0), new THREE.Vector3(1.45, -0.45, -0.1), new THREE.Vector3(2.35, -0.66, 0.12), new THREE.Vector3(3.05, -0.66, 0),
+  ]);
+  const glass = M.glass('#ffffff', { opacity: 0.22 });
+  scene.add(new THREE.Mesh(new THREE.TubeGeometry(cin, 80, 0.15, 20, false), glass));
+  scene.add(new THREE.Mesh(new THREE.TubeGeometry(cout, 80, 0.15, 20, false), glass));
+  const box = new THREE.Mesh(rbox(1.3, 1.3, 1.3, 0.3, 6), enhance(M.pearl('#EDE6FF'), { holo: 0.7 }));
+  scene.add(box);
+  const lam = label(textTex('λ', { w: 256, h: 256, size: 190, weight: 500, color: C.violet }), 0.78, 0.78);
+  lam.position.z = 0.66;
+  box.add(lam);
+  const pager = new THREE.Group();
+  const pb = new THREE.Mesh(rbox(0.72, 0.98, 0.24, 0.14), M.ceramic('#ffffff'));
+  const screen = label(textTex(['ON', 'CALL'], { w: 256, h: 300, size: 64, weight: 600, mono: true, color: C.mint, bg: '#1b1530', radius: 36 }), 0.52, 0.6);
+  screen.position.z = 0.125;
+  pager.add(pb, screen);
+  pager.position.set(3.6, -0.62, 0);
+  scene.add(pager);
+  const tray = new THREE.Mesh(rbox(1.25, 0.14, 0.9, 0.06), M.glass('#ffd6e5', { opacity: 0.45 }));
+  tray.position.set(0, -1.62, 0);
+  scene.add(tray);
+  const noiseTag = tag('noise ↓ dropped', { size: 40, color: '#d0457a', scale: 1.5 });
+  noiseTag.position.set(0, -2.2, 0.3);
+  const evTag = tag('events', { size: 40, scale: 1.5 });
+  evTag.position.set(-3.1, 2.05, 0.2);
+  scene.add(noiseTag, evTag);
+
+  const N = 34;
+  const parts = new THREE.InstancedMesh(new THREE.SphereGeometry(0.075, 18, 12), M.gloss('#ffffff'), N);
+  const r = rng(9);
+  const info = [];
+  const cSignal = [new THREE.Color(C.violet), new THREE.Color('#5d93f5')];
+  const cNoise = new THREE.Color(C.rose);
+  for (let i = 0; i < N; i++) {
+    const noise = r() < 0.55;
+    info.push({ off: i / N + r() * 0.01, noise, jx: (r() - 0.5) * 0.12, jy: (r() - 0.5) * 0.12 });
+    parts.setColorAt(i, noise ? cNoise : cSignal[i % 2]);
+  }
+  parts.instanceColor.needsUpdate = true;
+  scene.add(parts);
+  const floor = shadow(7, 2.6, 0.12);
+  floor.position.y = -2.4;
+  scene.add(floor);
+  const P = new THREE.Vector3();
+  let speed = 1;
+  let flow = 0;
+  let pulse = 0;
+  const lastPhase = new Float32Array(N);
+  return {
+    scene, camera, posterT: 6,
+    update(s) {
+      cam(s);
+      speed = damp(speed, s.hover ? 1.9 : 1, 3, s.dt);
+      flow += s.dt * 0.2 * speed;
+      const kin = easeOutBack(seg(s.t, 0, 0.8));
+      box.scale.setScalar(Math.max(0.0001, kin));
+      box.rotation.set(0.25 + s.py * 0.15, -0.5 + Math.sin(s.time * 0.5) * 0.25 + s.px * 0.3, 0);
+      for (let i = 0; i < N; i++) {
+        const I = info[i];
+        const ph = (I.off + flow) % 1;
+        let sc = 1;
+        if (ph < 0.42) {
+          cin.getPointAt(ph / 0.42, P);
+          P.x += I.jx * 0.3;
+          P.y += I.jy * 0.3;
+        } else if (ph < 0.5) {
+          P.set(0, 0, 0);
+          sc = 0.0001;
+        } else if (!I.noise) {
+          cout.getPointAt(Math.min(1, (ph - 0.5) / 0.46), P);
+          if (ph > 0.96) sc = 0.0001;
+          if (lastPhase[i] < 0.96 && ph >= 0.96) pulse = 1;
+        } else {
+          const k = (ph - 0.5) / 0.5;
+          const f = Math.min(1, k / 0.45);
+          P.set(I.jx * 3, -0.66 - easeIn(f) * 0.9, I.jy * 2);
+          sc = f < 1 ? 1 - f * 0.3 : 0.0001;
+        }
+        lastPhase[i] = ph;
+        if (s.t < 0.6) sc = 0.0001;
+        setInst(parts, i, P.x, P.y, P.z, 0, 0, 0, sc);
+      }
+      parts.instanceMatrix.needsUpdate = true;
+      pulse = damp(pulse, 0, 4, s.dt);
+      pager.scale.setScalar(1 + pulse * 0.12);
+      pager.rotation.y = -0.35 + Math.sin(s.time * 0.8) * 0.1;
+    },
+  };
+}
+const easeIn = (t) => t * t;
+
+/* ======================================================================
+   CHAMBERLAIN — a garage door of test cases: scan, escalate 2 bugs, ship
+   ====================================================================== */
+export function garage(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [2.6, 3.0, 11.6], look: [0, 1.55, 0] });
+  const frameMat = M.ceramic('#ffffff', { roughness: 0.35 });
+  const postL = new THREE.Mesh(rbox(0.26, 3.4, 0.36, 0.08), frameMat);
+  postL.position.set(-1.68, 1.7, 0);
+  const postR = postL.clone();
+  postR.position.x = 1.68;
+  const header = new THREE.Mesh(rbox(3.7, 0.42, 0.4, 0.1), frameMat);
+  header.position.set(0, 3.42, 0.02);
+  const slab = new THREE.Mesh(rbox(4.6, 0.12, 2.2, 0.05), M.ceramic('#EEE8FF'));
+  slab.position.set(0, -0.06, 0.2);
+  scene.add(postL, postR, header, slab);
+  const glowTex = canvasTex(1024, 1024, (g, w, h) => {
+    const grd = g.createLinearGradient(0, 0, 0, h);
+    grd.addColorStop(0, '#CDBBFF');
+    grd.addColorStop(1, '#FFC9E3');
+    g.fillStyle = grd;
+    g.fillRect(0, 0, w, h);
+    g.fillStyle = '#ffffff';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.font = `700 120px ${FONT}`;
+    g.fillText('SHIP IT', w / 2, h / 2 - 50);
+    g.font = `500 54px ${MONO}`;
+    g.fillText('suite: 62% faster ✓', w / 2, h / 2 + 80);
+  });
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(3.1, 3.2), new THREE.MeshBasicMaterial({ map: glowTex, toneMapped: false }));
+  glow.position.set(0, 1.62, -0.25);
+  scene.add(glow);
+
+  const grey = new THREE.Color('#d6d0e8');
+  const mint = new THREE.Color('#41c79a');
+  const rose = new THREE.Color('#ff5c8a');
+  const slats = [];
+  for (let i = 0; i < 8; i++) {
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(rbox(3.08, 0.36, 0.11, 0.05), M.ceramic('#ffffff', { roughness: 0.3 }));
+    const dotMat = M.gloss('#d6d0e8');
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 14), dotMat);
+    dot.position.set(-1.28, 0, 0.07);
+    const l1 = new THREE.Mesh(rbox(1.5, 0.05, 0.02, 0.02), M.flat('#e4def3'));
+    l1.position.set(-0.3, 0.05, 0.062);
+    const l2 = new THREE.Mesh(rbox(0.9, 0.05, 0.02, 0.02), M.flat('#ece7f8'));
+    l2.position.set(-0.6, -0.06, 0.062);
+    g.add(body, dot, l1, l2);
+    g.userData = { y: 0.24 + i * 0.39, dotMat, bug: i === 2 || i === 5 };
+    scene.add(g);
+    slats.push(g);
+  }
+  const scan = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 0.06), M.glow('#7ef0c6', { opacity: 0.8 }));
+  scan.position.z = 0.12;
+  scene.add(scan);
+  const bugTag = tag('2 critical bugs escalated', { size: 38, color: '#d0457a', scale: 0.9 });
+  bugTag.position.set(1.15, 4.05, 0.4);
+  scene.add(bugTag);
+  const floor = shadow(5, 2.8, 0.16);
+  floor.position.y = 0.0;
+  scene.add(floor);
+  const P = 8.6;
+  return {
+    scene, camera, posterT: 0.6 + P * 0.62,
+    update(s) {
+      cam(s);
+      const t = s.t;
+      const c = s.reduced ? 0.62 : loop(Math.max(0, t - 0.4), P);
+      const tt = c * P;
+      const lift = tt < 3.9 ? 0 : tt < 5.0 ? easeInOut((tt - 3.9) / 1.1) : tt < 6.9 ? 1 : tt < 7.9 ? 1 - easeInOut((tt - 6.9) / 1.0) : 0;
+      slats.forEach((g, i) => {
+        const j = 7 - i;
+        const hit = 0.3 + j * 0.24;
+        const ud = g.userData;
+        let state = tt > hit ? (ud.bug ? 'bug' : 'pass') : 'idle';
+        if (ud.bug && tt > 2.75) state = 'pass';
+        if (tt > 7.9) state = 'idle';
+        const target = state === 'pass' ? mint : state === 'bug' ? rose : grey;
+        ud.dotMat.color.lerp(target, s.reduced ? 1 : 1 - Math.exp(-12 * s.dt));
+        const pop = ud.bug ? easeOutBack(seg(tt, hit, 0.35)) * (1 - easeInOut(seg(tt, 2.5, 0.5))) : 0;
+        const y = ud.y + lift * 3.3;
+        g.position.set(0, y, pop * 0.55);
+        g.rotation.x = -pop * 0.12;
+        const hide = clamp((y - 3.2) / 0.25);
+        g.scale.set(1, Math.max(0.0001, 1 - hide), 1);
+        g.visible = hide < 1;
+      });
+      const sp = seg(tt, 0.2, 2.1);
+      scan.position.y = 3.15 - sp * 3.0;
+      scan.material.opacity = sp > 0 && sp < 1 ? 0.85 : 0;
+      bugTag.material.opacity = clamp(Math.min(seg(tt, 0.9, 0.4), 1 - seg(tt, 3.0, 0.4)));
+      glow.material.color.setScalar(0.75 + 0.25 * lift);
+      const intro = easeOutBack(seg(t, 0, 0.8), 1.2);
+      scene.scale.setScalar(Math.max(0.0001, 0.7 + 0.3 * intro));
+    },
+  };
+}
+
+/* ======================================================================
+   STUDYBUDDY — a lecture slide gets scanned on a GPU; tags & summary pop out
+   ====================================================================== */
+export function gpuScan(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0.8, 2.4, 11.2], look: [0.2, 0.5, 0] });
+  const board = new THREE.Mesh(rbox(3.6, 0.16, 2.4, 0.12), M.ceramic('#3a2c86', { roughness: 0.45, sheenColor: new THREE.Color('#9f8cff') }));
+  board.position.y = -1.15;
+  const die = new THREE.Mesh(rbox(1.25, 0.14, 1.25, 0.08), M.chrome('#EDE7FF'));
+  die.position.y = -1.02;
+  const dieLab = label(textTex('NEXUS', { w: 512, h: 128, size: 64, weight: 600, mono: true, color: '#6a54d8' }), 0.9, 0.22);
+  dieLab.rotation.x = -Math.PI / 2;
+  dieLab.position.set(0, -0.948, 0);
+  scene.add(board, die, dieLab);
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * TAU;
+    const m = new THREE.Mesh(rbox(0.38, 0.09, 0.22, 0.04), M.satin('#1d1638'));
+    m.position.set(Math.cos(a) * 1.35, -1.03, Math.sin(a) * 0.86);
+    m.rotation.y = -a;
+    scene.add(m);
+  }
+  const notes = canvasTex(1024, 640, (g, w, h) => {
+    g.fillStyle = '#ffffff';
+    g.fillRect(0, 0, w, h);
+    g.fillStyle = '#7254F0';
+    g.font = `500 34px ${MONO}`;
+    g.fillText('LEC 14', 64, 86);
+    g.fillStyle = C.ink;
+    g.font = `700 64px ${FONT}`;
+    g.fillText('Hash Tables', 64, 162);
+    g.strokeStyle = '#b8abef';
+    g.lineWidth = 6;
+    g.lineCap = 'round';
+    const rr = rng(4);
+    for (let y = 232; y < 590; y += 52) {
+      g.beginPath();
+      g.moveTo(64, y);
+      let x = 64;
+      while (x < 560 + rr() * 300) {
+        const nx = x + 20 + rr() * 30;
+        g.quadraticCurveTo((x + nx) / 2, y - 8 + rr() * 16, nx, y);
+        x = nx;
+      }
+      g.stroke();
+    }
+    g.strokeStyle = '#7254F0';
+    g.lineWidth = 5;
+    for (let i = 0; i < 5; i++) {
+      g.strokeRect(760, 240 + i * 62, 170, 46);
+      if (i % 2 === 0) {
+        g.beginPath();
+        g.moveTo(930, 263 + i * 62);
+        g.lineTo(975, 263 + i * 62);
+        g.stroke();
+      }
+    }
+  });
+  const slide = new THREE.Group();
+  const sBody = new THREE.Mesh(rbox(2.5, 1.56, 0.06, 0.06), M.ceramic('#ffffff'));
+  const sFace = label(notes, 2.4, 1.5);
+  sFace.position.z = 0.032;
+  slide.add(sBody, sFace);
+  slide.position.set(0, 0.62, 0);
+  slide.rotation.x = -0.12;
+  scene.add(slide);
+  const beam = new THREE.Mesh(new THREE.PlaneGeometry(2.7, 0.07), M.glow('#7ef0c6', { opacity: 0.9 }));
+  beam.position.z = 0.06;
+  slide.add(beam);
+  const tags = [['#hashing', C.lilac], ['#O(1) lookup', C.sky], ['#collisions', C.pink], ['#load factor', C.mint]].map(([txt, colr], i) => {
+    const g = new THREE.Group();
+    const pill = new THREE.Mesh(rbox(1.15, 0.3, 0.08, 0.14), M.gloss(colr));
+    const tx = label(textTex(txt, { w: 512, h: 128, size: 56, weight: 600, mono: true }), 1.0, 0.25);
+    tx.position.z = 0.045;
+    g.add(pill, tx);
+    g.userData = { from: new THREE.Vector3(-0.7 + (i % 2) * 1.2, 0.95 - i * 0.32, 0.1), to: new THREE.Vector3(-1.9 + i * 1.27, 2.05 + (i % 2) * 0.32, 0.25) };
+    scene.add(g);
+    return g;
+  });
+  const sum = new THREE.Group();
+  const sumBody = new THREE.Mesh(rbox(1.5, 0.95, 0.06, 0.06), M.ceramic('#ffffff'));
+  const sumFace = label(textTex(['Summary', 'keys → buckets', 'avg O(1), worst O(n)'], {
+    w: 640, h: 400, size: 48, weight: 500, align: 'left', pad: 44, color: C.ink, lineHeight: 1.4,
+  }), 1.38, 0.86);
+  sumFace.position.z = 0.032;
+  sum.add(sumBody, sumFace);
+  scene.add(sum);
+  const bits = sparkles(36, 0.8, { color: '#7ef0c6', size: 0.06, opacity: 0.9, seed: 21 });
+  scene.add(bits);
+  const P = 8.8;
+  return {
+    scene, camera, posterT: 0.3 + P * 0.62,
+    update(s) {
+      cam(s);
+      const tt = s.reduced ? P * 0.62 : loop(Math.max(0, s.t - 0.3), P) * P;
+      const kin = easeOutBack(seg(s.t, 0, 0.8));
+      slide.scale.setScalar(Math.max(0.0001, kin));
+      slide.position.y = 0.62 + Math.sin(s.time * 1.1) * 0.04;
+      const sp = seg(tt, 0.5, 2.4);
+      beam.position.y = 0.72 - sp * 1.44;
+      beam.material.opacity = sp > 0 && sp < 1 ? 0.9 : 0;
+      tags.forEach((g, i) => {
+        const k = easeOutBack(seg(tt, 1.0 + i * 0.55, 0.7), 1.3);
+        const back = easeInOut(seg(tt, 7.2, 0.9));
+        const u = k * (1 - back);
+        g.position.lerpVectors(g.userData.from, g.userData.to, u);
+        g.position.y += Math.sin(s.time * 1.5 + i) * 0.04 * u;
+        g.scale.setScalar(Math.max(0.0001, Math.min(1, u * 1.2)));
+        g.rotation.set(-0.12, (i - 1.5) * -0.08 + s.px * 0.1, 0);
+      });
+      const ks = easeOutBack(seg(tt, 3.6, 0.8)) * (1 - easeInOut(seg(tt, 7.2, 0.9)));
+      sum.position.set(lerp(0.4, 2.35, ks), lerp(0.5, 0.15, ks), 0.35);
+      sum.rotation.y = lerp(0, -0.35, ks);
+      sum.scale.setScalar(Math.max(0.0001, ks));
+      bits.position.y = -0.7 + loop(s.time * 0.5, 1) * 1.2;
+      bits.material.opacity = sp > 0 && sp < 1 ? 0.9 : 0.25;
+      scene.rotation.y = s.px * 0.12;
+    },
+  };
+}
+
+/* ======================================================================
+   INTELLIGENT TUTORING — a tutor orb walks a binary search tree
+   ====================================================================== */
+export function bstTutor(env) {
+  const { scene, camera } = stage(env, { fov: 28 });
+  const cam = rig(camera, { pos: [0, 0.6, 12.8], look: [0, 0.1, 0] });
+  const levels = [[50], [25, 75], [12, 37, 62, 87], [6, 18, 31, 43, 56, 68, 81, 93]];
+  const nodes = [];
+  const root = new THREE.Group();
+  scene.add(root);
+  levels.forEach((row, L) => row.forEach((v, i) => {
+    const span = 5.6 / row.length;
+    const x = (i - (row.length - 1) / 2) * span;
+    const y = 2.0 - L * 1.3;
+    const z = L === 3 ? (i % 2 ? 0.35 : -0.25) : 0;
+    const mat = enhance(M.pearl('#ffffff'), { holo: 0.6 });
+    const m = new THREE.Mesh(new THREE.SphereGeometry(0.29, 40, 28), mat);
+    m.position.set(x, y, z);
+    const txt = label(textTex(String(v), { w: 128, h: 128, size: 60, weight: 600 }), 0.34, 0.34);
+    txt.position.set(0, 0, 0.3);
+    m.add(txt);
+    root.add(m);
+    nodes.push({ v, m, mat, L, i, pos: m.position.clone() });
+  }));
+  const idx = (L, i) => (2 ** L) - 1 + i;
+  const edgeMat = M.satin('#cdbfff', { roughness: 0.35 });
+  for (let L = 0; L < 3; L++) {
+    for (let i = 0; i < 2 ** L; i++) {
+      for (const c of [0, 1]) {
+        const a = nodes[idx(L, i)].pos;
+        const b = nodes[idx(L + 1, i * 2 + c)].pos;
+        const len = a.distanceTo(b);
+        const e = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, len, 10), edgeMat);
+        e.position.copy(a).add(b).multiplyScalar(0.5);
+        e.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+        root.add(e);
+      }
+    }
+  }
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.12, 24, 16), M.glow('#7ef0c6', { opacity: 1 }));
+  const orbCore = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 12), M.flat('#ffffff'));
+  orb.add(orbCore);
+  root.add(orb);
+  const big = tag('O(log n)', { size: 46, scale: 1 });
+  big.position.set(2.5, 2.3, 0.3);
+  scene.add(big);
+  const targets = [43, 81, 18, 62, 31, 93];
+  const pathFor = (v) => {
+    const out = [];
+    let L = 0;
+    let i = 0;
+    for (;;) {
+      const n = nodes[idx(L, i)];
+      out.push(n);
+      if (n.v === v || L === 3) break;
+      i = i * 2 + (v < n.v ? 0 : 1);
+      L++;
+    }
+    return out;
+  };
+  const white = new THREE.Color('#ffffff');
+  const violet = new THREE.Color('#b9a5ff');
+  const mint = new THREE.Color('#8fe2c6');
+  const STEP = 0.6;
+  const P = 4 * STEP + 1.6;
+  return {
+    scene, camera, posterT: 2.3,
+    update(s) {
+      cam(s);
+      const t = Math.max(0, s.t - 0.5);
+      const n = Math.floor(t / P);
+      const tt = s.reduced ? 2.3 : t - n * P;
+      const path = pathFor(targets[(s.reduced ? 0 : n) % targets.length]);
+      const kin = easeOut(seg(s.t, 0, 0.9));
+      root.scale.setScalar(0.85 + 0.15 * kin);
+      root.rotation.y = Math.sin(s.time * 0.35) * 0.25 + s.px * 0.3;
+      const seg2 = Math.min(path.length - 1, Math.floor(tt / STEP));
+      const f = easeInOut(clamp(tt / STEP - seg2));
+      const a = path[seg2].pos;
+      const b = path[Math.min(path.length - 1, seg2 + 1)].pos;
+      orb.position.lerpVectors(a, b, f);
+      orb.position.y += 0.42;
+      orb.visible = tt < P - 0.4 && s.t > 0.5;
+      nodes.forEach((N) => {
+        const k = path.indexOf(N);
+        const reached = k >= 0 && tt >= k * STEP;
+        const isTarget = reached && k === path.length - 1;
+        const fade = tt > P - 0.5 ? 1 - seg(tt, P - 0.5, 0.4) : 1;
+        const target = isTarget ? mint : reached ? violet : white;
+        N.mat.color.copy(white).lerp(target, fade * (reached ? 1 : 0));
+        const pop = isTarget ? easeOutBack(seg(tt, k * STEP, 0.4), 2.5) * fade : 0;
+        N.m.scale.setScalar(1 + pop * 0.28);
+      });
+      big.material.opacity = easeOut(seg(s.t, 0.8, 0.5));
+    },
+  };
+}
+
+/* ======================================================================
+   TEACHING ASSISTANT — 900 students; help ripples out from the front
+   ====================================================================== */
+export function hall(env) {
+  const { scene, camera } = stage(env, { fov: 34 });
+  const cam = rig(camera, { pos: [0, 5.4, 8.6], look: [0, 0.3, -2.7], px: 0.6, py: 0.3 });
+  const rows = 20;
+  const span = 2.3;
+  const radii = Array.from({ length: rows }, (_, r) => 1.7 + r * 0.205);
+  const total = radii.reduce((a, b) => a + b, 0);
+  const counts = radii.map((R) => Math.round((R / total) * 900));
+  counts[rows - 1] += 900 - counts.reduce((a, b) => a + b, 0);
+  const seats = [];
+  radii.forEach((R, r) => {
+    const n = counts[r];
+    for (let i = 0; i < n; i++) {
+      const th = -span / 2 + (span * (i + 0.5)) / n;
+      seats.push({ x: Math.sin(th) * R, z: -Math.cos(th) * R, y: r * 0.12, d: R, r });
+    }
+  });
+  const mesh = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.048, 0.07, 4, 10), M.ceramic('#ffffff', { roughness: 0.35 }), seats.length);
+  const pal = [C.white, C.white, C.lilac2, C.mist, C.pink, C.sky].map((h) => new THREE.Color(h));
+  const rr = rng(13);
+  seats.forEach((st) => { st.c = pal[Math.floor(rr() * pal.length)]; });
+  const hot = new THREE.Color('#7254F0');
+  const hot2 = new THREE.Color('#5ed3a8');
+  const tmp = new THREE.Color();
+  scene.add(mesh);
+  const tiers = new THREE.Group();
+  for (let r = 0; r < rows; r += 2) {
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(radii[r] - 0.12, radii[Math.min(rows - 1, r + 1)] + 0.12, 64, 1, Math.PI / 2 - span / 2 - 0.05, span + 0.1),
+      M.ceramic(r % 4 ? '#f3effd' : '#ece6fb', { side: THREE.DoubleSide }),
+    );
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = r * 0.12 - 0.07;
+    tiers.add(ring);
+  }
+  scene.add(tiers);
+  const podium = new THREE.Mesh(rbox(0.7, 0.5, 0.42, 0.08), M.ceramic(C.lilac));
+  podium.position.set(0, 0.2, 0.25);
+  const ta = person({ mat: M.gloss(C.violet) });
+  ta.scale.setScalar(0.42);
+  ta.position.set(0.55, 0, 0.35);
+  scene.add(podium, ta);
+  const lbl = tag('900 students', { size: 46, scale: 1.1 });
+  lbl.position.set(0, 3.2, -3.4);
+  scene.add(lbl);
+  const floor = shadow(10, 7, 0.1);
+  floor.position.set(0, -0.08, -2.5);
+  scene.add(floor);
+  const W = 3.4;
+  return {
+    scene, camera, posterT: 1.7,
+    update(s) {
+      cam(s);
+      const t = s.t;
+      const wave = s.reduced ? 2.6 : loop(Math.max(0, t - 0.4), W) * W * 2.6;
+      const intro = s.reduced ? 1 : seg(t, 0, 1.2);
+      seats.forEach((st, i) => {
+        const appear = easeOutBack(clamp((intro * 1.4 - st.r / rows)));
+        const dd = st.d - wave;
+        const inf = Math.exp(-(dd * dd) / 0.09) * (wave > 0.2 ? 1 : 0);
+        setInst(mesh, i, st.x, st.y + 0.1 + inf * 0.16, st.z, 0, 0, 0, Math.max(0.0001, appear));
+        tmp.copy(st.c).lerp(st.r % 2 ? hot : hot2, Math.min(1, inf * 1.1));
+        mesh.setColorAt(i, tmp);
+      });
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.instanceColor.needsUpdate = true;
+      ta.rotation.y = Math.PI + Math.sin(s.time * 1.2) * 0.3;
+      ta.position.y = Math.abs(Math.sin(s.time * 2.4)) * 0.03;
+      lbl.material.opacity = easeOut(seg(t, 1, 0.6));
+    },
+  };
+}

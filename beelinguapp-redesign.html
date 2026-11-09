@@ -1,767 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Beelinguapp Redesign | Luke Hartzell</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Beelinguapp Community Stories case study — Luke Hartzell</title>
+  <meta name="description" content="Community Stories for Beelinguapp: a UX research and design case study on culturally relevant, community-driven language learning.">
+  <link rel="canonical" href="https://lukehartzell1.github.io/beelinguapp-redesign.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Community Stories for Beelinguapp — Luke Hartzell">
+  <meta property="og:description" content="UX research and design case study: letting language learners share and discover culturally relevant stories.">
+  <meta property="og:image" content="https://lukehartzell1.github.io/images/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#FBFAFF">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&family=Pixelify+Sans:wght@400..700&display=swap">
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Project-specific styles */
-    .project-header {
-      padding: 150px 0 100px;
-      background: var(--gradient-dark);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .project-header::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(0, 217, 255, 0.05) 0%, rgba(8, 13, 26, 0.8) 70%);
-      z-index: 0;
-    }
-    
-    .project-title {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .project-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      margin-bottom: 30px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .meta-item {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .meta-label {
-      font-size: 0.9rem;
-      color: var(--accent-color);
-      margin-bottom: 5px;
-    }
-    
-    .meta-value {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    
-    .project-highlights {
-      background: rgba(15, 23, 42, 0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 30px;
-      margin-top: 50px;
-      border: 1px solid rgba(110, 87, 224, 0.1);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .highlight-item {
-      margin-bottom: 15px;
-      position: relative;
-      padding-left: 30px;
-    }
-    
-    .highlight-item::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: var(--accent-color);
-      font-weight: bold;
-    }
-    
-    .project-section {
-      padding: 80px 0;
-    }
-    
-    .project-section:nth-child(even) {
-      background: var(--gradient-dark);
-    }
-    
-    .section-title {
-      font-size: 2.2rem;
-      margin-bottom: 40px;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .section-title::after {
-      content: "";
-      position: absolute;
-      width: 50px;
-      height: 3px;
-      background: var(--gradient-accent);
-      bottom: -10px;
-      left: 0;
-    }
-    
-    .project-image {
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-      margin-bottom: 30px;
-      border: 1px solid rgba(110, 87, 224, 0.2);
-      transition: all 0.3s ease;
-    }
-    
-    .project-image:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
-      border-color: var(--accent-color);
-    }
-    
-    .project-image img {
-      width: 100%;
-      height: auto;
-      max-height: 500px; /* Added max-height to make screenshots smaller */
-      object-fit: contain; /* Ensures the image maintains its aspect ratio */
-    }
-    
-    .project-text {
-      margin-bottom: 30px;
-    }
-    
-    .project-text p {
-      margin-bottom: 20px;
-      font-size: 1.05rem;
-    }
-    
-    .project-text ul {
-      padding-left: 20px;
-      margin-bottom: 20px;
-    }
-    
-    .project-text ul li {
-      margin-bottom: 10px;
-    }
-    
-    .project-nav {
-      padding: 50px 0;
-      background: var(--gradient-darker);
-      text-align: center;
-    }
-    
-    .project-nav-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
-    
-    .nav-link-item {
-      padding: 15px 30px;
-      background: rgba(15, 23, 42, 0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      border: 1px solid rgba(110, 87, 224, 0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .nav-link-item:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent-color);
-      box-shadow: 0 10px 20px rgba(0, 217, 255, 0.2);
-    }
-    
-    .nav-link-item a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .nav-link-item a:hover {
-      color: var(--accent-color);
-    }
-  </style>
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('lh-8bit') === '1') document.documentElement.classList.add('pixel'); } catch (e) {}
+  </script>
+  <script type="module" src="js/main.js"></script>
 </head>
 
-<body>
-  <!-- Cursor Effects -->
-  <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-outline" id="cursor-outline"></div>
-
-  <!-- Background Effects -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-  <div class="bg-noise"></div>
-  <div class="floating-shapes">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-  </div>
-
-  <!-- Particle Background -->
-  <div id="particles-js"></div>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand glitch-text" href="index.html" data-text="LUKE">LUKE</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#experience">Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#projects">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#skills">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="index.html#contact">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Project Header -->
-  <header class="project-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <h1 class="project-title text-gradient">Beelinguapp Redesign - Community Stories</h1>
-            <div class="project-meta justify-content-center">
-              <div class="meta-item">
-                <span class="meta-label">Role</span>
-                <span class="meta-value">UX Researcher + Designer</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Year</span>
-                <span class="meta-value">2025</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Type</span>
-                <span class="meta-value">Educational Technology</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Timeline</span>
-                <span class="meta-value">Feb – May 2025</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Team</span>
-                <span class="meta-value">Ashley, Michael, Harry, Timothy, Luke</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Key Skills</span>
-                <span class="meta-value">Affinity Diagramming, Thematic Analysis, Figma Prototyping, Heuristic Evaluation, UI Design</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Prototype</span>
-                <span class="meta-value">
-                  <a href="https://www.figma.com/proto/VmdSW3NIKIN5oqdFEatLWe/Beelinguapp-Design-File?node-id=169-3348">
-                    View Figma Prototype
-                  </a>
-                </span>
-              </div>
-            </div>
-          <div class="project-highlights">
-            <h3>Highlights</h3>
-            <div class="highlight-item">Limited cultural content and missing community engagement were critical issues.</div>
-            <div class="highlight-item">Conducted user interviews and iterative testing cycles for community story features.</div>
-            <div class="highlight-item">Designed intuitive community interaction and content creation tools to address racial inequalities in language education.</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<body class="cs-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="index.html" aria-label="Luke Hartzell, home"><span>LH</span></a>
+    <nav class="nav__links" aria-label="Sections">
+      <span class="nav__pill" aria-hidden="true"></span>
+      <a href="index.html#about">About</a>
+      <a href="index.html#education">Education</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#projects" class="is-active">Projects</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="nav__8bit" type="button" aria-pressed="false" data-8bit>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h2v1h1v1h4V5h1V4h2v2h1v6h-2v-2h-1v2H5v-2H4v2H2V6h1z"/></svg>
+      <span>8-bit</span>
+    </button>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="sheet">
+      <span class="sr-only">Menu</span><i></i><i></i>
+    </button>
   </header>
-
-  <!-- Part I: Background & Pain Points -->
-  <section class="project-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-title text-gradient">Background & Pain Points</h2>
-          <h3>Language Education & Cultural Engagement</h3>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-          <div class="project-text">
-            <p>Beelinguapp provides stories in target languages translated into users' home languages, tagged by difficulty levels, but has significant shortcomings in personalization and cultural depth. Users, particularly English learners (EL students), faced challenges with:</p>
-            <ul>
-              <li>Lack of culturally relevant storylines.</li>
-              <li>Absence of community-driven content and user-generated cultural narratives.</li>
-              <li>Limited context for available stories, making content engagement superficial.</li>
-            </ul>
-            <p>These limitations contributed to disengagement and stereotype threat, negatively affecting language acquisition and student motivation.</p>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img src="/images/current-beelinguapp.png" alt="Existing Beelinguapp Interface showing limited cultural content">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="project-section">
-  <div class="container">
-    <h2 class="section-title text-gradient">Competitive Analysis</h2>
-    <p>
-      We reviewed leading language-learning apps (Duolingo, Memrise, LingQ)
-      and found none offer true community-driven storytelling or deep cultural
-      context. This gap directly informed our feature set and prioritization.
-    </p>
-  </div>
-</section>
-
-  <!-- Part I.5: Personas -->
-<section id="personas" class="project-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 class="section-title text-gradient">Personas</h2>
-      </div>
-    </div>
-
-    <!-- Persona: Jorge Hernandez -->
-    <div class="row align-items-center mb-5">
-      <!-- Persona Image -->
-      <div class="col-lg-6">
-        <div class="project-image">
-          <img src="/images/persona-jorge.png" alt="Photo of Jorge Hernandez">
-        </div>
-      </div>
-      <!-- Persona Details -->
-      <div class="col-lg-6">
-        <div class="project-text">
-          <h3>Jorge Hernandez</h3>
-          <ul>
-            <li><strong>Age:</strong> 51</li>
-            <li><strong>Occupation:</strong> Middle School Teacher</li>
-            <li><strong>Location:</strong> Houston, Texas</li>
-            <li><strong>Education:</strong> Master’s in Education</li>
-            <li><strong>Tech Proficiency:</strong> Medium / High</li>
-          </ul>
-          <h4>Goals</h4>
-          <p>Implement research-backed ed-tech to address language inequalities in his ESOL classroom.</p>
-          <h4>Frustrations</h4>
-          <p>Students falling behind due to inconsistent ESOL programs and lack of faculty training on new tools.</p>
-        </div>
-      </div>
-    </div>
-</section>
-
-    <!-- Part II.6: Original Low-Fidelity Wireframe -->
-<section id="wireframe" class="project-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 class="section-title text-gradient">Original Low-Fidelity Wireframe</h2>
-      </div>
-    </div>
-    <div class="row align-items-center">
-      <!-- Wireframe Image -->
-      <div class="col-lg-6">
-        <div class="project-image">
-          <img src="/images/wireframe-lofi.png" alt="Original low-fidelity wireframe">
-        </div>
-      </div>
-      <!-- Wireframe Notes -->
-      <div class="col-lg-6">
-        <div class="project-text">
-          <p>My initial sketch focused on the core “Community Stories” flow, with:</p>
-          <ul>
-            <li>Placeholder cards for each story entry</li>
-            <li>Basic navigation tabs (“All Stories” / “My Stories”)</li>
-            <li>Simple “Add Story” button in the top-right</li>
-            <li>Minimal legend for metadata (date, author, language)</li>
-          </ul>
-          <p>This low-fi version helped validate the information hierarchy before moving into mid-fi mockups.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  
-  <!-- Part II: UX Research -->
-  <section class="project-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-title text-gradient">UX Research</h2>
-          <h3>Responsibilities + Data Collection & Analysis</h3>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img src="/images/community-stories-home.png" alt="Affinity Diagram showing user insights clustered">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="project-text">
-            <p>As UX lead for Community Stories, my responsibilities included:</p>
-            <ul>
-              <li>Designing an initial concept based on language inequality research.</li>
-              <li>Conducting iterative user testing to refine usability and inclusivity.</li>
-              <li>Analyzing feedback through affinity diagrams to pinpoint key user insights.</li>
-            </ul>
-            <p>Primary methods of data collection:</p>
-            <ul>
-              <li>Contextual inquiries with diverse bilingual users.</li>
-              <li>Think-aloud usability tests for the mid-fidelity prototype.</li>
-              <li>Competitive review of similar apps (Duolingo, Memrise, LingQ)</li>
-              <li>Interviews with 3 language-instructor stakeholders</li>
-              <li>Heuristic evaluation of existing community-sharing workflows</li>
-            </ul>
-            <p>Analysis methods included:</p>
-            <ul>
-              <li>Qualitative thematic analysis of user feedback.</li>
-              <li>Affinity diagramming to cluster insights into actionable improvements.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Part II.5: Problem Space Exploration & Affinity Diagramming -->
-  <section class="project-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-title text-gradient">
-            Exploring the Problem Space &amp; Affinity Diagramming
-          </h2>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <!-- Text description -->
-        <div class="col-lg-6">
-          <div class="project-text">
-            <p>
-              To ground our design in real user needs, I led an affinity‐diagramming
-              workshop to synthesize qualitative insights from our contextual inquiries
-              and think‐aloud sessions. This helped us:
-            </p>
-            <ul>
-              <li>Cluster user quotes &amp; observations into thematic groups.</li>
-              <li>Surface recurring pain points around cultural relevance and engagement.</li>
-              <li>Identify key opportunity areas for community storytelling features.</li>
-            </ul>
-            <p>
-              The resulting affinity map became our north star—driving feature prioritization
-              and informing the initial prototype.
-            </p>
-          </div>
-        </div>
-        <!-- Affinity diagram image -->
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img
-              src="/images/Group Assignment 2 Affinity Diagram.jpg"
-              alt="Affinity Diagram mapping user insights into clusters"
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Part III: Design Solutions & Iterative Prototyping -->
-  <section class="project-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-title text-gradient">Design Solutions & Iterative Prototyping</h2>
-        </div>
-      </div>
-      
-      <!-- Initial Prototype -->
-      <div class="row align-items-center mb-5">
-        <div class="col-lg-6">
-          <div class="project-text">
-            <h3>Initial Prototype (V0)</h3>
-            <ul>
-              <li>Community story page with basic "Add Story" feature and search functionality.</li>
-              <li>Preliminary filtering for community-generated content.</li>
-            </ul>
-            <p>User feedback indicated a positive reception of the dedicated community page and search functionality but pointed to issues with insufficient filtering and unclear story contexts.</p>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img src="/images/community-stories-proto-png.png" alt="Initial Prototype of the Community Story Page">
-          </div>
-        </div>
-      </div>
-      
-      <!-- Mid-Fidelity Prototype -->
-      <div class="row align-items-center mb-5">
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img src="/images/community-stories-add.png" alt="Mid-Fidelity Prototype with enhanced search and preview feature">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="project-text">
-            <h3>Mid-Fidelity Prototype (V1)</h3>
-            <p>Enhancements:</p>
-            <ul>
-              <li>Improved search functionality with live search capability.</li>
-              <li>Added Community Preview on the homepage for initial user engagement.</li>
-            </ul>
-            <p>Feedback identified a need for additional filtering, clearer story contexts, and better UI presentation for the preview component.</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- High-Fidelity Prototype -->
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-          <div class="project-text">
-            <h3>High-Fidelity Prototype (Final Design)</h3>
-            <p>Final iteration included:</p>
-            <ul>
-              <li>Advanced filtering options (date of submission, popularity).</li>
-              <li>Improved UI with carousel display for homepage preview component.</li>
-              <li>Contextual enhancements such as tags, brief descriptions, and story synopsis.</li>
-              <li>Verification and confirmation states for story uploads.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="project-image">
-            <img src="/images/community-stories-view.png" alt="Final High-Fidelity Prototype showcasing advanced filtering and improved UI">
-          </div>
-        </div>
-      </div>
-      
-      <!-- Additional Screenshot -->
-      <div class="row mt-4">
-        <div class="col-lg-6 mx-auto">
-          <div class="project-image">
-            <img src="/images/community-stories-verify.png" alt="Story reading interface with bilingual content">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Part IV: Justification & Learning Science Integration -->
-  <section class="project-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="section-title text-gradient">Justification & Learning Science Integration</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="project-text">
-            <p>Community-driven storytelling aligns with key educational principles:</p>
-            <ul>
-              <li><strong>Linguistic Inclusivity:</strong> Supports multilingualism by allowing content in diverse dialects and languages, addressing content gaps and promoting deeper user engagement.</li>
-              <li><strong>Counter-Narratives & Identity:</strong> Empowers marginalized learners to share affirming, culturally relevant stories, combating stereotype threat.</li>
-              <li><strong>Sociocultural Learning:</strong> Encourages active peer engagement and social learning through discussions and community contributions.</li>
-            </ul>
-            <p>This design reflects the Recognition Over Recall and Consistency & Standards UI principles, providing an intuitive, inclusive, and engaging experience for diverse language learners.</p>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-lg-8 mx-auto">
-          <div class="project-image">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-BIoEsl0jzOJgVT27uGQ4ysg1RF9lNc.png" alt="Beelinguapp Logo" style="max-width: 300px; margin: 0 auto; display: block;">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="project-section">
-  <div class="container">
-    <h2 class="section-title text-gradient">User Testing</h2>
-    <p>We ran five discrete usability sessions with both team members and external bilingual users:</p>
-    <ul>
-      <li>Ashley’s session: <a href="https://youtu.be/cS3NIiJ7kVU">Watch video</a></li>
-      <li>Michael’s session: <a href="https://youtu.be/OAs5zXA8ic8">Watch video</a></li>
-      <li>Harry’s session: <a href="https://youtu.be/w38WoMS-qto">Watch video</a></li>
-      <li>Timothy’s session: <a href="https://www.youtube.com/watch?v=VUrlgKCztMQ">Watch video</a></li>
-      <li>Luke’s session: <a href="https://youtu.be/rhzvHP0uEOU">Watch video</a></li>
-    </ul>
-  </div>
-</section>
-
-  <section class="project-section">
-  <div class="container">
-    <h2 class="section-title text-gradient">Reflection & Next Steps</h2>
-    <p>
-      Iterative testing was indispensable—each cycle revealed both usability
-      wins and new pain points. In particular, our filtering feature
-      received strong praise, and standardizing the Figma frames greatly
-      improved layout consistency. Going forward, I plan to:
-    </p>
-    <ul>
-      <li>Gather quantitative metrics (SUS, task-completion rates) on next prototype</li>
-      <li>Engage with additional language-education experts to refine cultural content</li>
-      <li>Explore adding community moderation tools to sustain quality</li>
-    </ul>
-    <p>
-      If I could tweak the assignment, I’d front-load the Figma workshops
-      and extend the user-testing window to better accommodate busy schedules.
-    </p>
-  </div>
-</section>
-
-  <!-- Project Navigation -->
-  <div class="project-nav">
-    <div class="container">
-      <div class="project-nav-links">
-        <div class="nav-link-item">
-          <a href="index.html#projects"><i class="fas fa-th"></i> All Projects</a>
-        </div>
-        <div class="nav-link-item">
-          <a href="gym-app.html">Next Project <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-    </div>
+  <div class="sheet" id="sheet" hidden>
+    <a href="index.html#about">About</a>
+    <a href="index.html#education">Education</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#contact">Contact</a>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-info">
-            <h3>Luke Hartzell</h3>
-            <p>Computer Science Student<br>Georgia Institute of Technology</p>
-            <div class="social-links">
-              <a href="https://github.com/LukeHartzell1" target="_blank"><i class="fab fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank"><i class="fab fa-linkedin"></i></a>
-              <a href="mailto:lukedhartzell@gmail.com"><i class="fas fa-envelope"></i></a>
+  <main id="main">
+    <section class="cs-hero" aria-labelledby="cs-title">
+      <a class="back" href="index.html#projects"><span aria-hidden="true">←</span> All projects</a>
+      <div class="cs-hero__grid">
+        <div>
+          <p class="cs-kicker"><b>UX</b> Case study · 2025</p>
+          <h1 class="cs-title" id="cs-title">Community Stories for Beelinguapp</h1>
+          <p class="cs-lede">Beelinguapp teaches languages through side-by-side stories — but learners told us those stories didn't reflect them. Our team designed Community Stories: a way for learners to share and discover culturally relevant stories, grounded in research on inequality in language education.</p>
+          <dl class="cs-meta">
+            <div><dt>Role</dt><dd>UX lead for Community Stories (research + design)</dd></div>
+            <div><dt>Timeline</dt><dd>Feb – May 2025</dd></div>
+            <div><dt>Team</dt><dd>Ashley, Michael, Harry, Timothy, Luke</dd></div>
+            <div><dt>Type</dt><dd>Educational technology</dd></div>
+            <div><dt>Methods</dt><dd>Affinity diagramming, thematic analysis, heuristic evaluation, Figma prototyping</dd></div>
+            <div><dt>Prototype</dt><dd><a href="https://www.figma.com/proto/VmdSW3NIKIN5oqdFEatLWe/Beelinguapp-Design-File?node-id=169-3348" target="_blank" rel="noopener">Open in Figma ↗</a></dd></div>
+          </dl>
+        </div>
+        <div class="cs-phones" aria-hidden="true">
+          <img src="images/opt/community-stories-view.webp" width="531" height="1100" alt="">
+          <img src="images/opt/community-stories-home.webp" width="552" height="1100" alt="">
+          <img src="images/opt/community-stories-add.webp" width="544" height="1100" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-highlights" aria-label="Highlights">
+      <div class="hi"><p class="hi__label">The problem</p><p>Limited cultural content and zero community engagement left learners — especially English learners — disengaged.</p></div>
+      <div class="hi"><p class="hi__label">What I did</p><p>Led UX for Community Stories: user interviews, affinity mapping, and iterative usability testing.</p></div>
+      <div class="hi"><p class="hi__label">The result</p><p>Intuitive tools for sharing and discovering stories, designed to address inequities in language education.</p></div>
+    </section>
+
+    <div class="cs-body">
+      <nav class="cs-toc" aria-label="On this page">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#background">Background</a></li>
+          <li><a href="#landscape">Competitive analysis</a></li>
+          <li><a href="#persona">Persona</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#affinity">Affinity mapping</a></li>
+          <li><a href="#wireframe">Low-fi wireframe</a></li>
+          <li><a href="#iteration">Iteration</a></li>
+          <li><a href="#science">Learning science</a></li>
+          <li><a href="#testing">User testing</a></li>
+          <li><a href="#reflection">Reflection</a></li>
+        </ol>
+      </nav>
+
+      <div class="cs-content">
+        <section class="cs-section" id="background">
+          <h2><span class="num">01</span> Background &amp; pain points</h2>
+          <div class="cs-split">
+            <div>
+              <p>Beelinguapp offers stories in a target language alongside a translation in the learner's home language, tagged by difficulty. But it falls short on personalization and cultural depth. Learners — English learners (EL students) in particular — ran into:</p>
+              <ul>
+                <li>A lack of culturally relevant storylines.</li>
+                <li>No community-driven content or user-generated cultural narratives.</li>
+                <li>Little context around stories, so engagement stayed shallow.</li>
+              </ul>
+              <p>Those gaps fed disengagement and stereotype threat — both of which hurt language acquisition and motivation.</p>
+            </div>
+            <figure class="cs-figure cs-figure--phone">
+              <button type="button" data-zoom="images/opt/current-beelinguapp.webp"><img src="images/opt/current-beelinguapp.webp" width="417" height="829" alt="The existing Beelinguapp reading screen with side-by-side English and French lyrics" loading="lazy"></button>
+              <figcaption>The existing reading experience</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="cs-section" id="landscape">
+          <h2><span class="num">02</span> Competitive analysis</h2>
+          <p>We reviewed the leading language-learning apps — Duolingo, Memrise, and LingQ — and found none offering true community-driven storytelling or deep cultural context. That gap directly shaped our feature set and priorities.</p>
+        </section>
+
+        <section class="cs-section" id="persona">
+          <h2><span class="num">03</span> Persona</h2>
+          <div class="persona-card">
+            <img src="images/opt/persona-jorge.webp" width="317" height="314" alt="Persona photo for Jorge Hernandez" loading="lazy">
+            <div>
+              <h3>Jorge Hernandez</h3>
+              <dl>
+                <div><dt>Age</dt><dd>51</dd></div>
+                <div><dt>Occupation</dt><dd>Middle school teacher</dd></div>
+                <div><dt>Location</dt><dd>Houston, Texas</dd></div>
+                <div><dt>Education</dt><dd>Master's in Education</dd></div>
+                <div><dt>Tech proficiency</dt><dd>Medium / high</dd></div>
+              </dl>
+              <p><strong>Goals:</strong> implement research-backed ed-tech to address language inequality in his ESOL classroom.</p>
+              <p><strong>Frustrations:</strong> students falling behind because of inconsistent ESOL programs, and little faculty training on new tools.</p>
             </div>
           </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-links">
-            <h4>Navigation</h4>
-            <ul>
-              <li><a href="index.html#home">Home</a></li>
-              <li><a href="index.html#about">About</a></li>
-              <li><a href="index.html#education">Education</a></li>
-              <li><a href="index.html#experience">Experience</a></li>
-              <li><a href="index.html#projects">Projects</a></li>
-              <li><a href="index.html#skills">Skills</a></li>
-              <li><a href="index.html#contact">Contact</a></li>
-            </ul>
+        </section>
+
+        <section class="cs-section" id="research">
+          <h2><span class="num">04</span> UX research</h2>
+          <div class="cs-split">
+            <div>
+              <h3>My responsibilities</h3>
+              <ul>
+                <li>Designing an initial concept grounded in language-inequality research.</li>
+                <li>Running iterative user testing to refine usability and inclusivity.</li>
+                <li>Analyzing feedback with affinity diagrams to pinpoint key insights.</li>
+              </ul>
+              <h3>How we collected data</h3>
+              <ul>
+                <li>Contextual inquiries with diverse bilingual users.</li>
+                <li>Think-aloud usability tests on the mid-fidelity prototype.</li>
+                <li>Competitive review of Duolingo, Memrise, and LingQ.</li>
+                <li>Interviews with 3 language-instructor stakeholders.</li>
+                <li>Heuristic evaluation of existing community-sharing workflows.</li>
+              </ul>
+              <h3>How we analyzed it</h3>
+              <ul>
+                <li>Qualitative thematic analysis of user feedback.</li>
+                <li>Affinity diagramming to cluster insights into actionable improvements.</li>
+              </ul>
+            </div>
+            <figure class="cs-figure cs-figure--phone">
+              <button type="button" data-zoom="images/opt/community-stories-home.webp"><img src="images/opt/community-stories-home.webp" width="552" height="1100" alt="Community Stories screen with search, a language filter, and story cards" loading="lazy"></button>
+              <figcaption>Community Stories home</figcaption>
+            </figure>
           </div>
-        </div>
-        <div class="col-lg-4 col-md-12">
-          <div class="footer-newsletter">
-            <h4>Let's Connect</h4>
-            <p>Feel free to reach out for collaborations, opportunities, or just to say hello!</p>
-            <a href="index.html#contact" class="btn btn-outline-light btn-sm">Contact Me</a>
+        </section>
+
+        <section class="cs-section" id="affinity">
+          <h2><span class="num">05</span> Exploring the problem space</h2>
+          <p>To ground the design in real needs, I led an affinity-diagramming workshop that synthesized our contextual inquiries and think-aloud sessions. It helped us cluster quotes and observations into themes, surface recurring pain points around cultural relevance and engagement, and spot the biggest opportunities for community storytelling. The resulting map became our north star for prioritization.</p>
+          <figure class="cs-figure cs-figure--wide">
+            <button type="button" data-zoom="images/opt/affinity-diagram-large.jpg" data-full="images/Group%20Assignment%202%20Affinity%20Diagram.jpg"><img src="images/opt/affinity-diagram.jpg" width="2400" height="822" alt="Affinity diagram clustering user insights into themes" loading="lazy"></button>
+            <figcaption>The affinity map · click to zoom</figcaption>
+          </figure>
+        </section>
+
+        <section class="cs-section" id="wireframe">
+          <h2><span class="num">06</span> The low-fidelity wireframe</h2>
+          <div class="cs-split cs-split--flip">
+            <div>
+              <p>My first sketch focused on the core Community Stories flow:</p>
+              <ul>
+                <li>Placeholder cards for each story.</li>
+                <li>Basic navigation tabs (“All Stories” / “My Stories”).</li>
+                <li>A simple “Add Story” button in the top-right.</li>
+                <li>A minimal legend for metadata (date, author, language).</li>
+              </ul>
+              <p>This low-fi pass let us validate the information hierarchy before moving to mid-fi mockups.</p>
+            </div>
+            <figure class="cs-figure cs-figure--wide">
+              <button type="button" data-zoom="images/opt/wireframe-lofi.webp"><img src="images/opt/wireframe-lofi.webp" width="1170" height="1422" alt="Hand-drawn low-fidelity wireframe of the Community Stories flow" loading="lazy"></button>
+            </figure>
           </div>
-        </div>
+        </section>
+
+        <section class="cs-section" id="iteration">
+          <h2><span class="num">07</span> Design solutions &amp; iteration</h2>
+          <div class="cs-steps">
+            <div class="step">
+              <div>
+                <span class="step__tag">v0 · initial prototype</span>
+                <h3>A home for community stories</h3>
+                <ul>
+                  <li>A community story page with a basic “Add Story” feature and search.</li>
+                  <li>Preliminary filtering for community-generated content.</li>
+                </ul>
+                <p>Users liked having a dedicated community page and search, but filtering felt thin and story context was unclear.</p>
+              </div>
+              <figure class="cs-figure cs-figure--wide">
+                <button type="button" data-zoom="images/opt/community-stories-proto.webp"><img src="images/opt/community-stories-proto.webp" width="1400" height="1051" alt="Initial prototype of the community story page" loading="lazy"></button>
+              </figure>
+            </div>
+            <div class="step">
+              <div>
+                <span class="step__tag">v1 · mid-fidelity</span>
+                <h3>Search that keeps up</h3>
+                <ul>
+                  <li>Live search.</li>
+                  <li>A Community Preview on the homepage to drive early engagement.</li>
+                </ul>
+                <p>Feedback asked for more filtering, clearer story context, and a better-presented preview component.</p>
+              </div>
+              <figure class="cs-figure cs-figure--phone">
+                <button type="button" data-zoom="images/opt/community-stories-add.webp"><img src="images/opt/community-stories-add.webp" width="544" height="1100" alt="Mid-fidelity Add Story screen" loading="lazy"></button>
+              </figure>
+            </div>
+            <div class="step">
+              <div>
+                <span class="step__tag">v2 · high-fidelity</span>
+                <h3>The final design</h3>
+                <ul>
+                  <li>Advanced filters (submission date, popularity).</li>
+                  <li>A carousel for the homepage preview.</li>
+                  <li>Context everywhere: tags, short descriptions, and synopses.</li>
+                  <li>Verification and confirmation states for story uploads.</li>
+                </ul>
+              </div>
+              <figure class="cs-figure cs-figure--phone">
+                <button type="button" data-zoom="images/opt/community-stories-view.webp"><img src="images/opt/community-stories-view.webp" width="531" height="1100" alt="High-fidelity story view with bilingual content" loading="lazy"></button>
+              </figure>
+            </div>
+            <div class="step">
+              <div>
+                <span class="step__tag">v2 · upload flow</span>
+                <h3>Trust and safety, built in</h3>
+                <p>Story uploads go through a verification step with clear confirmation states, so contributors know exactly where their story stands.</p>
+              </div>
+              <figure class="cs-figure cs-figure--phone">
+                <button type="button" data-zoom="images/opt/community-stories-verify.webp"><img src="images/opt/community-stories-verify.webp" width="552" height="1100" alt="Story verification and confirmation screen" loading="lazy"></button>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="cs-section" id="science">
+          <h2><span class="num">08</span> Why it works: learning science</h2>
+          <ul class="principles">
+            <li><b>Linguistic inclusivity</b>Supports multilingualism with content in diverse dialects and languages, closing content gaps.</li>
+            <li><b>Counter-narratives &amp; identity</b>Lets marginalized learners share affirming, culturally relevant stories — combating stereotype threat.</li>
+            <li><b>Sociocultural learning</b>Encourages peer engagement and social learning through community contributions.</li>
+            <li><b>Recognition over recall</b>Familiar patterns and consistent standards keep the experience intuitive for diverse learners.</li>
+          </ul>
+        </section>
+
+        <section class="cs-section" id="testing">
+          <h2><span class="num">09</span> User testing</h2>
+          <p>We ran five usability sessions with team members and external bilingual users:</p>
+          <ul class="videos">
+            <li><a href="https://youtu.be/cS3NIiJ7kVU" target="_blank" rel="noopener">▶ Ashley's session</a></li>
+            <li><a href="https://youtu.be/OAs5zXA8ic8" target="_blank" rel="noopener">▶ Michael's session</a></li>
+            <li><a href="https://youtu.be/w38WoMS-qto" target="_blank" rel="noopener">▶ Harry's session</a></li>
+            <li><a href="https://www.youtube.com/watch?v=VUrlgKCztMQ" target="_blank" rel="noopener">▶ Timothy's session</a></li>
+            <li><a href="https://youtu.be/rhzvHP0uEOU" target="_blank" rel="noopener">▶ Luke's session</a></li>
+          </ul>
+        </section>
+
+        <section class="cs-section" id="reflection">
+          <h2><span class="num">10</span> Reflection &amp; next steps</h2>
+          <p>Iterative testing was indispensable — every cycle surfaced both wins and new pain points. The filtering feature got strong praise, and standardizing our Figma frames made the layouts far more consistent. Going forward, I'd:</p>
+          <ul>
+            <li>Gather quantitative metrics (SUS, task-completion rates) on the next prototype.</li>
+            <li>Bring in more language-education experts to refine the cultural content.</li>
+            <li>Explore community moderation tools to keep quality high.</li>
+          </ul>
+          <p>If I could change one thing about the project, I'd front-load the Figma workshops and give user testing a longer window to fit people's schedules.</p>
+        </section>
       </div>
     </div>
-    <div class="footer-bottom">
-      <div class="container">
-        <div class="copyright">
-          &copy; <span id="current-year"></span> <strong>Luke Hartzell</strong>. All Rights Reserved
-        </div>
-      </div>
-    </div>
+
+    <nav class="cs-next" aria-label="Next case study">
+      <a href="gym-app.html">
+        <span><small>Next case study</small><strong>LiftIQ: a gym app with an AI form coach</strong></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>© <span data-year>2026</span> Luke Hartzell. Hand-built with three.js; every 3D object here is code.</p>
+    <p><button class="footer__8bit" type="button" data-8bit>Try 8-bit mode</button><a href="index.html">Back home ↑</a></p>
   </footer>
-
-  <!-- Back to Top Button -->
-  <a href="#" class="back-to-top" id="back-to-top"><i class="fas fa-arrow-up"></i></a>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="script.js"></script>
-  <script>
-    // Set current year in footer
-    document.getElementById("current-year").textContent = new Date().getFullYear();
-    
-    // Navbar scroll effect
-    const navbar = document.getElementById("mainNav");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
-      }
-    });
-    
-    // Back to top button
-    const backToTopButton = document.getElementById("back-to-top");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) {
-        backToTopButton.classList.add("active");
-      } else {
-        backToTopButton.classList.remove("active");
-      }
-    });
-    
-    backToTopButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    
-    // Custom cursor
-    const cursorDot = document.getElementById("cursor-dot");
-    const cursorOutline = document.getElementById("cursor-outline");
-    
-    window.addEventListener("mousemove", (e) => {
-      const posX = e.clientX;
-      const posY = e.clientY;
-      
-      cursorDot.style.left = `${posX}px`;
-      cursorDot.style.top = `${posY}px`;
-      
-      cursorOutline.animate(
-        {
-          left: `${posX}px`,
-          top: `${posY}px`,
-        },
-        { duration: 500, fill: "forwards" },
-      );
-    });
-  </script>
+  <div class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

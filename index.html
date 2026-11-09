@@ -1,901 +1,424 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Luke Hartzell | Portfolio</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Luke Hartzell</title>
+  <meta name="description" content="Luke Hartzell is a Developer Experiences Product Manager at Snowflake, a Georgia Tech CS grad, ex-AWS, founder of Interview Prepper, and an AR effect creator with 13B+ views. Every project on this site is a small 3D world.">
+  <meta name="author" content="Luke Hartzell">
+  <meta name="theme-color" content="#FBFAFF">
+  <link rel="canonical" href="https://lukehartzell1.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lukehartzell1.github.io/">
+  <meta property="og:title" content="Luke Hartzell">
+  <meta property="og:description" content="Developer Experiences PM at Snowflake. Georgia Tech CS. Ex-AWS. Founder. AR filters with 13B+ views. Every project here is a little 3D world.">
+  <meta property="og:image" content="https://lukehartzell1.github.io/images/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&family=Pixelify+Sans:wght@400..700&display=swap">
   <link rel="stylesheet" href="style.css">
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (localStorage.getItem('lh-8bit') === '1') document.documentElement.classList.add('pixel'); } catch (e) {}
+  </script>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+  </script>
+  <link rel="modulepreload" href="vendor/three/three.module.min.js">
+  <script type="module" src="js/main.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Luke Hartzell",
+    "url": "https://lukehartzell1.github.io/",
+    "image": "https://lukehartzell1.github.io/images/opt/luke-face.webp",
+    "jobTitle": "Developer Experiences Product Manager",
+    "worksFor": { "@type": "Organization", "name": "Snowflake" },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Georgia Institute of Technology" },
+    "sameAs": [
+      "https://www.linkedin.com/in/luke-hartzell/",
+      "https://github.com/LukeHartzell1",
+      "https://www.tiktok.com/@lukes.filters",
+      "https://www.snowflake.com/en/blog/authors/luke-hartzell/"
+    ]
+  }
+  </script>
 </head>
 
 <body>
-  <!-- Cursor Effects -->
-  <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-outline" id="cursor-outline"></div>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
 
-  <!-- Background Effects -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-  <div class="bg-noise"></div>
-  <div class="floating-shapes">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#top" aria-label="Luke Hartzell, back to top"><span>LH</span></a>
+    <nav class="nav__links" aria-label="Sections">
+      <span class="nav__pill" aria-hidden="true"></span>
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav__8bit" type="button" aria-pressed="false" data-8bit>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h2v1h1v1h4V5h1V4h2v2h1v6h-2v-2h-1v2H5v-2H4v2H2V6h1z"/></svg>
+      <span>8-bit</span>
+    </button>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="sheet">
+      <span class="sr-only">Menu</span><i></i><i></i>
+    </button>
+  </header>
+  <div class="sheet" id="sheet" hidden>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
   </div>
 
-  <!-- Particle Background -->
-  <div id="particles-js"></div>
+  <main id="main">
+    <!-- ============================== HERO ============================== -->
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero__text">
+        <p class="kicker" data-reveal><span class="kicker__dot" aria-hidden="true"></span>Developer Experiences PM at Snowflake</p>
+        <h1 class="hero__name" id="hero-name"><span class="line"><span>Luke</span></span><span class="line"><span>Hartzell</span></span></h1>
+        <p class="hero__role" data-reveal style="--d:.35s">
+          I'm a
+          <span class="rotator" aria-hidden="true"><span>
+            <span>product manager.</span>
+            <span>founder.</span>
+            <span>builder.</span>
+            <span>TikTok effect creator.</span>
+            <span>software engineer.</span>
+            <span>product manager.</span>
+          </span></span>
+          <span class="sr-only">product manager, founder, builder, TikTok effect creator, and software engineer.</span>
+        </p>
+        <p class="hero__lede" data-reveal style="--d:.45s">I build things people actually use, from developer tools at Snowflake to AR filters with 13B+ views. Every project below is a little 3D world.</p>
+        <div class="hero__cta" data-reveal style="--d:.55s">
+          <a class="btn btn--dark" href="#projects">View projects<span aria-hidden="true">→</span></a>
+          <a class="btn btn--light" href="#contact">Contact me</a>
+        </div>
+      </div>
+      <div class="stage stage--hero" data-scene="hero" aria-hidden="true"></div>
+      <dl class="stats" data-reveal style="--d:.7s">
+        <div><dt><span data-count="13">13</span>B+</dt><dd>views on my AR filters</dd></div>
+        <div><dt><span data-count="1">1</span>K+</dt><dd>job seekers on Interview Prepper</dd></div>
+        <div><dt><span data-count="4" data-decimals="1">4.0</span></dt><dd>GPA at Georgia Tech</dd></div>
+        <div><dt><span data-count="900">900</span></dt><dd>students in the course I TA'd</dd></div>
+      </dl>
+    </section>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand glitch-text" href="#home" data-text="LUKE">LUKE</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#experience">Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#projects">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#skills">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hover-underline-animation" href="#contact">Contact</a>
-          </li>
-        </ul>
+    <!-- ============================== ABOUT ============================== -->
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <header class="section__head" data-reveal>
+        <p class="eyebrow"><span>01</span>About</p>
+        <h2 class="title" id="about-title">About <em>me</em></h2>
+      </header>
+      <div class="about__grid">
+        <div class="holo-wrap" data-reveal>
+          <button class="holo" type="button" aria-pressed="false" aria-label="My trading card. Press to flip it over.">
+            <span class="holo__inner">
+              <span class="holo__face holo__front">
+                <span class="holo__top"><b>Luke Hartzell</b><i>PM · Builder</i></span>
+                <span class="holo__photo">
+                  <img class="holo__img" src="images/opt/luke.webp" alt="" width="820" height="1024" loading="lazy" decoding="async">
+                  <img class="holo__img holo__img--px" src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async">
+                  <span class="holo__foil"></span>
+                </span>
+                <span class="holo__type">Product manager · from Chicago, IL</span>
+                <span class="holo__moves">
+                  <span class="move"><b>Ship it</b><em>0→1, 1K+ users</em></span>
+                  <span class="move"><b>Go viral</b><em>13B+ filter views</em></span>
+                  <span class="move"><b>Teach</b><em>900 students</em></span>
+                </span>
+                <span class="holo__foot"><span>Weakness: the “optimal” split</span><span>No. 001</span></span>
+              </span>
+              <span class="holo__face holo__back">
+                <span class="holo__emblem">LH</span>
+                <span class="holo__back-txt">luke hartzell · first edition</span>
+              </span>
+              <span class="holo__glare"></span>
+            </span>
+          </button>
+          <p class="holo__hint">Tilt it, then tap to flip</p>
+        </div>
+        <div class="about__text">
+          <p class="lead" data-reveal>Hey! I'm Luke, a product manager and engineer from Chicago. I studied computer science at Georgia Tech, and now I'm a Developer Experiences PM at Snowflake.</p>
+          <p data-reveal>I love building things that people actually want to use, whether that's helping people nail their interviews or making AR filters that go viral on TikTok.</p>
+          <p data-reveal>When I'm not glued to my laptop, you'll find me at the gym (probably doing too much research on the “optimal” workout split), gaming with friends, or falling down random YouTube rabbit holes about productivity hacks.</p>
+          <div class="facts" data-reveal>
+            <section class="panel" aria-labelledby="facts-title">
+              <h3 id="facts-title">Quick facts</h3>
+              <dl class="facts__list">
+                <div><dt>Now</dt><dd>Developer Experiences PM @ Snowflake</dd></div>
+                <div><dt>Studied</dt><dd>Computer Science @ Georgia Tech</dd></div>
+                <div><dt>From</dt><dd>Chicago, Illinois</dd></div>
+                <div><dt>Also</dt><dd>Founder &amp; AR effect creator</dd></div>
+              </dl>
+            </section>
+            <section class="panel" aria-labelledby="interests-title">
+              <h3 id="interests-title">Interests</h3>
+              <ul class="chips">
+                <li>Fitness</li><li>Gaming</li><li>Coding</li><li>Learning</li><li>AR effects</li>
+              </ul>
+            </section>
+          </div>
+        </div>
       </div>
-    </div>
-  </nav>
+    </section>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero-section">
-    <!-- Hero Background Elements -->
-    <div class="hero-bg-elements">
-      <div class="hero-lines">
-        <div class="hero-line"></div>
-        <div class="hero-line"></div>
-        <div class="hero-line"></div>
-        <div class="hero-line"></div>
-      </div>
-      <div class="hero-dots">
-        <!-- Hero dots will be added via JavaScript -->
-      </div>
-    </div>
-    
-    <div class="hero-content">
-      <div class="glitch-wrapper">
-        <h1 class="hero-title glitch" data-text="Luke Hartzell">Luke Hartzell</h1>
-      </div>
-      <div class="typing-container">
-        <p class="hero-subtitle"><span class="typing"></span></p>
-      </div>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary btn-glow">View Projects</a>
-        <a href="#contact" class="btn btn-outline-light btn-glow-secondary">Contact Me</a>
-      </div>
-    </div>
-    <div class="scroll-indicator">
-      <div class="mouse">
-        <div class="wheel"></div>
-      </div>
-      <div>
-        <span class="scroll-arrow">
-          <span></span>
-          <span></span>
-        </span>
-      </div>
-    </div>
-  </section>
+    <!-- ============================== EDUCATION ============================== -->
+    <section class="section education" id="education" aria-labelledby="edu-title">
+      <header class="section__head" data-reveal>
+        <p class="eyebrow"><span>02</span>Education</p>
+        <h2 class="title" id="edu-title">Where I <em>learned</em></h2>
+      </header>
+      <article class="edu" data-reveal>
+        <div class="stage stage--edu" data-scene="education" aria-hidden="true"></div>
+        <div class="edu__body">
+          <p class="meta">Aug 2022 – Dec 2025 · Atlanta, GA</p>
+          <h3>Georgia Institute of Technology</h3>
+          <p class="edu__degree">Bachelor of Science in Computer Science</p>
+          <p class="gpa"><b>4.0</b><span>/ 4.0 GPA</span></p>
+          <p class="label">Coursework</p>
+          <ul class="chips">
+            <li>Algorithms</li><li>Data Structures</li><li>Intro to AI</li><li>Object-Oriented Programming</li><li>UI/UX</li><li>Educational Technology</li>
+          </ul>
+        </div>
+      </article>
+    </section>
 
-  <!-- About Section -->
-  <section id="about" class="section-padding">
-  <div class="container">
-    <div class="section-title" data-aos="fade-up">
-      <h2 class="text-gradient">About Me</h2>
-      <div class="underline"></div>
-    </div>
-    <div class="row align-items-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="about-text" data-aos="fade-right">
-          <p class="lead">Hey! I'm a Computer Science student from Chicago, currently at Georgia Tech with a 4.0 GPA.</p>
-          <p>I love building things that people actually want to use. Right now I'm really into creating products that solve real problems - whether that's helping people nail their interviews or making fun AR filters that go viral on TikTok.</p>
-          <p>I'm looking for roles in Product Management, Technical Program Management, or Software Engineering where I can combine my technical background with my passion for building user-focused products.</p>
-          <p>When I'm not glued to my laptop, you'll find me at the gym (probably doing too much research on the "optimal" workout split), gaming with friends, or falling down random YouTube rabbit holes about productivity hacks.</p>
-          <div class="social-icons">
-            <a href="https://github.com/LukeHartzell1" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
-            <a href="mailto:lukedhartzell@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+    <!-- ============================== EXPERIENCE ============================== -->
+    <section class="section experience" id="experience" aria-labelledby="xp-title">
+      <header class="section__head" data-reveal>
+        <p class="eyebrow"><span>03</span>Experience</p>
+        <h2 class="title" id="xp-title">Where I've <em>worked</em></h2>
+      </header>
+      <div class="xp">
+        <div class="xp__sticky" aria-hidden="true">
+          <div class="xp__frame">
+            <div class="stage stage--xp" data-switch="xp"></div>
+            <p class="xp__badge"><span class="xp__badge-dot"></span><span data-badge>Skills adoption 3×+</span></p>
+            <p class="xp__count"><span data-count-now>01</span> / 08</p>
           </div>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="about-card" data-aos="fade-left">
-          <div class="card-3d-wrapper">
-            <div class="card-front">
-              <div class="card-content">
-                <h3>Quick Facts</h3>
-                <ul class="about-list">
-                  <li><i class="fas fa-graduation-cap"></i> Computer Science @ Georgia Tech</li>
-                  <li><i class="fas fa-code"></i> Product Builder</li>
-                  <li><i class="fas fa-map-marker-alt"></i> Chicago, Illinois</li>
-                  <li><i class="fas fa-briefcase"></i> Founder & Creator</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card-back">
-              <div class="card-content">
-                <h3>Interests</h3>
-                <ul class="about-list">
-                  <li><i class="fas fa-dumbbell"></i> Fitness</li>
-                  <li><i class="fas fa-gamepad"></i> Gaming</li>
-                  <li><i class="fas fa-laptop-code"></i> Coding</li>
-                  <li><i class="fas fa-brain"></i> Learning</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- Education Section -->
-  <section id="education" class="section-padding bg-gradient">
-  <div class="container">
-    <div class="section-title" data-aos="fade-up">
-      <h2>Education</h2>
-      <div class="underline"></div>
-    </div>
-    <div class="education-card" data-aos="flip-up">
-      <div class="education-logo">
-        <img src="images/gt-logo.png" alt="Georgia Tech Logo" class="img-fluid">
-      </div>
-      <div class="education-content">
-        <h3>Georgia Institute of Technology</h3>
-        <p class="education-degree">Bachelor of Science in Computer Science</p>
-        <p class="education-date">2022 - Dec 2025 (Expected)</p>
-        <p><strong>GPA: 4.0/4.0</strong></p>
-        <div class="education-details">
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>Algorithms</span>
-          </div>
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>Data Structures</span>
-          </div>
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>Intro to AI</span>
-          </div>
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>Object-Oriented Programming</span>
-          </div>
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>UI/UX</span>
-          </div>
-          <div class="education-detail-item">
-            <i class="fas fa-book"></i>
-            <span>Educational Technology</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- Work Experience Section -->
-  <section id="experience" class="section-padding">
-    <div class="container">
-      <div class="section-title" data-aos="fade-up">
-        <h2 class="text-gradient">Work Experience</h2>
-        <div class="underline"></div>
-      </div>
-      
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="experience-timeline" data-aos="fade-up">
-            <!-- Interview Prepper -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">May 2025 - Present</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Founder & Product Lead</h3>
-                  <h4>Interview Prepper</h4>
-                  <ul>
-                    <li>Grew Interview Prepper to 1k+ users and 3M+ impressions by leading all marketing efforts by analyzing product usage insights and leveraging trending social media strategies to maximize outreach</li>
-                    <li>Increased engagement by 21% and retention by 16% by planning and executing feature launches, applying A/B testing and data-driven analysis to identify user needs and consistently prioritize high-impact updates</li>
-                    <li>Accelerated product improvements by defining project scope, designed agile sprints, and delegated tasks as Technical Project Manager, enabling our cofounder team to deliver rapid iterations and streamline workflow</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- TikTok Filters -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">January 2024 - Present</span>
-                </div>
-                <div class="experience-info">
-                  <h3>TikTok Effect Creator</h3>
-                  <h4>Luke's Filters</h4>
-                  <ul>
-                    <li>Achieved 11B+ views & 40M+ videos made with my filters by developing AR filters using visual scripting, procedural effects, and 3D modeling, integrating real-time facial tracking and shader effects while leveraging data-driven optimization</li>
-                    <li>Ranked top 0.0001% of TikTok effect creators by analyzing market trends & platform advertising insights</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- AWS -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">May 2025 - August 2025</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Software Engineering Intern</h3>
-                  <h4>Amazon Web Services (AWS)</h4>
-                  <ul>
-                    <li>Developed an internal auditing tool for the Mechanic team to help with incident analysis for operator tools that perform safe actions on production resources</li>
-                    <li>Designed project architecture, conducted design reviews, and led full project lifecycle from conception to implementation</li>
-                    <li>Enhanced incident response capabilities by providing comprehensive audit trails and analysis tools for production operations</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Chamberlain Group -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">May 2024 - August 2024</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Software Engineering Intern</h3>
-                  <h4>Chamberlain Group</h4>
-                  <ul>
-                    <li>Cut test execution time by 62% (saving 56 seconds/run) by independently designing and optimizing a Playwright automation testing framework in JavaScript & Cucumber, directly improving overall efficiency and reliability</li>
-                    <li>Protected 10M+ users by discovering and escalating 2 critical bugs via comprehensive system testing and analysis</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- AI Makerspace Nexus -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">August 2024 - Present</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Software Engineer & Project Manager</h3>
-                  <h4>Georgia Tech VIP – AI Makerspace Nexus</h4>
-                  <ul>
-                    <li>Expanded access and usability for 20,000+ students by launching an AI-powered notetaking and lecture assistance tool on the NVIDIA AI supercomputer by directing product development and leading technical integration</li>
-                    <li>Delivered project milestones rapidly by coordinating a 4-member team, aligning goals, and driving collaboration</li>
-                    <li>Enabled rapid feature expansion by architecting a modular backend to support integration of new AI tools</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Intelligent Tutoring -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">January 2024 - May 2024</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Software Engineer & Project Manager</h3>
-                  <h4>Georgia Tech VIP – Intelligent Tutoring</h4>
-                  <ul>
-                    <li>Enhanced personalized learning by developing advanced AI-enhanced Data Structures & Algorithms modules</li>
-                    <li>Delivered new features on schedule by leading a team of 4, managing design, planning, and Agile development</li>
-                    <li>Increased student engagement by implementing an AI chatbot, interactive coding feedback, and quizzes</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Teaching Assistant -->
-            <div class="experience-item">
-              <div class="experience-content">
-                <div class="experience-time">
-                  <span class="date">August 2023 - Present</span>
-                </div>
-                <div class="experience-info">
-                  <h3>Teaching Assistant</h3>
-                  <h4>Georgia Institute of Technology</h4>
-                  <ul>
-                    <li>Assisting professor in teaching Object-Oriented Programming course</li>
-                    <li>Holding office hours to help students with programming assignments and concepts</li>
-                    <li>Grading assignments and providing constructive feedback to students</li>
-                    <li>Creating supplementary learning materials to help students understand complex topics</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="section-padding">
-    <div class="container">
-      <div class="section-title" data-aos="fade-up">
-        <h2 class="text-gradient">Featured Projects</h2>
-        <div class="underline"></div>
-      </div>
-      
-      <div class="projects-filter" data-aos="fade-up">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="ai">AI</button>
-        <button class="filter-btn" data-filter="mobile">Mobile</button>
-        <button class="filter-btn" data-filter="web">Web</button>
-        <button class="filter-btn" data-filter="data">Data</button>
-        <button class="filter-btn" data-filter="education">Education</button>
-        <button class="filter-btn" data-filter="ux">UX</button>
-        <button class="filter-btn" data-filter="design">Design</button>
-      </div>
-      
-      <div class="row projects-container">
-        <!-- Interview Prepper -->
-        <div class="col-lg-6 col-md-6 project-item ai web education" data-aos="zoom-in">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/interview-prepper-logo.png" alt="Interview Prepper" class="img-fluid">
-                  <div class="project-category">AI & Web & Education</div>
-                </div>
-                <div class="project-info">
-                  <h3>Interview Prepper</h3>
-                  <div class="tech-stack">
-                    <span>AI</span>
-                    <span>Web Platform</span>
-                    <span>Interview Prep</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>Interview Prepper</h3>
-                <p>I built this because job interviews are stressful and most prep resources suck. It's got three main parts: Blueprints (custom prep plans), Quickies (quick daily practice), and Vibzy (an AI that actually gives useful feedback on coding interviews).</p>
-                <p>Turns out people really needed this - we've hit 11K+ visitors and 31K+ page views. It combines the behavioral and technical prep you actually need with real company research, not just generic advice.</p>
-                <div class="project-links">
-                  <a href="https://www.interviewprepper.co" target="_blank" class="btn btn-sm btn-outline-light"><i class="fas fa-external-link-alt"></i> Visit Site</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- AI Makerspace Nexus -->
-        <div class="col-lg-6 col-md-6 project-item ai web education" data-aos="zoom-in" data-aos-delay="100">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/studybuddy.png" alt="AI Makerspace Nexus" class="img-fluid">
-                  <div class="project-category">AI & Web & Education</div>
-                </div>
-                <div class="project-info">
-                  <h3>AI Makerspace Nexus - StudyBuddy</h3>
-                  <div class="tech-stack">
-                    <span>Python</span>
-                    <span>NVIDIA AI</span>
-                    <span>Project Management</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>AI Makerspace Nexus</h3>
-                <p>Led a team to build an AI-powered note-taking and lecture assistant that actually helps students learn better. Got it running on Georgia Tech's NVIDIA AI supercomputer, which sounds fancy but really just means it's fast and accessible to 20,000+ students.</p>
-                <p>The best part was managing the team and figuring out how to make AI tools that students would actually want to use in their daily studying.</p>
-                <!-- <div class="project-links"> -->
-                  <!-- <a href="https://github.com/LukeHartzell1" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-github"></i> GitHub</a> -->
-                <!-- </div> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- TikTok Filters -->
-        <div class="col-lg-6 col-md-6 project-item mobile" data-aos="zoom-in" data-aos-delay="200">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/lukes.filters logo.png" alt="TikTok Filters" class="img-fluid">
-                  <div class="project-category">Mobile & AR</div>
-                </div>
-                <div class="project-info">
-                  <h3>TikTok Filters</h3>
-                  <div class="tech-stack">
-                    <span>Effect House</span>
-                    <span>AR</span>
-                    <span>3D Modeling</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>TikTok Filters</h3>
-                <p>Started making AR filters for fun and somehow ended up with 11B+ views and 40M+ videos made with my creations. Turns out people really love filters that actually work well and look cool.</p>
-                <p>I'm in the top 0.01% of TikTok effect creators, which honestly still blows my mind. It's all about understanding what trends people want and building them before everyone else does.</p>
-                <div class="project-links">
-                  <a href="https://www.tiktok.com/@lukes.filters" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-tiktok"></i> TikTok</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Intelligent Tutoring -->
-        <div class="col-lg-6 col-md-6 project-item ai education" data-aos="zoom-in" data-aos-delay="300">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/meta llama.png" alt="Intelligent Tutoring" class="img-fluid">
-                  <div class="project-category">AI & Education</div>
-                </div>
-                <div class="project-info">
-                  <h3>Intelligent Tutoring</h3>
-                  <div class="tech-stack">
-                    <span>Python</span>
-                    <span>AI</span>
-                    <span>Educational Tech</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>Intelligent Tutoring</h3>
-                <p>Built AI-powered modules to help students actually understand Data Structures & Algorithms instead of just memorizing them. Used AI to personalize the learning experience for each student.</p>
-                <p>Led a team of 4 people through the whole development process - from brainstorming to launch. Learned a lot about managing people and keeping everyone motivated.</p>
-                <div class="project-links">
-                  <a href="https://www.linkedin.com/posts/luke-hartzell_ai-edtech-datastructures-activity-7196509632956092416-yqB6?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDHzXEBghCTybAhAV-HZoeoc2lfOFSiVCs" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-linkedin"></i> Linkedin</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Better Spotify Wrapped -->
-        <div class="col-lg-6 col-md-6 project-item web data" data-aos="zoom-in" data-aos-delay="400">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/spotify_logo.png" alt="Better Spotify Wrapped" class="img-fluid">
-                  <div class="project-category">Web & Data</div>
-                </div>
-                <div class="project-info">
-                  <h3>Better Spotify Wrapped</h3>
-                  <div class="tech-stack">
-                    <span>React</span>
-                    <span>Spotify API</span>
-                    <span>Data Visualization</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>Better Spotify Wrapped</h3>
-                <p>Spotify Wrapped is cool, but it only comes once a year and doesn't show you enough detail. So we built our own version with way more insights and you can check it anytime.</p>
-                <p>Led a team of 6 through the whole process - from connecting to Spotify's API to making the data actually look good. Everyone had different strengths which made it really fun to coordinate.</p>
-                <div class="project-links">
-                  <a href="https://www.linkedin.com/posts/luke-hartzell_spotifywrapped-cs2340project-musicinsights-activity-7194712852140630016-LWsF?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDHzXEBghCTybAhAV-HZoeoc2lfOFSiVCs" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-linkedin"></i> Linkedin</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- IdentifAI Project -->
-        <div class="col-lg-6 col-md-6 project-item mobile ai" data-aos="zoom-in" data-aos-delay="500">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/IdentifAI logo 3.png" alt="IdentifAI Project" class="img-fluid">
-                  <div class="project-category">Mobile App & AI</div>
-                </div>
-                <div class="project-info">
-                  <h3>IdentifAI</h3>
-                  <div class="tech-stack">
-                    <span>Kotlin</span>
-                    <span>AWS Rekognition</span>
-                    <span>Firebase</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>IdentifAI</h3>
-                <p>Developed an Android app using Kotlin, empowering Alzheimer's patients with facial recognition capabilities via AWS Rekognition and secure user profile storage in Google Firebase.</p>
-                <p>Conceived and executed during HackGTX in a team of three.</p>
-                <div class="project-links">
-                  <a href="https://www.youtube.com/watch?v=IKsSfN8OJ2o" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-youtube"></i> Demo</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Gopu -->
-        <div class="col-lg-6 col-md-6 project-item web ai" data-aos="zoom-in" data-aos-delay="600">
-          <div class="project-card">
-            <div class="project-card-inner">
-              <div class="project-card-front">
-                <div class="project-img">
-                  <img src="images/gopu wide.png" alt="Gopu" class="img-fluid">
-                  <div class="project-category">Web & AI</div>
-                </div>
-                <div class="project-info">
-                  <h3>Gopu</h3>
-                  <div class="tech-stack">
-                    <span>React</span>
-                    <span>Node.js</span>
-                    <span>AI Integration</span>
-                  </div>
-                </div>
-              </div>
-              <div class="project-card-back">
-                <h3>Gopu</h3>
-                <p>Created an AI-powered productivity assistant that helps users manage tasks, schedule meetings, and optimize their workflow.</p>
-                <p>Integrated with popular productivity tools and calendars to provide a seamless experience across different platforms.</p>
-                <div class="project-links">
-                  <a href="https://www.linkedin.com/posts/luke-hartzell_google-does-not-let-you-search-for-public-activity-7162852890607386625-K0cw?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDHzXEBghCTybAhAV-HZoeoc2lfOFSiVCs" target="_blank" class="btn btn-sm btn-outline-light"><i class="fab fa-github"></i> Linkedin</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Beelinguapp Redesign -->
-<div class="col-lg-6 col-md-6 project-item ai education design ux" data-aos="zoom-in" data-aos-delay="700">
-  <div class="project-card">
-    <div class="project-card-inner">
-      <div class="project-card-front">
-        <div class="project-img">
-          <img src="images/beelinguapp-logo.png" alt="Beelinguapp Redesign" class="img-fluid">
-          <div class="project-category">UX & Design</div>
-        </div>
-        <div class="project-info">
-          <h3>Beelinguapp Redesign</h3>
-          <div class="tech-stack">
-            <span>UX</span>
-            <span>Educational Tech</span>
-            <span>Community Stories</span>
-          </div>
-        </div>
-      </div>
-      <div class="project-card-back">
-        <h3>Beelinguapp Redesign</h3>
-        <p>Designed a community stories feature to address cultural content gaps and enhance engagement in language learning.</p>
-        <p>Conducted user interviews and iterative testing to create an inclusive, culturally relevant learning experience.</p>
-        <div class="project-links">
-          <a href="beelinguapp-redesign.html" class="btn btn-sm btn-outline-light"><i class="fas fa-external-link-alt"></i> View Project</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Gym App with AI Coach -->
-<div class="col-lg-6 col-md-6 project-item mobile ai design education ux" data-aos="zoom-in" data-aos-delay="800">
-  <div class="project-card">
-    <div class="project-card-inner">
-      <div class="project-card-front">
-        <div class="project-img">
-          <img src="images/liftiq-logo.png" alt="LiftIQ: Gym App with AI Coach" class="img-fluid">
-          <div class="project-category">Mobile App & AI & UX</div>
-        </div>
-        <div class="project-info">
-          <h3>LiftIQ: Gym App with AI Coach</h3>
-          <div class="tech-stack">
-            <span>AI</span>
-            <span>Mobile Design</span>
-            <span>Fitness Tech</span>
-          </div>
-        </div>
-      </div>
-      <div class="project-card-back">
-        <h3>LiftIQ: Gym App with AI Coach</h3>
-        <p>Designed an intuitive mobile interface combining AI motion tracking, instructional videos, and written resources for proper gym form.</p>
-        <p>Conducted iterative user testing to refine AI coach and multimedia instruction features.</p>
-        <div class="project-links">
-          <a href="gym-app.html" class="btn btn-sm btn-outline-light"><i class="fas fa-external-link-alt"></i> View Project</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="section-padding bg-gradient">
-  <div class="container">
-    <div class="section-title" data-aos="fade-up">
-      <h2>Skills & Technologies</h2>
-      <div class="underline"></div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6" data-aos="fade-right">
-        <div class="skills-category">
-          <h3>Programming Languages</h3>
-          <div class="skills-container">
-            <div class="skill-item" data-percentage="90">
-              <div class="skill-info">
-                <span>Java</span>
-                <span class="skill-percentage">90%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="85">
-              <div class="skill-info">
-                <span>JavaScript</span>
-                <span class="skill-percentage">85%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="80">
-              <div class="skill-info">
-                <span>Python</span>
-                <span class="skill-percentage">80%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="75">
-              <div class="skill-info">
-                <span>C</span>
-                <span class="skill-percentage">75%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="70">
-              <div class="skill-info">
-                <span>SQL</span>
-                <span class="skill-percentage">70%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6" data-aos="fade-left">
-        <div class="skills-category">
-          <h3>Frameworks & Tools</h3>
-          <div class="skills-container">
-            <div class="skill-item" data-percentage="85">
-              <div class="skill-info">
-                <span>Playwright</span>
-                <span class="skill-percentage">85%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="80">
-              <div class="skill-info">
-                <span>Google Cloud Vertex AI</span>
-                <span class="skill-percentage">80%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="75">
-              <div class="skill-info">
-                <span>Node.js</span>
-                <span class="skill-percentage">75%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="70">
-              <div class="skill-info">
-                <span>Firebase</span>
-                <span class="skill-percentage">70%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-            <div class="skill-item" data-percentage="65">
-              <div class="skill-info">
-                <span>AWS Rekognition</span>
-                <span class="skill-percentage">65%</span>
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="row mt-5">
-      <div class="col-12" data-aos="zoom-in">
-        <div class="tech-cloud">
-          <div class="tech-item">Java</div>
-          <div class="tech-item">JavaScript</div>
-          <div class="tech-item">Python</div>
-          <div class="tech-item">C</div>
-          <div class="tech-item">SQL</div>
-          <div class="tech-item">HTML/CSS</div>
-          <div class="tech-item">Lua</div>
-          <div class="tech-item">Kotlin</div>
-          <div class="tech-item">Playwright</div>
-          <div class="tech-item">Google Cloud</div>
-          <div class="tech-item">Node.js</div>
-          <div class="tech-item">Bootstrap</div>
-          <div class="tech-item">Firebase</div>
-          <div class="tech-item">AWS</div>
-          <div class="tech-item">Cucumber</div>
-          <div class="tech-item">LLaMa</div>
-          <div class="tech-item">Git/GitHub</div>
-          <div class="tech-item">Jira</div>
-          <div class="tech-item">Azure</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="section-padding">
-    <div class="container">
-      <div class="section-title" data-aos="fade-up">
-        <h2 class="text-gradient">Get In Touch</h2>
-        <div class="underline"></div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-lg-8" data-aos="fade-up">
-          <div class="contact-info-card">
-            <div class="contact-header">
-              <div class="contact-avatar">
-                <div class="avatar-inner">LH</div>
-              </div>
-              <h3>Let's Connect</h3>
-            </div>
-            <p class="contact-intro">Always down to chat about projects, opportunities, or just cool tech stuff. Feel free to reach out!</p>
-            <div class="contact-methods">
-              <div class="contact-method">
-                <div class="contact-icon">
-                  <i class="fas fa-envelope"></i>
-                </div>
-                <div class="contact-details">
-                  <h4>Email</h4>
-                  <p><a href="mailto:lukedhartzell@gmail.com">lukedhartzell@gmail.com</a></p>
-                </div>
-              </div>
-              <div class="contact-method">
-                <div class="contact-icon">
-                  <i class="fab fa-linkedin"></i>
-                </div>
-                <div class="contact-details">
-                  <h4>LinkedIn</h4>
-                  <p><a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank">@LukeHartzell</a></p>
-                </div>
-              </div>
-              <div class="contact-method">
-                <div class="contact-icon">
-                  <i class="fab fa-github"></i>
-                </div>
-                <div class="contact-details">
-                  <h4>GitHub</h4>
-                  <p><a href="https://github.com/LukeHartzell1" target="_blank">@LukeHartzell1</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="contact-cta">
-              <a href="mailto:lukedhartzell@gmail.com" class="btn btn-primary btn-glow">Send Email</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-info">
-            <h3>Luke Hartzell</h3>
-            <p>Computer Science Student<br>Georgia Institute of Technology</p>
-            <div class="social-links">
-              <a href="https://github.com/LukeHartzell1" target="_blank"><i class="fab fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank"><i class="fab fa-linkedin"></i></a>
-              <a href="mailto:lukedhartzell@gmail.com"><i class="fas fa-envelope"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-links">
-            <h4>Navigation</h4>
-            <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#education">Education</a></li>
-              <li><a href="#experience">Experience</a></li>
-              <li><a href="#projects">Projects</a></li>
-              <li><a href="#skills">Skills</a></li>
-              <li><a href="#contact">Contact</a></li>
+        <ol class="xp__list">
+          <li class="role" data-role="snowflakeRole" data-badge-text="Skills adoption 3×+">
+            <div class="stage stage--inline" data-scene="snowflakeRole" aria-hidden="true"></div>
+            <p class="meta">Jun 2026 – Present · Menlo Park, CA</p>
+            <h3>Developer Experiences Product Manager</h3>
+            <p class="org">Snowflake</p>
+            <ul class="bullets">
+              <li>Run in-product experiments and email campaigns with GTM and Growth, and decide what to scale or kill. The campaigns hold <b>50%+</b> click retention.</li>
+              <li>Led an internal adoption campaign for the Skills feature that grew its early users <b>3×+</b>.</li>
+              <li>Dogfood pre-release products and turn customer and SE feedback into demos and enablement for the roadmap.</li>
             </ul>
+            <p class="role__links"><a href="https://www.snowflake.com/en/blog/authors/luke-hartzell/" target="_blank" rel="noopener">My posts on the Snowflake blog ↗</a></p>
+          </li>
+          <li class="role" data-role="habitLoop" data-badge-text="+36% L28 retention">
+            <div class="stage stage--inline" data-scene="habitLoop" aria-hidden="true"></div>
+            <p class="meta">May 2025 – Present · Remote</p>
+            <h3>Founder &amp; Product Lead</h3>
+            <p class="org">Interview Prepper</p>
+            <ul class="bullets">
+              <li>Took it from <b>0→1</b>: upload your résumé, get a personalized prep plan. Shaped by interviews with recruiters and a PM.</li>
+              <li>Spotted an off-season engagement dip, shipped daily mini-games, and A/B tested them: <b>+21%</b> session frequency, <b>+36%</b> L28 retention.</li>
+              <li>Used by <b>1K+</b> job seekers.</li>
+            </ul>
+            <p class="role__links"><a href="https://www.interviewprepper.co" target="_blank" rel="noopener">interviewprepper.co ↗</a></p>
+          </li>
+          <li class="role" data-role="arPhone" data-badge-text="13B+ views · 35M+ posts">
+            <div class="stage stage--inline" data-scene="arPhone" aria-hidden="true"></div>
+            <p class="meta">Jan 2024 – Present</p>
+            <h3>TikTok Effect Creator</h3>
+            <p class="org">Luke's Filters</p>
+            <ul class="bullets">
+              <li>AR effects built with visual scripting, procedural effects, 3D modeling, face tracking, and shaders.</li>
+              <li><b>13B+</b> views and <b>35M+</b> posts made with them. The trick: read the trend and ship before it peaks.</li>
+            </ul>
+            <p class="role__links"><a href="https://www.tiktok.com/@lukes.filters" target="_blank" rel="noopener">@lukes.filters ↗</a></p>
+          </li>
+          <li class="role" data-role="router" data-badge-text="Noise filtered before on-call">
+            <div class="stage stage--inline" data-scene="router" aria-hidden="true"></div>
+            <p class="meta">May – Aug 2025 · Seattle, WA</p>
+            <h3>Software Development Engineer Intern</h3>
+            <p class="org">Amazon Web Services · Mechanic Core</p>
+            <ul class="bullets">
+              <li>Owned the PRD and design review for an event-driven incident analytics pipeline (Java, Kinesis) to speed up on-call triage.</li>
+              <li>Built a Java log processor and a Python Lambda routing layer that drops noisy events before they reach downstream services.</li>
+            </ul>
+          </li>
+          <li class="role" data-role="garage" data-badge-text="−62% test time">
+            <div class="stage stage--inline" data-scene="garage" aria-hidden="true"></div>
+            <p class="meta">May – Aug 2024 · Chicago, IL</p>
+            <h3>Software Engineering Intern</h3>
+            <p class="org">Chamberlain Group</p>
+            <ul class="bullets">
+              <li>Designed a Playwright + Cucumber automation framework that cut end-to-end test time <b>62%</b> (56 seconds a run).</li>
+              <li>Caught and escalated <b>2 critical bugs</b> before they reached 10M+ users.</li>
+            </ul>
+          </li>
+          <li class="role" data-role="gpuScan" data-badge-text="OCR → summary → tags">
+            <div class="stage stage--inline" data-scene="gpuScan" aria-hidden="true"></div>
+            <p class="meta">Aug 2024 – Present · Atlanta, GA</p>
+            <h3>Software Engineer &amp; Product Manager</h3>
+            <p class="org">Georgia Tech VIP · AI Makerspace Nexus</p>
+            <ul class="bullets">
+              <li>Led product for StudyBuddy, an AI note-taking and lecture assistant running on Georgia Tech's NVIDIA AI supercomputer.</li>
+              <li>Built modular OCR, summarization, and tagging pipelines, and piloted it in 2 sections (~160 students).</li>
+            </ul>
+          </li>
+          <li class="role" data-role="bstTutor" data-badge-text="Team of 4 · AI tutor">
+            <div class="stage stage--inline" data-scene="bstTutor" aria-hidden="true"></div>
+            <p class="meta">Jan – May 2024 · Atlanta, GA</p>
+            <h3>Software Engineer &amp; Project Manager</h3>
+            <p class="org">Georgia Tech VIP · Intelligent Tutoring</p>
+            <ul class="bullets">
+              <li>Built AI-enhanced Data Structures &amp; Algorithms modules: a chatbot, interactive coding feedback, and quizzes.</li>
+              <li>Led a team of 4 through design, planning, and Agile development.</li>
+            </ul>
+          </li>
+          <li class="role" data-role="hall" data-badge-text="900 students">
+            <div class="stage stage--inline" data-scene="hall" aria-hidden="true"></div>
+            <p class="meta">Aug 2023 – Dec 2025 · Atlanta, GA</p>
+            <h3>Teaching Assistant, Object-Oriented Programming</h3>
+            <p class="org">Georgia Institute of Technology</p>
+            <ul class="bullets">
+              <li>Helped teach a <b>900-student</b> course: recitations, office hours, and ~30-student review sessions.</li>
+              <li>Wrote rubrics and automated test cases so students got feedback faster.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================== PROJECTS ============================== -->
+    <section class="section projects" id="projects" aria-labelledby="projects-title">
+      <header class="section__head" data-reveal>
+        <p class="eyebrow"><span>04</span>Projects</p>
+        <h2 class="title" id="projects-title">Things I've <em>built</em></h2>
+        <p class="section__intro">Side projects, hackathons, and UX case studies. Hover a card to wake it up.</p>
+      </header>
+      <div class="grid">
+        <article class="project" style="--tint: #F4ECFF; --tint2: #E9F1FF" data-reveal>
+          <div class="stage stage--project" data-scene="spotify" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">Web · Data</p>
+            <h3>Better Spotify Wrapped</h3>
+            <p>Spotify Wrapped, but anytime, and with way more detail. I led a team of 6 from Spotify's API to making the data actually look good.</p>
+            <ul class="tags"><li>React</li><li>Spotify API</li><li>Data viz</li></ul>
+            <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_spotifywrapped-cs2340project-musicinsights-activity-7194712852140630016-LWsF" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
           </div>
-        </div>
-        <div class="col-lg-4 col-md-12">
-          <div class="footer-newsletter">
-            <h4>Let's Connect</h4>
-            <p>Feel free to reach out for collaborations, opportunities, or just to say hello!</p>
-            <a href="#contact" class="btn btn-outline-light btn-sm">Contact Me</a>
+        </article>
+        <article class="project" style="--tint: #FFF0F6; --tint2: #F2ECFF" data-reveal>
+          <div class="stage stage--project" data-scene="identifai" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">Mobile · AI · HackGTX</p>
+            <h3>IdentifAI</h3>
+            <p>An Android app that helps Alzheimer's patients recognize the people they love, with facial recognition and secure profiles. Built at HackGTX with a team of three.</p>
+            <ul class="tags"><li>Kotlin</li><li>AWS Rekognition</li><li>Firebase</li></ul>
+            <a class="project__link" href="https://www.youtube.com/watch?v=IKsSfN8OJ2o" target="_blank" rel="noopener">Watch the demo <span aria-hidden="true">↗</span></a>
           </div>
+        </article>
+        <article class="project" style="--tint: #EAF8F2; --tint2: #EEF0FF" data-reveal>
+          <div class="stage stage--project" data-scene="gopu" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">Web · AI</p>
+            <h3>Gopu</h3>
+            <p>An AI productivity assistant that manages tasks, schedules meetings, and plugs into the calendars you already use.</p>
+            <ul class="tags"><li>React</li><li>Node.js</li><li>AI integration</li></ul>
+            <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_google-does-not-let-you-search-for-public-activity-7162852890607386625-K0cw" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+        <article class="project" style="--tint: #F1EEFB; --tint2: #FFF3EC" data-reveal>
+          <div class="stage stage--project" data-scene="fog" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">Desktop · AI agents · 2026</p>
+            <h3>FogOfYou</h3>
+            <p>A privacy app: autonomous browser agents roam the web as decoy personas until your ad profile is worthless to data brokers.</p>
+            <ul class="tags"><li>Electron</li><li>React</li><li>TypeScript</li><li>Playwright</li><li>Gemini</li></ul>
+            <a class="project__link" href="https://github.com/LukeHartzell1/FogOfYou" target="_blank" rel="noopener">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+        <article class="project" style="--tint: #EEF4FF; --tint2: #FFF0F7" data-reveal>
+          <div class="stage stage--project" data-scene="book" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">UX case study</p>
+            <h3>Beelinguapp Redesign</h3>
+            <p>A community stories feature for culturally relevant language learning, shaped by user interviews and iterative testing.</p>
+            <ul class="tags"><li>UX research</li><li>EdTech</li><li>Prototyping</li></ul>
+            <a class="project__link" href="beelinguapp-redesign.html">Read the case study <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article class="project" style="--tint: #F0FBF6; --tint2: #F4ECFF" data-reveal>
+          <div class="stage stage--project" data-scene="squat" aria-hidden="true"></div>
+          <div class="project__body">
+            <p class="meta">UX case study</p>
+            <h3>LiftIQ: gym app with an AI coach</h3>
+            <p>AI motion tracking, video instruction, and written guides for proper form, refined through rounds of user testing.</p>
+            <ul class="tags"><li>AI</li><li>Mobile design</li><li>Fitness</li></ul>
+            <a class="project__link" href="gym-app.html">Read the case study <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================== SKILLS ============================== -->
+    <section class="section skills" id="skills" aria-labelledby="skills-title">
+      <header class="section__head" data-reveal>
+        <p class="eyebrow"><span>05</span>Skills</p>
+        <h2 class="title" id="skills-title">Tools I <em>reach for</em></h2>
+        <p class="section__intro">Every keycap is a skill. Hover them, or type on your keyboard.</p>
+      </header>
+      <div class="keys" data-reveal>
+        <div class="stage stage--keys" data-scene="keyboard" aria-hidden="true"></div>
+        <p class="keys__now" aria-live="polite"><span>Pressed:</span> <b data-skill-now>Java</b></p>
+      </div>
+      <div class="skillsets" data-reveal>
+        <section><h3>Languages</h3><p>Java, JavaScript, Python, C, SQL, HTML/CSS, Lua, Kotlin</p></section>
+        <section><h3>Frameworks &amp; tools</h3><p>React, Node.js, Playwright, Cucumber, Firebase, Bootstrap, Git/GitHub, Jira</p></section>
+        <section><h3>AI &amp; cloud</h3><p>AWS (Lambda, Kinesis, Rekognition), Google Cloud Vertex AI, Gemini, LLM integration</p></section>
+        <section><h3>Product &amp; design</h3><p>PRDs, A/B testing, user research, OKRs, Figma, Effect House</p></section>
+      </div>
+    </section>
+
+    <!-- ============================== CONTACT ============================== -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact__card" data-reveal>
+        <div class="stage stage--plane" data-scene="plane" aria-hidden="true"></div>
+        <div class="contact__body">
+          <p class="eyebrow"><span>06</span>Contact</p>
+          <h2 class="title" id="contact-title">Let's <em>connect</em></h2>
+          <p class="contact__lede">Always down to chat about projects, opportunities, or just cool tech stuff. Feel free to reach out!</p>
+          <div class="contact__actions">
+            <a class="btn btn--dark" href="mailto:lukedhartzell@gmail.com" data-send>Send email<span aria-hidden="true">↗</span></a>
+            <button class="btn btn--light" type="button" data-copy="lukedhartzell@gmail.com">Copy email</button>
+          </div>
+          <ul class="contact__links">
+            <li><span>Email</span><a href="mailto:lukedhartzell@gmail.com">lukedhartzell@gmail.com</a></li>
+            <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/luke-hartzell/" target="_blank" rel="noopener">@luke-hartzell</a></li>
+            <li><span>GitHub</span><a href="https://github.com/LukeHartzell1" target="_blank" rel="noopener">@LukeHartzell1</a></li>
+            <li><span>TikTok</span><a href="https://www.tiktok.com/@lukes.filters" target="_blank" rel="noopener">@lukes.filters</a></li>
+          </ul>
         </div>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">
-        <div class="copyright">
-          &copy; <span id="current-year"></span> <strong>Luke Hartzell</strong>. All Rights Reserved
-        </div>
-      </div>
-    </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span data-year>2026</span> Luke Hartzell. Hand-built with three.js; every 3D object here is code.</p>
+    <p><button class="footer__8bit" type="button" data-8bit>Try 8-bit mode</button><a href="#top">Back to top ↑</a></p>
   </footer>
-
-  <!-- Back to Top Button -->
-  <a href="#" class="back-to-top" id="back-to-top"><i class="fas fa-arrow-up"></i></a>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="script.js"></script>
+  <div class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
-
