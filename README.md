@@ -1,6 +1,6 @@
 # lukehartzell1.github.io
 
-My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), but every section, role, and project is dressed as the thing it's about: About is a game's player profile, Education is a notebook page with a report card, the Snowflake role is an agent session in a terminal, AWS is an ops console, Chamberlain is a test report, LiftIQ is a workout tracker, Contact is an airmail postcard, and so on. Each one also has its own 3D sculpture, built in code with three.js.
+My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), but every section, role, and project is dressed as the thing it's about: About is a game's character-select screen, Education is a notebook page with a report card, the Snowflake role is an agent session in a terminal, AWS is an ops console, Chamberlain is a test report, Gopu is a restroom map, LiftIQ is a workout tracker, and so on. The hero cycles through "I'm a ..." with each word dressed as its world, and Contact ends back in the lobby (with a note for AI agents). Each one also has its own 3D sculpture, built in code with three.js.
 
 Hand-written HTML, CSS, and vanilla JS. No build step, no frameworks, no trackers. GitHub Pages serves it straight from the repo.
 
@@ -25,7 +25,8 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 
 | Section | Scene | What it shows |
 | --- | --- | --- |
-| Hero | `hero` | A liquid pearl with tiny versions of everything below in orbit |
+| Hero | `hero` | A liquid pearl with six miniatures in orbit, one per "I'm a ..." word; the current word's miniature swings to the front |
+| About | `profile` | A character-select pedestal for the trading card, with the card's five energy types orbiting |
 | Education | `education` | A 4.0 built one course at a time, topped with a grad cap |
 | Snowflake | `snowflakeRole` | An ice crystal growing its branches, orbited by my two CoCo skills: a clapperboard (agentic video editor) and a demo screen (agentic demo maker) |
 | Interview Prepper | `habitLoop` | Practice cards riding a Möbius habit loop |
@@ -35,7 +36,7 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | AI Makerspace Nexus | `gpuScan` | A lecture slide gets scanned on a GPU; tags and a summary pop out |
 | Intelligent Tutoring | `bstTutor` | A tutor orb walks a binary search tree |
 | Teaching assistant | `hall` | 900 students; help ripples out from the front |
-| Projects | `spotify`, `identifai`, `gopu`, `fog`, `book`, `squat` | A record with a live EQ ring, a recognition reticle naming faces, an assistant scheduling a calendar, you hidden among decoy personas, a story book with greetings, and a squat with an AI form coach |
+| Projects | `spotify`, `identifai`, `gopu`, `fog`, `book`, `squat` | A record with a live EQ ring, a recognition reticle naming faces, restroom pins filtered down on a city map, you hidden among decoy personas, a story book with greetings, and a squat with an AI form coach |
 | Skills | `keyboard` | A keyboard where every keycap is a skill (type on yours to press them) |
 | Contact | `plane` | A paper plane; "Email me" launches it |
 

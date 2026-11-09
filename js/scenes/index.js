@@ -3,8 +3,9 @@ import { hero } from './hero.js';
 import { education, snowflakeRole, habitLoop, arPhone, router, garage, gpuScan, bstTutor, hall } from './work.js';
 import { spotify, identifai, gopu, fog, book, squat } from './projects.js';
 import { keyboard, plane } from './extras.js';
+import { profile } from './profile.js';
 
 export const registry = {
   hero, education, snowflakeRole, habitLoop, arPhone, router, garage, gpuScan, bstTutor, hall,
-  spotify, identifai, gopu, fog, book, squat, keyboard, plane,
+  spotify, identifai, gopu, fog, book, squat, keyboard, plane, profile,
 };

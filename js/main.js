@@ -30,6 +30,42 @@ function toast(msg) {
 /* ---------- hero: the lights come up once the page has painted ---------- */
 requestAnimationFrame(() => requestAnimationFrame(() => $('.hero')?.classList.add('is-in')));
 
+/* ---------- hero: "I'm a ..." cycles through worlds ----------
+   Each word is styled like its world; the 3D scene hears 'hero-role' and swings
+   the matching miniature to the front. Hovering the "In orbit" legend picks one. */
+const iam = $('[data-iam]');
+if (iam) {
+  const words = $$('.iam__word', iam);
+  const legend = $$('[data-legend]');
+  let at = -1;
+  let held = false;
+  const show = (i) => {
+    if (i === at) return;
+    const prev = words[at];
+    at = i;
+    words.forEach((w, k) => {
+      w.classList.toggle('is-on', k === i);
+      w.classList.toggle('is-off', w === prev);
+    });
+    legend.forEach((a) => a.classList.toggle('is-on', Number(a.dataset.legend) === i));
+    window.__heroRole = i;
+    window.dispatchEvent(new CustomEvent('hero-role', { detail: i }));
+  };
+  show(0);
+  if (!reduced) {
+    let visible = true;
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(iam);
+    setInterval(() => { if (visible && !held && !document.hidden) show((at + 1) % words.length); }, 2600);
+  }
+  legend.forEach((a) => {
+    const pick = () => { held = true; show(Number(a.dataset.legend)); };
+    a.addEventListener('mouseenter', pick);
+    a.addEventListener('focus', pick);
+    a.addEventListener('mouseleave', () => { held = false; });
+    a.addEventListener('blur', () => { held = false; });
+  });
+}
+
 /* ---------- worlds: number the steps, play each entrance once ---------- */
 const onEnter = new Map(); // element -> callbacks to run when it first turns on
 function whenOn(el, fn) {

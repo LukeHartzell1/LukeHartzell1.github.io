@@ -210,100 +210,144 @@ export function identifai(env) {
 }
 
 /* ======================================================================
-   GOPU — an assistant orb drops each task into a free calendar slot
+   GOPU — Google won't search for public restrooms, so: a map, pins drop in,
+   the filters thin them out, and a route leads to the nearest one
    ====================================================================== */
 export function gopu(env) {
   const { scene, camera } = stage(env, { fov: 28 });
-  const cam = rig(camera, { pos: [0, 6.4, 7.6], look: [0, 0.35, 0.1] });
-  const board = new THREE.Mesh(rbox(4.0, 0.16, 2.9, 0.14), M.ceramic('#ffffff', { roughness: 0.32 }));
+  const cam = rig(camera, { pos: [0, 6.3, 7.5], look: [0, 0.3, 0.15] });
+  const board = new THREE.Mesh(rbox(4.2, 0.16, 3.0, 0.14), M.ceramic('#ffffff', { roughness: 0.35 }));
   board.position.y = -0.08;
-  const gridTex = canvasTex(1024, 744, (g, w, h) => {
-    g.fillStyle = '#ffffff';
+  const mapTex = canvasTex(1024, 732, (g, w, h) => {
+    g.fillStyle = '#E7EEE5';
     g.fillRect(0, 0, w, h);
-    const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-    g.font = `500 30px ${MONO}`;
-    g.fillStyle = '#8a8f9c';
-    g.textAlign = 'center';
-    days.forEach((d, i) => g.fillText(d, 132 + i * 190, 52));
-    g.strokeStyle = '#ecedf1';
-    g.lineWidth = 3;
-    for (let r = 0; r <= 5; r++) {
-      g.beginPath();
-      g.moveTo(40, 84 + r * 128);
-      g.lineTo(w - 40, 84 + r * 128);
-      g.stroke();
+    // A park and a waterfront.
+    g.fillStyle = '#CDE6C6';
+    roundRectPath(g, 640, 60, 250, 180, 34);
+    g.fill();
+    g.fillStyle = '#CBDDF6';
+    g.beginPath();
+    g.moveTo(0, 590);
+    g.bezierCurveTo(210, 545, 330, 650, 520, 615);
+    g.bezierCurveTo(700, 580, 830, 690, w, 655);
+    g.lineTo(w, h);
+    g.lineTo(0, h);
+    g.closePath();
+    g.fill();
+    // Blocks.
+    g.fillStyle = '#DCE3DA';
+    for (const [x, y, bw, bh] of [[40, 40, 120, 90], [220, 40, 160, 90], [420, 40, 170, 90], [40, 190, 120, 120], [220, 190, 160, 120], [440, 300, 150, 120], [650, 300, 160, 120], [860, 300, 130, 120], [220, 360, 160, 110]]) {
+      roundRectPath(g, x, y, bw, bh, 10);
+      g.fill();
     }
-    for (let c = 0; c <= 5; c++) {
-      g.beginPath();
-      g.moveTo(37 + c * 190, 84);
-      g.lineTo(37 + c * 190, h - 20);
-      g.stroke();
-    }
+    // Streets.
+    g.strokeStyle = '#ffffff';
+    g.lineCap = 'round';
+    g.lineWidth = 20;
+    for (const x of [190, 405, 615, 835]) { g.beginPath(); g.moveTo(x, 20); g.lineTo(x, 560); g.stroke(); }
+    for (const y of [160, 340, 500]) { g.beginPath(); g.moveTo(20, y); g.lineTo(w - 20, y); g.stroke(); }
+    g.lineWidth = 30;
+    g.beginPath();
+    g.moveTo(60, 560);
+    g.lineTo(960, 40);
+    g.stroke();
   });
-  const grid = label(gridTex, 3.86, 2.8);
-  grid.rotation.x = -Math.PI / 2;
-  grid.position.y = 0.002;
-  scene.add(board, grid);
-  const slot = (c, r) => new THREE.Vector3(-1.53 + c * 0.742, 0.1, -0.86 + r * 0.482);
-  const tasks = [
-    ['Standup', C.lilac, 0, 0], ['Gym', C.pink, 1, 3], ['Deep work', C.sky, 2, 1], ['1:1', C.mint, 3, 0],
-    ['Ship it', C.peach, 4, 2], ['Study', C.lilac2, 1, 1], ['Lunch', '#ffe3b8', 3, 2],
-  ].map(([name, colr, c, r], i) => {
+  const map = label(mapTex, 4.0, 2.86);
+  map.rotation.x = -Math.PI / 2;
+  map.position.y = 0.002;
+  scene.add(board, map);
+
+  // Map units: the texture's 1024x732 maps onto 4.0 x 2.86.
+  const at = (px, py) => new THREE.Vector3((px / 1024 - 0.5) * 4.0, 0, (py / 732 - 0.5) * 2.86);
+  const spots = [[150, 120], [300, 250], [470, 180], [560, 420], [700, 120], [760, 400], [905, 250], [330, 470], [905, 470]].map(([x, y]) => at(x, y));
+  const hits = new Set([1, 3, 5]);
+  const grey = new THREE.Color('#AEB4C0');
+  const blue = new THREE.Color('#2F7BF6');
+  const wcTex = textTex('WC', { w: 128, h: 128, size: 58, weight: 800, color: '#ffffff', bg: '#2F7BF6', radius: 64 });
+  const pins = spots.map((p, i) => {
     const g = new THREE.Group();
-    const b = new THREE.Mesh(rbox(0.66, 0.14, 0.4, 0.07), M.gloss(colr));
-    const tx = label(textTex(name, { w: 384, h: 192, size: 64, weight: 600 }), 0.6, 0.3);
-    tx.rotation.x = -Math.PI / 2;
-    tx.position.y = 0.072;
-    g.add(b, tx);
-    const rr = rng(30 + i);
-    g.userData = {
-      slot: slot(c, r),
-      home: new THREE.Vector3(-1.5 + (i / 6) * 3.0 + (rr() - 0.5) * 0.3, 1.25 + rr() * 0.7, -0.35 + (rr() - 0.5) * 0.7),
-      rot: new THREE.Euler((rr() - 0.5) * 0.9, (rr() - 0.5) * 1.6, (rr() - 0.5) * 0.9),
-    };
+    const mat = M.gloss('#AEB4C0');
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 28, 20), mat);
+    head.position.y = 0.42;
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.32, 24), mat);
+    tip.rotation.x = Math.PI;
+    tip.position.y = 0.24;
+    g.add(head, tip);
+    let wc = null;
+    if (hits.has(i)) {
+      wc = sprite(wcTex, 0.3, 0.3);
+      wc.position.y = 0.82;
+      g.add(wc);
+    }
+    g.position.copy(p);
     scene.add(g);
-    return g;
+    return { g, mat, wc, hit: hits.has(i), p };
   });
-  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.2, 40, 28), enhance(M.pearl('#edeff4'), { holo: 0.9 }));
-  const halo = sprite(dotTex(), 0.9, 0.9, { color: '#c3cad8', opacity: 0.7 });
-  orb.add(halo);
-  scene.add(orb);
+
+  // You are here, with a pulse.
+  const youPos = at(380, 610 - 160);
+  const you = new THREE.Mesh(new THREE.CircleGeometry(0.11, 40), M.flat('#2F7BF6'));
+  you.rotation.x = -Math.PI / 2;
+  you.position.copy(youPos).setY(0.012);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.13, 0.17, 48), M.flat('#2F7BF6', { transparent: true, opacity: 0.5 }));
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.copy(you.position).setY(0.013);
+  scene.add(you, ring);
+
+  // Route to the nearest hit, drawn as dots along the streets.
+  const near = pins[3].p;
+  const route = new THREE.CatmullRomCurve3([
+    you.position.clone(), at(405, 450).setY(0.012), at(405, 420).setY(0.012), at(520, 420).setY(0.012), near.clone().setY(0.012),
+  ], false, 'catmullrom', 0.1);
+  const D = 26;
+  const dots = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.035, 0.035, 0.012, 16), M.flat('#2F7BF6'), D);
+  scene.add(dots);
+  const search = tag('public restrooms near me', { w: 820, size: 44, scale: 1.0, color: '#17201A' });
+  search.position.set(-0.55, 1.55, -1.05);
+  scene.add(search);
   const floor = shadow(6.4, 4.6, 0.12);
   floor.position.y = -0.17;
   scene.add(floor);
-  const STEP = 0.95;
-  const P = 0.6 + tasks.length * STEP + 2.2;
+
+  const P = 8.2;
   const v = new THREE.Vector3();
-  const q = new THREE.Quaternion();
-  const qi = new THREE.Quaternion();
   return {
-    scene, camera, posterT: 0.6 + tasks.length * STEP + 0.6,
+    scene, camera, posterT: 5.6,
     update(s) {
       cam(s);
-      const tt = s.reduced ? P - 2.2 : loop(s.t, P) * P;
-      const reset = easeInOut(seg(tt, P - 1.0, 0.9));
-      tasks.forEach((g, i) => {
-        const ud = g.userData;
-        const start = 0.6 + i * STEP;
-        const k = easeInOut(seg(tt, start + 0.35, 0.55)) * (1 - reset);
-        v.lerpVectors(ud.home, ud.slot, k);
-        v.y += Math.sin(Math.PI * k) * 0.7;
-        if (k < 0.001) v.y += Math.sin(s.time * 1.4 + i) * 0.06;
-        g.position.copy(v);
-        q.setFromEuler(ud.rot);
-        g.quaternion.copy(q).slerp(qi, k);
-        const intro = easeOutBack(seg(s.t, i * 0.06, 0.6));
-        g.scale.setScalar(Math.max(0.0001, intro));
+      const tt = s.reduced ? 5.6 : loop(s.t, P) * P;
+      const out = easeInOut(seg(tt, P - 0.8, 0.7));
+      const filt = easeInOut(seg(tt, 2.5, 0.8));
+      pins.forEach((pin, i) => {
+        const drop = seg(tt, 0.3 + i * 0.16, 0.55);
+        const y = (1 - easeOutBack(drop, 1.8)) * 1.6;
+        pin.g.position.set(pin.p.x, y, pin.p.z);
+        let sc = drop > 0 ? 1 : 0.0001;
+        if (pin.hit) {
+          pin.mat.color.copy(grey).lerp(blue, filt);
+          sc *= 1 + filt * 0.18;
+          pin.g.position.y += filt * 0.06;
+          if (pin.wc) pin.wc.scale.setScalar(Math.max(0.0001, easeOutBack(seg(tt, 3.0, 0.5)) * 0.3));
+        } else {
+          pin.mat.color.copy(grey);
+          sc *= 1 - filt * 0.55;
+          pin.mat.transparent = true;
+          pin.mat.opacity = 1 - filt * 0.6;
+        }
+        pin.g.scale.setScalar(Math.max(0.0001, sc * (1 - out)));
       });
-      const i = clamp(Math.floor((tt - 0.6) / STEP), 0, tasks.length - 1);
-      const f = clamp((tt - 0.6) / STEP - i);
-      const g = tasks[i];
-      const near = g.position.clone().add(new THREE.Vector3(0, 0.38, 0));
-      const done = tt > 0.6 + tasks.length * STEP;
-      v.copy(done ? new THREE.Vector3(2.2, 1.6, 0.6) : near);
-      orb.position.lerp(v, s.reduced ? 1 : 1 - Math.exp(-(f < 0.4 ? 9 : 14) * s.dt));
-      orb.position.y += Math.sin(s.time * 3) * 0.004;
-      scene.rotation.y = Math.sin(s.time * 0.3) * 0.12 + s.px * 0.15;
+      const rk = clamp((tt - 3.5) / 1.2) * (1 - out);
+      const shown = Math.floor(rk * D);
+      for (let i = 0; i < D; i++) {
+        route.getPointAt(i / (D - 1), v);
+        setInst(dots, i, v.x, v.y, v.z, 0, 0, 0, i < shown ? 1 : 0.0001);
+      }
+      dots.instanceMatrix.needsUpdate = true;
+      const pulse = (s.time * 0.8) % 1;
+      ring.scale.setScalar(1 + pulse * 1.6);
+      ring.material.opacity = 0.5 * (1 - pulse);
+      search.material.opacity = easeOut(seg(s.t, 0.2, 0.6));
+      scene.rotation.y = Math.sin(s.time * 0.3) * 0.1 + s.px * 0.15;
     },
   };
 }
