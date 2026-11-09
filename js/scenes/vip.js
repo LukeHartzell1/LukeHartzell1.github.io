@@ -265,7 +265,7 @@ export function studyBuddy(env) {
   }
 
   // Your phone, up close, where it all lands.
-  const phone = put(root, new THREE.Group(), 2.3, 0.85, 2.45);
+  const phone = put(root, new THREE.Group(), 2.05, 0.85, 2.5);
   phone.rotation.set(-0.16, -0.3, 0.05);
   put(phone, box(1.2, 2.3, 0.08, M.ceramic('#F4F6FA', { roughness: 0.3 }), 0.14));
   put(phone, new THREE.Mesh(new THREE.PlaneGeometry(1.08, 2.14), M.flat('#FFFFFF')), 0, 0, 0.045);
@@ -286,7 +286,7 @@ export function studyBuddy(env) {
   students.forEach((s) => {
     stops.push(s.g.position.clone().add(new THREE.Vector3(0, 1.75, 0)));
   });
-  stops.push(new THREE.Vector3(1.55, 2.35, 2.0));
+  stops.push(new THREE.Vector3(1.3, 2.35, 2.05));
   const flight = new THREE.CatmullRomCurve3(stops, false, 'centripetal');
   const sparks = [...Array(14)].map((_, i) => {
     const sp = put(root, sprite(dotTex(), 0.16, 0.16, { color: i % 2 ? '#4BE3A6' : '#7CA6FF', opacity: 0, blending: THREE.AdditiveBlending }));
