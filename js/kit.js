@@ -136,7 +136,7 @@ export function roundRectPath(g, x, y, w, h, r) {
 
 /* ---------- textures ---------- */
 export const FONT = '"Archivo", system-ui, sans-serif';
-export const MONO = FONT;
+export const MONO = '"IBM Plex Mono", ui-monospace, monospace';
 
 export function canvasTex(w, h, draw, { srgb = true } = {}) {
   const c = document.createElement('canvas');

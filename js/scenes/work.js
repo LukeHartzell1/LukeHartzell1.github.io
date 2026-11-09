@@ -810,7 +810,7 @@ export function bstTutor(env) {
   orb.add(orbCore);
   root.add(orb);
   const big = tag('O(log n)', { size: 46, scale: 1 });
-  big.position.set(2.5, 2.3, 0.3);
+  big.position.set(1.85, 2.45, 0.3);
   scene.add(big);
   const targets = [43, 81, 18, 62, 31, 93];
   const pathFor = (v) => {

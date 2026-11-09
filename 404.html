@@ -14,19 +14,20 @@
   <style>
     .lost { min-height: 100svh; display: grid; align-content: center; gap: 28px; padding: 48px var(--gutter); }
     .lost__code { margin: 0; font-size: clamp(7rem, 30vw, 22rem); font-weight: 800; font-stretch: 125%; line-height: 0.8; letter-spacing: -0.05em; }
-    .lost .placard { max-width: 26rem; padding: 14px 18px 15px; border-radius: 2px; background: #fff; box-shadow: 0 10px 24px -16px rgba(17, 17, 20, 0.45); }
-    .lost .placard__title { font-size: 1.05rem; font-stretch: 100%; }
+    .lost .label { max-width: 26rem; margin: 0; padding: 14px 18px 15px; border-radius: 2px; background: #fff; box-shadow: 0 10px 24px -16px rgba(17, 17, 20, 0.45); }
+    .lost .label b { display: block; font-size: 1.05rem; font-weight: 750; }
+    .lost .label span { display: block; margin-top: 6px; font-size: 0.95rem; font-style: italic; color: var(--muted); }
     .lost__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin: 0; }
   </style>
 </head>
 <body>
   <main class="lost">
     <h1 class="lost__code">404</h1>
-    <p class="placard">
-      <span class="placard__title">Empty wall, 2026</span>
-      <span class="placard__medium">The piece that hung here has wandered off, probably to research the optimal workout split.</span>
+    <p class="label">
+      <b>Nothing in this world</b>
+      <span>This page wandered off, probably to research the optimal workout split.</span>
     </p>
-    <p class="lost__cta"><a class="btn" href="/">Back to the exhibition</a><a class="link" href="/#projects">See the projects</a></p>
+    <p class="lost__cta"><a class="btn" href="/">Back home</a><a class="link" href="/#projects">See the projects</a></p>
   </main>
 </body>
 </html>

@@ -1,6 +1,6 @@
 # lukehartzell1.github.io
 
-My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), laid out like a small exhibition: each section is a room with its own wall color, every project and role is a 3D sculpture built in code with three.js, and each sculpture has a museum-style placard.
+My personal site. Same sections as always (About, Education, Experience, Projects, Skills, Contact), but every section, role, and project is dressed as the thing it's about: About is a game's player profile, Education is a notebook page with a report card, the Snowflake role is an agent session in a terminal, AWS is an ops console, Chamberlain is a test report, LiftIQ is a workout tracker, Contact is an airmail postcard, and so on. Each one also has its own 3D sculpture, built in code with three.js.
 
 Hand-written HTML, CSS, and vanilla JS. No build step, no frameworks, no trackers. GitHub Pages serves it straight from the repo.
 
@@ -10,9 +10,9 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 
 | File | What it is |
 | --- | --- |
-| `index.html` | The page: hero, about (with a holographic trading card), education, experience, projects, skills, contact |
-| `style.css` | All styles, in numbered sections (tokens at the top: wall, ink, graphite, cobalt, signal orange, silver; one type family, Archivo) |
-| `js/main.js` | Page behavior: the hero's lights-up moment, the nav that takes the color of the room under it, the card, the experience scroll story, the projects gallery, 8-bit mode, booting the 3D |
+| `index.html` | The page: the lobby (hero), then one themed world per section, role, and project |
+| `style.css` | All styles, in numbered sections. Every world is a `.band` with a `theme-*` class that sets a few tokens (`--band-bg`, `--band-fg`, `--band-accent`...) on one shared skeleton. Three type families: Archivo, IBM Plex Mono, Literata |
+| `js/main.js` | Page behavior: the hero's lights-up moment, each world's one-time entrance, the nav that takes the colors of the world under it, the RPG dialogue, the quiz, the card, the projects gallery, 8-bit mode, booting the 3D |
 | `js/engine.js` | The shared renderer, stage mounting, crossfades, input, adaptive quality, and the 8-bit pixel pass |
 | `js/kit.js` | Shared palette, easing, materials, text labels, shadows, and the camera rig |
 | `js/scenes/` | The scenes: `hero.js`, `work.js` (education + experience), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
@@ -41,14 +41,15 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 
 ## Easter eggs
 
-- **8-bit mode** (top-right button, the footer link, or ↑↑↓↓←→←→BA): every scene drops to a dithered four-color palette and the type goes pixel.
-- **The trading card** in About tilts with your cursor and flips on click.
+- **8-bit mode** (top-right button, the footer link, or ↑↑↓↓←→←→BA): every 3D scene drops to a dithered four-color palette.
+- **The trading card** in About tilts with your cursor and flips on click; the dialogue box next to it pages through like an RPG.
+- **The quiz** in the tutoring world actually checks your answer.
 
 ## Editing
 
 - **Copy:** it's all in `index.html`.
 - **A new 3D scene:** add a function to one of the files in `js/scenes/` that returns `{ scene, camera, update(state) }` (use `stage()` and `rig()` from `js/kit.js`), register it in `js/scenes/index.js`, then put `<div class="stage" data-scene="yourName"></div>` in the page.
-- **A new role:** copy an `<li class="role placard">` in `index.html` and set `data-role` (its scene) and `data-badge-text` (the placard's medium line, shown under the sticky sculpture).
+- **A new role or project:** copy an `<article class="band theme-…">` (or a `.slide` in the gallery), point its `.stage` at a scene with `data-scene`, and pick or add a `theme-*` block in `style.css`. Mark anything that should appear in sequence with `data-step`.
 
 ## Run it locally
 
