@@ -3,38 +3,9 @@
    document flow (so it scrolls perfectly with the page). Each frame the shared
    renderer draws a stage's scene into a corner of an offscreen buffer and the
    pixels are copied into that stage's canvas. Only stages near the viewport
-   render, quality adapts to the device, and "8-bit mode" is a cheap
-   low-res + palette pass on the same path. */
+   render, and quality adapts to the device. */
 import * as THREE from 'three';
 import { clamp, damp } from './kit.js';
-
-const PALETTE = ['#0B1033', '#2142E8', '#8EA6FF', '#EEF1FF'].map((hex) => {
-  const n = parseInt(hex.slice(1), 16);
-  return new THREE.Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
-});
-
-const PIXEL_VERT = /* glsl */ `
-  varying vec2 vUv;
-  void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
-`;
-const PIXEL_FRAG = /* glsl */ `
-  uniform sampler2D tDiffuse;
-  uniform vec3 pal[4];
-  uniform float exposure;
-  varying vec2 vUv;
-  float bayer2(vec2 a) { a = floor(a); return fract(dot(a, vec2(0.5, a.y * 0.75))); }
-  float bayer4(vec2 a) { return bayer2(0.5 * a) * 0.25 + bayer2(a); }
-  vec3 aces(vec3 x) { return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0); }
-  void main() {
-    vec4 c = texture2D(tDiffuse, vUv);
-    if (c.a < 0.4) { gl_FragColor = vec4(0.0); return; }
-    vec3 col = pow(aces(c.rgb * exposure), vec3(1.0 / 2.2));
-    float l = dot(col, vec3(0.299, 0.587, 0.114));
-    float v = l + (bayer4(gl_FragCoord.xy) - 0.5) * 0.1;
-    vec3 o = v < 0.5 ? pal[0] : (v < 0.74 ? pal[1] : (v < 0.92 ? pal[2] : pal[3]));
-    gl_FragColor = vec4(o, 1.0);
-  }
-`;
 
 /* A soft pastel photo studio for reflections: a big white softbox overhead,
    pink and sky panels on the sides, a lilac bounce behind. Every glossy or
@@ -93,7 +64,6 @@ export function createEngine() {
   let reduced = reducedMQ.matches;
   let dprBase = Math.min(window.devicePixelRatio || 1, smallMQ.matches ? 1.6 : 2);
   let quality = 1;
-  let pixelOn = false;
 
   /* ---------- offscreen buffer ---------- */
   let bufW = 0;
@@ -105,28 +75,7 @@ export function createEngine() {
     renderer.setSize(bufW, bufH, false);
   }
 
-  /* ---------- 8-bit pass ---------- */
-  const rts = new Map();
-  const rtFor = (w, h) => {
-    const k = `${w}x${h}`;
-    if (!rts.has(k)) {
-      rts.set(k, new THREE.WebGLRenderTarget(w, h, {
-        minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true, samples: 0,
-      }));
-    }
-    return rts.get(k);
-  };
-  const quadMat = new THREE.ShaderMaterial({
-    uniforms: { tDiffuse: { value: null }, pal: { value: PALETTE }, exposure: { value: 1.06 } },
-    vertexShader: PIXEL_VERT, fragmentShader: PIXEL_FRAG, depthTest: false, depthWrite: false,
-  });
-  const quadScene = new THREE.Scene();
-  const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), quadMat);
-  quad.frustumCulled = false;
-  quadScene.add(quad);
-
-  function draw(inst, w, h, ctx, alpha, cssW) {
+  function draw(inst, w, h, ctx, alpha) {
     const cam = inst.camera;
     const aspect = w / h;
     if (Math.abs(cam.aspect - aspect) > 1e-4) {
@@ -134,38 +83,15 @@ export function createEngine() {
       cam.updateProjectionMatrix();
       inst.onAspect?.(aspect);
     }
+    ensure(w, h);
+    renderer.setRenderTarget(null);
+    renderer.setViewport(0, 0, w, h);
+    renderer.setScissor(0, 0, w, h);
+    renderer.setScissorTest(true);
+    renderer.clear();
+    renderer.render(inst.scene, cam);
     ctx.globalAlpha = alpha;
-    if (pixelOn) {
-      const block = Math.max(2, Math.round((w / cssW) * 5));
-      const lw = Math.max(8, Math.ceil(w / block));
-      const lh = Math.max(8, Math.ceil(h / block));
-      ensure(lw, lh);
-      const rt = rtFor(lw, lh);
-      renderer.setRenderTarget(rt);
-      renderer.setScissorTest(false);
-      renderer.setViewport(0, 0, lw, lh);
-      renderer.clear();
-      renderer.render(inst.scene, cam);
-      renderer.setRenderTarget(null);
-      renderer.setViewport(0, 0, lw, lh);
-      renderer.setScissor(0, 0, lw, lh);
-      renderer.setScissorTest(true);
-      renderer.clear();
-      quadMat.uniforms.tDiffuse.value = rt.texture;
-      renderer.render(quadScene, quadCam);
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(glCanvas, 0, bufH - lh, lw, lh, 0, 0, w, h);
-    } else {
-      ensure(w, h);
-      renderer.setRenderTarget(null);
-      renderer.setViewport(0, 0, w, h);
-      renderer.setScissor(0, 0, w, h);
-      renderer.setScissorTest(true);
-      renderer.clear();
-      renderer.render(inst.scene, cam);
-      ctx.imageSmoothingEnabled = true;
-      ctx.drawImage(glCanvas, 0, bufH - h, w, h, 0, 0, w, h);
-    }
+    ctx.drawImage(glCanvas, 0, bufH - h, w, h, 0, 0, w, h);
     ctx.globalAlpha = 1;
   }
 
@@ -187,7 +113,7 @@ export function createEngine() {
   let clock = 0;
   const S = {
     t: 0, time: 0, dt: 0, px: 0, py: 0, hover: false, gx: 0, gy: 0, progress: 0.5,
-    reduced: false, pixel: false, aspect: 1, active: true,
+    reduced: false, aspect: 1, active: true,
   };
 
   const ro = new ResizeObserver((entries) => {
@@ -286,7 +212,6 @@ export function createEngine() {
     S.gy = reduced ? 0 : G.gy;
     S.progress = clamp((vh - r.top) / (vh + r.height));
     S.reduced = reduced;
-    S.pixel = pixelOn;
     S.aspect = tg.pw / tg.ph;
 
     tg.ctx.clearRect(0, 0, tg.pw, tg.ph);
@@ -301,7 +226,7 @@ export function createEngine() {
       S.t = reduced ? (L.inst.posterT ?? 8) : clock - L.t0;
       S.active = L.target === 1;
       L.inst.update?.(S);
-      draw(L.inst, tg.pw, tg.ph, tg.ctx, L.alpha, tg.w);
+      draw(L.inst, tg.pw, tg.ph, tg.ctx, L.alpha);
     }
     tg.dirty = false;
   }
@@ -362,11 +287,6 @@ export function createEngine() {
     envMap,
     mount,
     get reduced() { return reduced; },
-    get pixel() { return pixelOn; },
-    setPixel(on) {
-      pixelOn = !!on;
-      for (const tg of targets) tg.dirty = true;
-    },
     /* Jump every scene's clock forward (used by screenshot tests). */
     advance(sec) { clock += sec; },
     get clock() { return clock; },

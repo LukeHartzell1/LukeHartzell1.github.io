@@ -12,10 +12,10 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | --- | --- |
 | `index.html` | The page: the universe (hero), then one themed world per section, role, and project |
 | `style.css` | All styles, in numbered sections. Every world is a `.band` with a `theme-*` class that sets a few tokens (`--band-bg`, `--band-fg`, `--band-accent`...) on one shared skeleton. Three type families: Archivo, IBM Plex Mono, Literata |
-| `js/main.js` | Page behavior: the hero's reveal and word reel, each world's one-time entrance, the nav that takes the colors of the world under it, the tour of my room, the quiz, the card, the projects gallery, 8-bit mode, booting the 3D |
-| `js/engine.js` | The shared renderer, stage mounting, crossfades, input, adaptive quality, and the 8-bit pixel pass |
+| `js/main.js` | Page behavior: the hero's reveal and word reel, each world's one-time entrance, the nav that takes the colors of the world under it, the tour of my room, the quiz, the card, the projects gallery, booting the 3D |
+| `js/engine.js` | The shared renderer, stage mounting, crossfades, input, and adaptive quality |
 | `js/kit.js` | Shared palette, easing, materials, text labels, shadows, and the camera rig |
-| `js/scenes/` | The scenes: `hero.js`, `room.js` (About), `work.js` (education + experience), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
+| `js/scenes/` | The scenes: `hero.js`, `room.js` (About), `work.js` (education + experience), `vip.js` (the two Georgia Tech VIP roles), `projects.js`, `extras.js` (keyboard + paper plane), `builders.js` (shared models) |
 | `vendor/three/` | three.js r169 (only the files the site imports) |
 | `gym-app.html`, `beelinguapp-redesign.html` | UX case studies |
 | `images/opt/` | Optimized images the site loads (originals in `images/`) |
@@ -33,8 +33,8 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | TikTok effects | `arPhone` | My face on a phone; pixel shades drop on cue |
 | AWS | `router` | Events stream in, a λ router drops the noise before on-call |
 | Chamberlain | `garage` | A garage door of test cases: scan, escalate 2 bugs, ship |
-| AI Makerspace Nexus | `gpuScan` | A lecture slide gets scanned on a GPU; tags and a summary pop out |
-| Intelligent Tutoring | `bstTutor` | A tutor orb walks a binary search tree |
+| AI Makerspace Nexus | `studyBuddy` | StudyBuddy at work: a lecture is recorded and its slide OCR-scanned, the capture streams into a GPU rack, and notes write themselves (summary and tags too) before going out to students' phones |
+| Intelligent Tutoring | `tutor` | A student's BST insert is missing its base case: the tutor bot hints in chat, the fix types in, the tests pass, 42 drops into the tree, and a quiz card checks the idea |
 | Teaching assistant | `hall` | 900 students; help ripples out from the front |
 | Projects | `spotify`, `identifai`, `gopu`, `fog`, `book`, `squat` | A record with a live EQ ring, a recognition reticle naming faces, restroom pins filtered down on a city map, you hidden among decoy personas, a story book with greetings, and a squat with an AI form coach |
 | Skills | `keyboard` | A keyboard where every keycap is a skill (type on yours to press them) |
@@ -42,7 +42,6 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 
 ## Easter eggs
 
-- **8-bit mode** (top-right button, the footer link, or ↑↑↓↓←→←→BA): every 3D scene drops to a dithered four-color palette.
 - **The trading card** in About tilts with your cursor (its foil shifts color) and flips on click.
 - **My room** gives itself a tour until you pick a spot: click a marker or the thing itself.
 - **The planets' labels** in the hero: hover one to spin the reel to that word.

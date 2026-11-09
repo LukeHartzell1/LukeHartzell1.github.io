@@ -20,7 +20,6 @@
   <link rel="stylesheet" href="style.css">
   <script>
     document.documentElement.classList.add('js');
-    try { if (localStorage.getItem('lh-8bit') === '1') document.documentElement.classList.add('pixel'); } catch (e) {}
   </script>
   <script type="module" src="js/main.js"></script>
 </head>
@@ -38,10 +37,6 @@
       <a href="index.html#skills">Skills</a>
       <a href="index.html#contact">Contact</a>
     </nav>
-    <button class="nav__8bit" type="button" aria-pressed="false" aria-label="8-bit mode" data-8bit>
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h2v1h1v1h4V5h1V4h2v2h1v6h-2v-2h-1v2H5v-2H4v2H2V6h1z"/></svg>
-      <span>8-bit</span>
-    </button>
     <button class="nav__menu" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
   </header>
   <div class="sheet" id="sheet" hidden>
@@ -231,7 +226,7 @@
   <footer class="footer">
     <div class="footer__in wrap">
       <p>© <span data-year>2026</span> Luke Hartzell. Every object on this site is drawn in code with three.js.</p>
-      <p class="footer__links"><button class="footer__8bit" type="button" aria-pressed="false" data-8bit>8-bit mode</button><a href="index.html">Back home</a></p>
+      <p class="footer__links"><a href="index.html">Back home</a></p>
     </div>
   </footer>
   <div class="toast" role="status" aria-live="polite"></div>

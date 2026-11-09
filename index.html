@@ -26,7 +26,6 @@
   <link rel="stylesheet" href="style.css">
   <script>
     document.documentElement.classList.add('js');
-    try { if (localStorage.getItem('lh-8bit') === '1') document.documentElement.classList.add('pixel'); } catch (e) {}
   </script>
   <script type="importmap">
     { "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
@@ -100,10 +99,6 @@
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="nav__8bit" type="button" aria-pressed="false" aria-label="8-bit mode" data-8bit>
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h2v1h1v1h4V5h1V4h2v2h1v6h-2v-2h-1v2H5v-2H4v2H2V6h1z"/></svg>
-      <span>8-bit</span>
-    </button>
     <button class="nav__menu" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
   </header>
   <div class="sheet" id="sheet" hidden>
@@ -215,14 +210,13 @@
                       <span class="tcg__top">
                         <span class="tcg__evo"><img src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async"></span>
                         <span class="tcg__meta">
-                          <span class="tcg__line"><span class="tcg__stage">STAGE 2</span><span class="tcg__evolves">Evolves from 8-bit Luke</span></span>
+                          <span class="tcg__line"><span class="tcg__stage">STAGE 2</span><span class="tcg__evolves">Evolves from Intern Luke</span></span>
                           <span class="tcg__name">Luke Hartzell</span>
                         </span>
                         <span class="tcg__hp"><small>HP</small>170<svg class="nrg" aria-hidden="true"><use href="#nrg-build"/></svg></span>
                       </span>
                       <span class="tcg__art"><span class="tcg__win">
                         <img class="holo__img" src="images/opt/luke.webp" alt="" width="820" height="1024" loading="lazy" decoding="async">
-                        <img class="holo__img holo__img--px" src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async">
                         <span class="holo__foil"></span>
                       </span></span>
                       <span class="tcg__strip"><span>No. 001</span><span>Product / Builder / DevRel</span><span>Chicago, IL</span></span>
@@ -299,20 +293,18 @@
         <div class="hall__in wrap">
           <header class="room__head">
             <h2 class="room__title" id="xp-title">Experience</h2>
-            <p class="room__note">Eight roles, several at once. Click a bar to jump into its world.</p>
+            <p class="room__note">Eight roles, a few of them at once. Pick one to jump into its world, or keep scrolling through all eight.</p>
           </header>
-          <div class="tl">
-            <div class="tl__axis" aria-hidden="true"><span class="tl__label"></span><span class="tl__track"><i style="--x:.146">2024</i><i style="--x:.439">2025</i><i style="--x:.732">2026</i><i class="tl__now" style="--x:1">Now</i></span></div>
-            <ol class="tl__rows">
-            <li style="--s:0.854;--e:1;--bg:#0B0D11;--fg:#E8EAF0;--ac:#6CB6FF"><a href="#xp-snowflake"><span class="tl__label"><b>Developer Advocate</b><span>Snowflake</span><span class="tl__dates">Jun 2026 – now</span></span><span class="tl__track"><i class="tl__bar tl__bar--now" data-step><em>Jun 2026 – now</em></i></span></a></li>
-            <li style="--s:0.537;--e:1;--bg:#E4EEE7;--fg:#10261A;--ac:#1E7A4C"><a href="#xp-prepper"><span class="tl__label"><b>Founder &amp; Product Lead</b><span>Interview Prepper</span><span class="tl__dates">May 2025 – now</span></span><span class="tl__track"><i class="tl__bar tl__bar--now" data-step><em>May 2025 – now</em></i></span></a></li>
-            <li style="--s:0.146;--e:1;--bg:#09090C;--fg:#F5F5F7;--ac:#FF3B6B"><a href="#xp-tiktok"><span class="tl__label"><b>TikTok Effect Creator</b><span>Luke's Filters</span><span class="tl__dates">Jan 2024 – now</span></span><span class="tl__track"><i class="tl__bar tl__bar--now" data-step><em>Jan 2024 – now</em></i></span></a></li>
-            <li style="--s:0.537;--e:0.634;--bg:#0E141B;--fg:#E6EDF3;--ac:#FF9F43"><a href="#xp-aws"><span class="tl__label"><b>SDE Intern</b><span>Amazon Web Services</span><span class="tl__dates">May – Aug 2025</span></span><span class="tl__track"><i class="tl__bar tl__bar--short" data-step><em>May – Aug 2025</em></i></span></a></li>
-            <li style="--s:0.244;--e:0.341;--bg:#F2F3F5;--fg:#15171C;--ac:#1F9D55"><a href="#xp-chamberlain"><span class="tl__label"><b>Software Engineering Intern</b><span>Chamberlain Group</span><span class="tl__dates">May – Aug 2024</span></span><span class="tl__track"><i class="tl__bar tl__bar--short" data-step><em>May – Aug 2024</em></i></span></a></li>
-            <li style="--s:0.317;--e:1;--bg:#EDF1F7;--fg:#121A2B;--ac:#2E5BFF"><a href="#xp-nexus"><span class="tl__label"><b>Software Engineer &amp; PM</b><span>AI Makerspace Nexus</span><span class="tl__dates">Aug 2024 – now</span></span><span class="tl__track"><i class="tl__bar tl__bar--now" data-step><em>Aug 2024 – now</em></i></span></a></li>
-            <li style="--s:0.146;--e:0.268;--bg:#F7F7F3;--fg:#1B1E26;--ac:#1F5FD6"><a href="#xp-tutoring"><span class="tl__label"><b>Software Engineer &amp; Project Manager</b><span>Intelligent Tutoring</span><span class="tl__dates">Jan – May 2024</span></span><span class="tl__track"><i class="tl__bar tl__bar--short" data-step><em>Jan – May 2024</em></i></span></a></li>
-            <li style="--s:0.024;--e:0.585;--bg:#1F3A30;--fg:#F1F3EE;--ac:#F7B7C6"><a href="#xp-ta"><span class="tl__label"><b>Teaching Assistant</b><span>Georgia Tech</span><span class="tl__dates">Aug 2023 – Dec 2025</span></span><span class="tl__track"><i class="tl__bar" data-step><em>Aug 2023 – Dec 2025</em></i></span></a></li>
-            </ol>
+          <ol class="roles">
+            <li style="--ac:#6CB6FF" data-step><a href="#xp-snowflake"><span class="roles__n">01</span><span class="roles__t"><b>Developer Advocate</b> <span class="roles__co">Snowflake</span></span><span class="roles__when">Jun 2026 – <em>now</em></span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#3FD08A" data-step><a href="#xp-prepper"><span class="roles__n">02</span><span class="roles__t"><b>Founder &amp; Product Lead</b> <span class="roles__co">Interview Prepper</span></span><span class="roles__when">May 2025 – <em>now</em></span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#FF4F7E" data-step><a href="#xp-tiktok"><span class="roles__n">03</span><span class="roles__t"><b>TikTok Effect Creator</b> <span class="roles__co">Luke's Filters</span></span><span class="roles__when">Jan 2024 – <em>now</em></span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#FF9F43" data-step><a href="#xp-aws"><span class="roles__n">04</span><span class="roles__t"><b>SDE Intern</b> <span class="roles__co">Amazon Web Services</span></span><span class="roles__when">May – Aug 2025</span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#33D1B5" data-step><a href="#xp-chamberlain"><span class="roles__n">05</span><span class="roles__t"><b>Software Engineering Intern</b> <span class="roles__co">Chamberlain Group</span></span><span class="roles__when">May – Aug 2024</span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#7C9BFF" data-step><a href="#xp-nexus"><span class="roles__n">06</span><span class="roles__t"><b>Software Engineer &amp; Product Manager</b> <span class="roles__co">AI Makerspace Nexus, Georgia Tech VIP</span></span><span class="roles__when">Aug 2024 – <em>now</em></span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#FFB38A" data-step><a href="#xp-tutoring"><span class="roles__n">07</span><span class="roles__t"><b>Software Engineer &amp; Project Manager</b> <span class="roles__co">Intelligent Tutoring, Georgia Tech VIP</span></span><span class="roles__when">Jan – May 2024</span><span class="roles__go" aria-hidden="true">→</span></a></li>
+            <li style="--ac:#F7B7C6" data-step><a href="#xp-ta"><span class="roles__n">08</span><span class="roles__t"><b>Teaching Assistant</b> <span class="roles__co">Georgia Tech</span></span><span class="roles__when">Aug 2023 – Dec 2025</span><span class="roles__go" aria-hidden="true">→</span></a></li>
+          </ol>
           </div>
         </div>
       </div>
@@ -468,7 +460,7 @@
       <!-- 6. AI Makerspace Nexus: scanned lecture notes -->
       <article class="band theme-scan" id="xp-nexus" data-band aria-labelledby="xp6">
         <div class="band__in wrap">
-          <div class="stage band__stage" data-scene="gpuScan" aria-hidden="true"></div>
+          <div class="stage band__stage" data-scene="studyBuddy" aria-hidden="true"></div>
           <div class="band__body">
             <header class="band__head">
               <p class="band__n">6 of 8</p>
@@ -498,7 +490,7 @@
       <!-- 7. Intelligent Tutoring: a whiteboard quiz -->
       <article class="band theme-board" id="xp-tutoring" data-band aria-labelledby="xp7">
         <div class="band__in wrap">
-          <div class="stage band__stage" data-scene="bstTutor" aria-hidden="true"></div>
+          <div class="stage band__stage" data-scene="tutor" aria-hidden="true"></div>
           <div class="band__body">
             <header class="band__head">
               <p class="band__n">7 of 8</p>
@@ -753,7 +745,7 @@
   <footer class="footer">
     <div class="footer__in wrap">
       <p>© <span data-year>2026</span> Luke Hartzell. Every object on this site is drawn in code with three.js.</p>
-      <p class="footer__links"><button class="footer__8bit" type="button" aria-pressed="false" data-8bit>8-bit mode</button><a href="#top">Back to top</a></p>
+      <p class="footer__links"><a href="#top">Back to top</a></p>
     </div>
   </footer>
   <div class="toast" role="status" aria-live="polite"></div>

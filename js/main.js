@@ -1,15 +1,11 @@
 /* Page behaviour: the hero's reveal and word reel, the worlds' entrances, the
    nav that takes on the colors of the world under it, the tour of my room, the
-   quiz, the holo card, the projects gallery, 8-bit mode, and booting the 3D engine.
+   quiz, the holo card, the projects gallery, and booting the 3D engine.
    Works on the case-study pages too (anything missing is simply skipped). */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const root = document.documentElement;
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const store = {
-  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode is fine */ } },
-};
 // Entrance sequences only run when motion is welcome (and only once js is
 // here to finish them), so nothing is ever left hidden.
 if (!reduced) root.classList.add('steps');
@@ -534,28 +530,6 @@ if (holo) {
   }
 }
 
-/* ---------- 8-bit mode (button, footer link, or the Konami code) ---------- */
-let engine = null;
-function setPixel(on, announce = true) {
-  root.classList.toggle('pixel', on);
-  $$('[data-8bit]').forEach((b) => b.setAttribute('aria-pressed', String(on)));
-  store.set('lh-8bit', on ? '1' : '0');
-  engine?.setPixel(on);
-  if (announce) toast(on ? '8-bit mode on. Every scene is now pixel art.' : 'Back to full resolution.');
-}
-setPixel(root.classList.contains('pixel'), false);
-$$('[data-8bit]').forEach((b) => b.addEventListener('click', () => setPixel(!root.classList.contains('pixel'))));
-const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let kAt = 0;
-document.addEventListener('keydown', (e) => {
-  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-  kAt = k === KONAMI[kAt] ? kAt + 1 : (k === KONAMI[0] ? 1 : 0);
-  if (kAt === KONAMI.length) {
-    kAt = 0;
-    setPixel(!root.classList.contains('pixel'));
-  }
-});
-
 /* ---------- projects: vertical scroll drives a horizontal gallery ---------- */
 if (hs) {
   const pin = $('.hscroll__pin', hs);
@@ -775,13 +749,12 @@ async function boot3d() {
     return;
   }
   const [{ createEngine }, { registry }] = mods;
-  engine = createEngine();
+  const engine = createEngine();
   if (!engine) {
     root.classList.add('no-webgl');
     window.dispatchEvent(new Event('hero-arrive'));
     return;
   }
-  engine.setPixel(root.classList.contains('pixel'));
   window.__luke = engine;
   const make = (name) => {
     try { return registry[name]?.(engine.envMap) || null; } catch (err) { console.error(`[luke] scene "${name}" failed`, err); return null; }
