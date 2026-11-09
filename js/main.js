@@ -76,6 +76,9 @@ function spy() {
   sections.forEach((sec, i) => { if (sec.getBoundingClientRect().top <= y) current = links[i]; });
   links.forEach((a) => a.classList.toggle('is-active', a === current));
   movePill(current);
+  // Each section tints the page background a little differently.
+  const wash = current ? current.getAttribute('href').slice(1) : 'top';
+  if (root.dataset.section !== wash) root.dataset.section = wash;
 }
 window.addEventListener('scroll', () => { if (!spyRaf) spyRaf = requestAnimationFrame(spy); }, { passive: true });
 window.addEventListener('resize', () => { if (!spyRaf) spyRaf = requestAnimationFrame(spy); });
@@ -165,6 +168,72 @@ document.addEventListener('keydown', (e) => {
     setPixel(!root.classList.contains('pixel'));
   }
 });
+
+
+/* ---------- projects: vertical scroll drives a horizontal gallery ---------- */
+const hs = $('[data-hscroll]');
+if (hs) {
+  const track = $('.hscroll__track', hs);
+  const bar = $('.hscroll__bar', hs);
+  const now = $('[data-proj-now]');
+  const slides = $$('.slide', hs);
+  const wide = window.matchMedia('(min-width: 961px)');
+  let maxX = 0;
+  let cur = 0;
+  let target = 0;
+  let running = false;
+  // Invisible snap points (one per slide) so the gallery settles on a project.
+  const snaps = [];
+  const measure = () => {
+    snaps.splice(0).forEach((el) => el.remove());
+    if (!wide.matches) {
+      hs.style.height = '';
+      track.style.transform = '';
+      root.classList.remove('has-hsnap');
+      return;
+    }
+    maxX = Math.max(0, track.scrollWidth - window.innerWidth);
+    hs.style.height = `${window.innerHeight + maxX}px`;
+    const step = slides.length > 1 ? maxX / (slides.length - 1) : 0;
+    slides.forEach((_, i) => {
+      const el = document.createElement('i');
+      el.className = 'hscroll__snap';
+      el.setAttribute('aria-hidden', 'true');
+      el.style.top = `${Math.round(i * step)}px`;
+      hs.appendChild(el);
+      snaps.push(el);
+    });
+    root.classList.toggle('has-hsnap', !reduced);
+  };
+  const read = () => {
+    const r = hs.getBoundingClientRect();
+    const span = hs.offsetHeight - window.innerHeight;
+    const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+    target = p * maxX;
+    hs.classList.toggle('is-pinned', r.top <= 1 && r.bottom >= window.innerHeight - 1);
+    bar?.style.setProperty('--p', p.toFixed(4));
+    if (now) now.textContent = String(Math.min(slides.length, Math.round(p * (slides.length - 1)) + 1)).padStart(2, '0');
+  };
+  const loop = () => {
+    if (!wide.matches) { running = false; return; }
+    cur = reduced ? target : cur + (target - cur) * 0.12;
+    if (Math.abs(target - cur) < 0.1) cur = target;
+    track.style.transform = `translate3d(${(-cur).toFixed(2)}px, 0, 0)`;
+    if (cur !== target) requestAnimationFrame(loop);
+    else running = false;
+  };
+  const kick = () => {
+    if (!wide.matches) return;
+    read();
+    if (!running) { running = true; requestAnimationFrame(loop); }
+  };
+  measure();
+  kick();
+  window.addEventListener('scroll', kick, { passive: true });
+  window.addEventListener('resize', () => { measure(); kick(); });
+  wide.addEventListener?.('change', () => { measure(); kick(); });
+  window.addEventListener('load', () => { measure(); kick(); });
+}
 
 /* ---------- skills readout ---------- */
 const skillNow = $('[data-skill-now]');
@@ -275,12 +344,18 @@ async function boot3d() {
     const badge = $('.xp__badge');
     const badgeText = $('[data-badge]');
     const countNow = $('[data-count-now]');
+    const xpNum = $('[data-xp-num]');
     const tg = engine.mount(xpEl, { onFirstVisible: () => { ready = true; pick(true); } });
     const activate = (role) => {
       if (role === current) return;
       current = role;
       roles.forEach((r) => r.classList.toggle('is-active', r === role));
-      if (countNow) countNow.textContent = String(roles.indexOf(role) + 1).padStart(2, '0');
+      const n = String(roles.indexOf(role) + 1).padStart(2, '0');
+      if (countNow) countNow.textContent = n;
+      if (xpNum) {
+        xpNum.classList.add('is-swapping');
+        setTimeout(() => { xpNum.textContent = n; xpNum.classList.remove('is-swapping'); }, 220);
+      }
       if (badge && badgeText) {
         badge.classList.add('is-swapping');
         setTimeout(() => {

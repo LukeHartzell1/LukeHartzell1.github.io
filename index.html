@@ -55,6 +55,21 @@
 
 <body>
   <a class="skip" href="#main">Skip to content</a>
+  <!-- Energy symbols for the trading card (original designs). -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="g-build" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#EEE6FF"/><stop offset="0.55" stop-color="#A88BFF"/><stop offset="1" stop-color="#6A47E8"/></radialGradient>
+      <radialGradient id="g-grow" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#FFE6F1"/><stop offset="0.55" stop-color="#FF9CC5"/><stop offset="1" stop-color="#DB4D8C"/></radialGradient>
+      <radialGradient id="g-code" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#E5F0FF"/><stop offset="0.55" stop-color="#8DB7FF"/><stop offset="1" stop-color="#3F7FE6"/></radialGradient>
+      <radialGradient id="g-lift" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#E2FBF2"/><stop offset="0.55" stop-color="#7EDCBC"/><stop offset="1" stop-color="#26A47A"/></radialGradient>
+      <radialGradient id="g-shield" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#F1EEFA"/><stop offset="0.55" stop-color="#B9B1D6"/><stop offset="1" stop-color="#7D74A8"/></radialGradient>
+    </defs>
+    <symbol id="nrg-build" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.4" fill="url(#g-build)" stroke="rgba(30,15,80,.35)" stroke-width=".8"/><path d="M12 4.6l1.75 4.7 4.65 1.7-4.65 1.7L12 17.4l-1.75-4.7L5.6 11l4.65-1.7z" fill="#fff"/></symbol>
+    <symbol id="nrg-grow" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.4" fill="url(#g-grow)" stroke="rgba(80,15,40,.35)" stroke-width=".8"/><path d="M12 5.4l5.4 6.4h-3.3V18h-4.2v-6.2H6.6z" fill="#fff"/></symbol>
+    <symbol id="nrg-code" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.4" fill="url(#g-code)" stroke="rgba(15,35,90,.35)" stroke-width=".8"/><path d="M9.6 7.8 5.7 12l3.9 4.2M14.4 7.8l3.9 4.2-3.9 4.2" stroke="#fff" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="nrg-lift" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.4" fill="url(#g-lift)" stroke="rgba(10,70,50,.35)" stroke-width=".8"/><path d="M5.8 9.4v5.2M8.4 7.6v8.8M15.6 7.6v8.8M18.2 9.4v5.2M8.4 12h7.2" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/></symbol>
+    <symbol id="nrg-shield" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.4" fill="url(#g-shield)" stroke="rgba(40,30,80,.35)" stroke-width=".8"/><path d="M12 5.3l5.6 2.1v4.3c0 3.4-2.4 6-5.6 6.9-3.2-.9-5.6-3.5-5.6-6.9V7.4z" fill="#fff"/></symbol>
+  </svg>
   <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <header class="nav" id="nav">
@@ -89,21 +104,21 @@
     <!-- ============================== HERO ============================== -->
     <section class="hero" id="top" aria-labelledby="hero-name">
       <div class="hero__text">
-        <p class="kicker" data-reveal><span class="kicker__dot" aria-hidden="true"></span>Developer Advocate at Snowflake</p>
+        <p class="kicker" data-reveal><span class="kicker__dot" aria-hidden="true"></span>Product <i>/</i> Builder <i>/</i> DevRel</p>
         <h1 class="hero__name" id="hero-name"><span class="line"><span>Luke</span></span><span class="line"><span>Hartzell</span></span></h1>
         <p class="hero__role" data-reveal style="--d:.35s">
           I'm a
           <span class="rotator" aria-hidden="true"><span>
+            <span>product builder.</span>
             <span>developer advocate.</span>
             <span>founder.</span>
-            <span>builder.</span>
             <span>TikTok effect creator.</span>
             <span>software engineer.</span>
-            <span>developer advocate.</span>
+            <span>product builder.</span>
           </span></span>
-          <span class="sr-only">developer advocate, founder, builder, TikTok effect creator, and software engineer.</span>
+          <span class="sr-only">product builder, developer advocate, founder, TikTok effect creator, and software engineer.</span>
         </p>
-        <p class="hero__lede" data-reveal style="--d:.45s">I build things people actually use, from AI developer tools at Snowflake to AR filters with 17B+ views. Every project below is a little 3D world.</p>
+        <p class="hero__lede" data-reveal style="--d:.45s">Developer Advocate at Snowflake, working on CoCo, its AI coding agent. I build things people actually use, from agent skills to AR filters with 17B+ views. Every project below is a little 3D world.</p>
         <div class="hero__cta" data-reveal style="--d:.55s">
           <a class="btn btn--dark" href="#projects">View projects<span aria-hidden="true">→</span></a>
           <a class="btn btn--light" href="#contact">Contact me</a>
@@ -120,28 +135,52 @@
 
     <!-- ============================== ABOUT ============================== -->
     <section class="section about" id="about" aria-labelledby="about-title">
-      <header class="section__head" data-reveal>
+      <header class="section__head" data-index="01" data-reveal>
         <p class="eyebrow"><span>01</span>About</p>
         <h2 class="title" id="about-title">About <em>me</em></h2>
       </header>
       <div class="about__grid">
         <div class="holo-wrap" data-reveal>
-          <button class="holo" type="button" aria-pressed="false" aria-label="My trading card. Press to flip it over.">
+          <button class="holo" type="button" aria-pressed="false" aria-label="My trading card: Luke Hartzell, Product, Builder, DevRel. Press to flip it over.">
             <span class="holo__inner">
               <span class="holo__face holo__front">
-                <span class="holo__top"><b>Luke Hartzell</b><i>DevRel · Builder</i></span>
-                <span class="holo__photo">
-                  <img class="holo__img" src="images/opt/luke.webp" alt="" width="820" height="1024" loading="lazy" decoding="async">
-                  <img class="holo__img holo__img--px" src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async">
-                  <span class="holo__foil"></span>
+                <span class="tcg">
+                  <span class="tcg__top">
+                    <span class="tcg__evo"><img src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async"></span>
+                    <span class="tcg__meta">
+                      <span class="tcg__line"><span class="tcg__stage">STAGE 2</span><span class="tcg__evolves">Evolves from 8-bit Luke</span></span>
+                      <span class="tcg__name">Luke Hartzell</span>
+                    </span>
+                    <span class="tcg__hp"><small>HP</small>170<svg class="nrg" aria-hidden="true"><use href="#nrg-build"/></svg></span>
+                  </span>
+                  <span class="tcg__art"><span class="tcg__win">
+                    <img class="holo__img" src="images/opt/luke.webp" alt="" width="820" height="1024" loading="lazy" decoding="async">
+                    <img class="holo__img holo__img--px" src="images/opt/luke-pixel.png" alt="" width="64" height="80" loading="lazy" decoding="async">
+                    <span class="holo__foil"></span>
+                  </span></span>
+                  <span class="tcg__strip">NO. 001 · Product / Builder / DevRel · Chicago, IL</span>
+                  <span class="tcg__ability">
+                    <span class="tcg__ability-head"><b class="tcg__ability-tag">Ability</b><b class="tcg__ability-name">Agentic Assist</b></span>
+                    <span class="tcg__text">Once during your turn, you may search your deck for a CoCo skill (the agentic video editor or the agentic demo maker) and attach it to your developer.</span>
+                  </span>
+                  <span class="tcg__attack">
+                    <span class="tcg__cost"><svg class="nrg"><use href="#nrg-build"/></svg><svg class="nrg"><use href="#nrg-build"/></svg></span>
+                    <b class="tcg__atk">Ship It</b><b class="tcg__dmg">120</b>
+                    <span class="tcg__text">Take a product from 0→1. If it's Interview Prepper, put 1K+ job seekers on your bench.</span>
+                  </span>
+                  <span class="tcg__attack">
+                    <span class="tcg__cost"><svg class="nrg"><use href="#nrg-grow"/></svg><svg class="nrg"><use href="#nrg-grow"/></svg><svg class="nrg"><use href="#nrg-code"/></svg></span>
+                    <b class="tcg__atk">Go Viral</b><b class="tcg__dmg">170</b>
+                    <span class="tcg__text">Ship a filter before the trend peaks: 17B+ views and 45M+ videos.</span>
+                  </span>
+                  <span class="tcg__wrr">
+                    <span><small>weakness</small><svg class="nrg"><use href="#nrg-lift"/></svg>×2</span>
+                    <span><small>resistance</small><svg class="nrg"><use href="#nrg-shield"/></svg>−30</span>
+                    <span><small>retreat</small>never</span>
+                  </span>
+                  <span class="tcg__flavor">It researches the optimal workout split more than it lifts. Often spotted shipping right before a trend peaks.</span>
+                  <span class="tcg__foot"><span>Illus. Luke Hartzell</span><span class="tcg__reg">L</span><span>001/017 ★</span></span>
                 </span>
-                <span class="holo__type">Developer advocate · from Chicago, IL</span>
-                <span class="holo__moves">
-                  <span class="move"><b>Ship it</b><em>0→1, 1K+ users</em></span>
-                  <span class="move"><b>Go viral</b><em>17B+ filter views</em></span>
-                  <span class="move"><b>Teach</b><em>900 students</em></span>
-                </span>
-                <span class="holo__foot"><span>Weakness: the “optimal” split</span><span>No. 001</span></span>
               </span>
               <span class="holo__face holo__back">
                 <span class="holo__emblem">LH</span>
@@ -153,64 +192,60 @@
           <p class="holo__hint">Tilt it, then tap to flip</p>
         </div>
         <div class="about__text">
-          <p class="lead" data-reveal>Hey! I'm Luke, a developer advocate and engineer from Chicago. I studied computer science at Georgia Tech, and now I'm a Developer Advocate at Snowflake, working on CoCo, its AI coding agent.</p>
+          <p class="lead" data-reveal>Hey! I'm Luke: product person, builder, and developer advocate from Chicago. I studied computer science at Georgia Tech, and now I'm a Developer Advocate at Snowflake, working on CoCo, its AI coding agent.</p>
           <p data-reveal>I love building things that people actually want to use, whether that's helping people nail their interviews or making AR filters that go viral on TikTok.</p>
           <p data-reveal>When I'm not glued to my laptop, you'll find me at the gym (probably doing too much research on the “optimal” workout split), gaming with friends, or falling down random YouTube rabbit holes about productivity hacks.</p>
-          <div class="facts" data-reveal>
-            <section class="panel" aria-labelledby="facts-title">
-              <h3 id="facts-title">Quick facts</h3>
-              <dl class="facts__list">
-                <div><dt>Now</dt><dd>Developer Advocate @ Snowflake</dd></div>
-                <div><dt>Studied</dt><dd>Computer Science @ Georgia Tech</dd></div>
-                <div><dt>From</dt><dd>Chicago, Illinois</dd></div>
-                <div><dt>Also</dt><dd>Founder &amp; AR effect creator</dd></div>
-              </dl>
-            </section>
-            <section class="panel" aria-labelledby="interests-title">
-              <h3 id="interests-title">Interests</h3>
-              <ul class="chips">
-                <li>Fitness</li><li>Gaming</li><li>Coding</li><li>Learning</li><li>AR effects</li>
-              </ul>
-            </section>
-          </div>
+          <dl class="facts" data-reveal>
+            <div><dt>Now</dt><dd>Developer Advocate @ Snowflake</dd></div>
+            <div><dt>Studied</dt><dd>Computer Science @ Georgia Tech</dd></div>
+            <div><dt>From</dt><dd>Chicago, Illinois</dd></div>
+            <div><dt>Also</dt><dd>Founder &amp; AR effect creator</dd></div>
+          </dl>
+          <p class="label" data-reveal>Interests</p>
+          <ul class="stickers" data-reveal>
+            <li style="--r:-5deg; --c:#E9DFFF">Fitness</li>
+            <li style="--r:4deg; --c:#DCEBFF">Gaming</li>
+            <li style="--r:-2deg; --c:#DDF5EC">Coding</li>
+            <li style="--r:6deg; --c:#FFE3EF">Learning</li>
+            <li style="--r:-4deg; --c:#FFE9DD">AR effects</li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- ============================== EDUCATION ============================== -->
     <section class="section education" id="education" aria-labelledby="edu-title">
-      <header class="section__head" data-reveal>
+      <header class="section__head" data-index="02" data-reveal>
         <p class="eyebrow"><span>02</span>Education</p>
         <h2 class="title" id="edu-title">Where I <em>learned</em></h2>
       </header>
-      <article class="edu" data-reveal>
+      <div class="spread">
         <div class="stage stage--edu" data-scene="education" aria-hidden="true"></div>
-        <div class="edu__body">
+        <div class="spread__body" data-reveal>
           <p class="meta">Aug 2022 – Dec 2025 · Atlanta, GA</p>
-          <h3>Georgia Institute of Technology</h3>
-          <p class="edu__degree">Bachelor of Science in Computer Science</p>
-          <p class="gpa"><b>4.0</b><span>/ 4.0 GPA</span></p>
+          <h3 class="spread__title">Georgia Institute of Technology</h3>
+          <p class="spread__sub">Bachelor of Science in Computer Science</p>
+          <p class="bignum"><span>4.0</span><small>/ 4.0 GPA</small></p>
           <p class="label">Coursework</p>
-          <ul class="chips">
+          <ol class="courses">
             <li>Algorithms</li><li>Data Structures</li><li>Intro to AI</li><li>Object-Oriented Programming</li><li>UI/UX</li><li>Educational Technology</li>
-          </ul>
+          </ol>
         </div>
-      </article>
+      </div>
     </section>
 
     <!-- ============================== EXPERIENCE ============================== -->
     <section class="section experience" id="experience" aria-labelledby="xp-title">
-      <header class="section__head" data-reveal>
+      <header class="section__head" data-index="03" data-reveal>
         <p class="eyebrow"><span>03</span>Experience</p>
         <h2 class="title" id="xp-title">Where I've <em>worked</em></h2>
       </header>
       <div class="xp">
         <div class="xp__sticky" aria-hidden="true">
-          <div class="xp__frame">
-            <div class="stage stage--xp" data-switch="xp"></div>
-            <p class="xp__badge"><span class="xp__badge-dot"></span><span data-badge>Agent skills: video editor + demo maker</span></p>
-            <p class="xp__count"><span data-count-now>01</span> / 08</p>
-          </div>
+          <p class="xp__num" data-xp-num>01</p>
+          <div class="stage stage--xp" data-switch="xp"></div>
+          <p class="xp__badge"><span class="xp__badge-dot"></span><span data-badge>Agent skills: video editor + demo maker</span></p>
+          <p class="xp__count"><span data-count-now>01</span> / 08</p>
         </div>
         <ol class="xp__list">
           <li class="role" data-role="snowflakeRole" data-badge-text="Agent skills: video editor + demo maker">
@@ -308,102 +343,126 @@
     </section>
 
     <!-- ============================== PROJECTS ============================== -->
-    <section class="section projects" id="projects" aria-labelledby="projects-title">
-      <header class="section__head" data-reveal>
+    <section class="projects" id="projects" aria-labelledby="projects-title">
+      <header class="section section__head projects__head" data-index="04" data-reveal>
         <p class="eyebrow"><span>04</span>Projects</p>
         <h2 class="title" id="projects-title">Things I've <em>built</em></h2>
-        <p class="section__intro">Side projects, hackathons, and UX case studies. Hover a card to wake it up.</p>
+        <p class="section__intro">Side projects, hackathons, and UX case studies. Keep scrolling to move through them; hover one to wake it up.</p>
       </header>
-      <div class="grid">
-        <article class="project" style="--tint: #F4ECFF; --tint2: #E9F1FF" data-reveal>
-          <div class="stage stage--project" data-scene="spotify" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">Web · Data</p>
-            <h3>Better Spotify Wrapped</h3>
-            <p>Spotify Wrapped, but anytime, and with way more detail. I led a team of 6 from Spotify's API to making the data actually look good.</p>
-            <ul class="tags"><li>React</li><li>Spotify API</li><li>Data viz</li></ul>
-            <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_spotifywrapped-cs2340project-musicinsights-activity-7194712852140630016-LWsF" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
+      <div class="hscroll" data-hscroll>
+        <div class="hscroll__pin">
+          <div class="hscroll__track">
+            <article class="slide" style="--glow: #E6DCFF">
+              <div class="stage slide__stage" data-scene="spotify" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">01</p>
+                <p class="meta">Web · Data</p>
+                <h3>Better Spotify Wrapped</h3>
+                <p class="slide__text">Spotify Wrapped, but anytime, and with way more detail. I led a team of 6 from Spotify's API to making the data actually look good.</p>
+                <ul class="tags"><li>React</li><li>Spotify API</li><li>Data viz</li></ul>
+                <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_spotifywrapped-cs2340project-musicinsights-activity-7194712852140630016-LWsF" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="slide" style="--glow: #FFE0EE">
+              <div class="stage slide__stage" data-scene="identifai" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">02</p>
+                <p class="meta">Mobile · AI · HackGTX</p>
+                <h3>IdentifAI</h3>
+                <p class="slide__text">An Android app that helps Alzheimer's patients recognize the people they love, with facial recognition and secure profiles. Built at HackGTX with a team of three.</p>
+                <ul class="tags"><li>Kotlin</li><li>AWS Rekognition</li><li>Firebase</li></ul>
+                <a class="project__link" href="https://www.youtube.com/watch?v=IKsSfN8OJ2o" target="_blank" rel="noopener">Watch the demo <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="slide" style="--glow: #D9F5EA">
+              <div class="stage slide__stage" data-scene="gopu" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">03</p>
+                <p class="meta">Web · AI</p>
+                <h3>Gopu</h3>
+                <p class="slide__text">An AI productivity assistant that manages tasks, schedules meetings, and plugs into the calendars you already use.</p>
+                <ul class="tags"><li>React</li><li>Node.js</li><li>AI integration</li></ul>
+                <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_google-does-not-let-you-search-for-public-activity-7162852890607386625-K0cw" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="slide" style="--glow: #ECE7FA">
+              <div class="stage slide__stage" data-scene="fog" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">04</p>
+                <p class="meta">Desktop · AI agents · 2026</p>
+                <h3>FogOfYou</h3>
+                <p class="slide__text">A privacy app: autonomous browser agents roam the web as decoy personas until your ad profile is worthless to data brokers.</p>
+                <ul class="tags"><li>Electron</li><li>React</li><li>TypeScript</li><li>Playwright</li><li>Gemini</li></ul>
+                <a class="project__link" href="https://github.com/LukeHartzell1/FogOfYou" target="_blank" rel="noopener">View on GitHub <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="slide" style="--glow: #DDEBFF">
+              <div class="stage slide__stage" data-scene="book" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">05</p>
+                <p class="meta">UX case study</p>
+                <h3>Beelinguapp Redesign</h3>
+                <p class="slide__text">A community stories feature for culturally relevant language learning, shaped by user interviews and iterative testing.</p>
+                <ul class="tags"><li>UX research</li><li>EdTech</li><li>Prototyping</li></ul>
+                <a class="project__link" href="beelinguapp-redesign.html">Read the case study <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+            <article class="slide" style="--glow: #E0F7EE">
+              <div class="stage slide__stage" data-scene="squat" aria-hidden="true"></div>
+              <div class="slide__body">
+                <p class="slide__num" aria-hidden="true">06</p>
+                <p class="meta">UX case study</p>
+                <h3>LiftIQ: gym app with an AI coach</h3>
+                <p class="slide__text">AI motion tracking, video instruction, and written guides for proper form, refined through rounds of user testing.</p>
+                <ul class="tags"><li>AI</li><li>Mobile design</li><li>Fitness</li></ul>
+                <a class="project__link" href="gym-app.html">Read the case study <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
           </div>
-        </article>
-        <article class="project" style="--tint: #FFF0F6; --tint2: #F2ECFF" data-reveal>
-          <div class="stage stage--project" data-scene="identifai" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">Mobile · AI · HackGTX</p>
-            <h3>IdentifAI</h3>
-            <p>An Android app that helps Alzheimer's patients recognize the people they love, with facial recognition and secure profiles. Built at HackGTX with a team of three.</p>
-            <ul class="tags"><li>Kotlin</li><li>AWS Rekognition</li><li>Firebase</li></ul>
-            <a class="project__link" href="https://www.youtube.com/watch?v=IKsSfN8OJ2o" target="_blank" rel="noopener">Watch the demo <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-        <article class="project" style="--tint: #EAF8F2; --tint2: #EEF0FF" data-reveal>
-          <div class="stage stage--project" data-scene="gopu" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">Web · AI</p>
-            <h3>Gopu</h3>
-            <p>An AI productivity assistant that manages tasks, schedules meetings, and plugs into the calendars you already use.</p>
-            <ul class="tags"><li>React</li><li>Node.js</li><li>AI integration</li></ul>
-            <a class="project__link" href="https://www.linkedin.com/posts/luke-hartzell_google-does-not-let-you-search-for-public-activity-7162852890607386625-K0cw" target="_blank" rel="noopener">See the post <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-        <article class="project" style="--tint: #F1EEFB; --tint2: #FFF3EC" data-reveal>
-          <div class="stage stage--project" data-scene="fog" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">Desktop · AI agents · 2026</p>
-            <h3>FogOfYou</h3>
-            <p>A privacy app: autonomous browser agents roam the web as decoy personas until your ad profile is worthless to data brokers.</p>
-            <ul class="tags"><li>Electron</li><li>React</li><li>TypeScript</li><li>Playwright</li><li>Gemini</li></ul>
-            <a class="project__link" href="https://github.com/LukeHartzell1/FogOfYou" target="_blank" rel="noopener">View on GitHub <span aria-hidden="true">↗</span></a>
-          </div>
-        </article>
-        <article class="project" style="--tint: #EEF4FF; --tint2: #FFF0F7" data-reveal>
-          <div class="stage stage--project" data-scene="book" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">UX case study</p>
-            <h3>Beelinguapp Redesign</h3>
-            <p>A community stories feature for culturally relevant language learning, shaped by user interviews and iterative testing.</p>
-            <ul class="tags"><li>UX research</li><li>EdTech</li><li>Prototyping</li></ul>
-            <a class="project__link" href="beelinguapp-redesign.html">Read the case study <span aria-hidden="true">→</span></a>
-          </div>
-        </article>
-        <article class="project" style="--tint: #F0FBF6; --tint2: #F4ECFF" data-reveal>
-          <div class="stage stage--project" data-scene="squat" aria-hidden="true"></div>
-          <div class="project__body">
-            <p class="meta">UX case study</p>
-            <h3>LiftIQ: gym app with an AI coach</h3>
-            <p>AI motion tracking, video instruction, and written guides for proper form, refined through rounds of user testing.</p>
-            <ul class="tags"><li>AI</li><li>Mobile design</li><li>Fitness</li></ul>
-            <a class="project__link" href="gym-app.html">Read the case study <span aria-hidden="true">→</span></a>
-          </div>
-        </article>
+          <div class="hscroll__bar" aria-hidden="true"><span></span></div>
+          <p class="hscroll__count" aria-hidden="true"><span data-proj-now>01</span> / 06</p>
+        </div>
       </div>
     </section>
 
     <!-- ============================== SKILLS ============================== -->
     <section class="section skills" id="skills" aria-labelledby="skills-title">
-      <header class="section__head" data-reveal>
+      <header class="section__head" data-index="05" data-reveal>
         <p class="eyebrow"><span>05</span>Skills</p>
         <h2 class="title" id="skills-title">Tools I <em>reach for</em></h2>
         <p class="section__intro">Every keycap is a skill. Hover them, or type on your keyboard.</p>
       </header>
-      <div class="keys" data-reveal>
+      <div class="keys">
         <div class="stage stage--keys" data-scene="keyboard" aria-hidden="true"></div>
-        <p class="keys__now" aria-live="polite"><span>Pressed:</span> <b data-skill-now>Java</b></p>
+        <p class="keys__now" aria-live="polite"><span>Pressed</span> <b data-skill-now>Java</b></p>
       </div>
-      <div class="skillsets" data-reveal>
-        <section><h3>Languages</h3><p>Java, JavaScript, Python, C, SQL, HTML/CSS, Lua, Kotlin</p></section>
-        <section><h3>Frameworks &amp; tools</h3><p>React, Node.js, Playwright, Cucumber, Firebase, Bootstrap, Git/GitHub, Jira</p></section>
-        <section><h3>AI &amp; cloud</h3><p>AWS (Lambda, Kinesis, Rekognition), Google Cloud Vertex AI, Gemini, LLM integration</p></section>
-        <section><h3>Product &amp; design</h3><p>PRDs, A/B testing, user research, OKRs, Figma, Effect House</p></section>
+      <div class="marquees">
+        <div class="marquee"><p class="marquee__label">Languages</p><div class="marquee__track"><div class="marquee__inner">
+          <ul><li>Java</li><li>JavaScript</li><li>Python</li><li>C</li><li>SQL</li><li>HTML/CSS</li><li>Lua</li><li>Kotlin</li></ul>
+          <ul aria-hidden="true"><li>Java</li><li>JavaScript</li><li>Python</li><li>C</li><li>SQL</li><li>HTML/CSS</li><li>Lua</li><li>Kotlin</li></ul>
+        </div></div></div>
+        <div class="marquee"><p class="marquee__label">Frameworks &amp; tools</p><div class="marquee__track"><div class="marquee__inner">
+          <ul><li>React</li><li>Node.js</li><li>Playwright</li><li>Cucumber</li><li>Firebase</li><li>Bootstrap</li><li>Git/GitHub</li><li>Jira</li></ul>
+          <ul aria-hidden="true"><li>React</li><li>Node.js</li><li>Playwright</li><li>Cucumber</li><li>Firebase</li><li>Bootstrap</li><li>Git/GitHub</li><li>Jira</li></ul>
+        </div></div></div>
+        <div class="marquee"><p class="marquee__label">AI &amp; cloud</p><div class="marquee__track"><div class="marquee__inner">
+          <ul><li>Agent skills</li><li>LLM integration</li><li>Gemini</li><li>Vertex AI</li><li>AWS Lambda</li><li>Kinesis</li><li>Rekognition</li><li>Snowflake</li></ul>
+          <ul aria-hidden="true"><li>Agent skills</li><li>LLM integration</li><li>Gemini</li><li>Vertex AI</li><li>AWS Lambda</li><li>Kinesis</li><li>Rekognition</li><li>Snowflake</li></ul>
+        </div></div></div>
+        <div class="marquee"><p class="marquee__label">Product &amp; design</p><div class="marquee__track"><div class="marquee__inner">
+          <ul><li>PRDs</li><li>A/B testing</li><li>User research</li><li>OKRs</li><li>Figma</li><li>Effect House</li><li>Technical writing</li><li>Workshops</li></ul>
+          <ul aria-hidden="true"><li>PRDs</li><li>A/B testing</li><li>User research</li><li>OKRs</li><li>Figma</li><li>Effect House</li><li>Technical writing</li><li>Workshops</li></ul>
+        </div></div></div>
       </div>
     </section>
 
     <!-- ============================== CONTACT ============================== -->
-    <section class="section contact" id="contact" aria-labelledby="contact-title">
-      <div class="contact__card" data-reveal>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="finale">
         <div class="stage stage--plane" data-scene="plane" aria-hidden="true"></div>
-        <div class="contact__body">
+        <div class="finale__body" data-reveal>
           <p class="eyebrow"><span>06</span>Contact</p>
-          <h2 class="title" id="contact-title">Let's <em>connect</em></h2>
+          <h2 class="finale__title" id="contact-title">Let's <em>connect</em></h2>
           <p class="contact__lede">Always down to chat about projects, opportunities, or just cool tech stuff. Feel free to reach out!</p>
           <div class="contact__actions">
             <a class="btn btn--dark" href="mailto:lukedhartzell@gmail.com" data-send>Send email<span aria-hidden="true">↗</span></a>
