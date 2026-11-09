@@ -347,6 +347,22 @@ h3 { margin: 0; font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
 .role.is-active::before { background: var(--violet); box-shadow: 0 0 0 5px rgba(107, 77, 239, 0.16); transform: scale(1.2); }
 .role h3 { font-size: clamp(1.6rem, 2.6vw, 2.35rem); letter-spacing: -0.035em; }
 .role .org { margin: 8px 0 0; font-size: 1.12rem; font-weight: 500; color: var(--violet); }
+.highlights { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0 2px; }
+.highlight {
+  position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); column-gap: 12px; row-gap: 2px; align-content: start;
+  padding: 16px 16px 16px 14px; border-radius: 18px; background: linear-gradient(135deg, #F5F0FF, #FFF2F8);
+  box-shadow: 0 0 0 1px rgba(107, 77, 239, 0.16) inset, 0 10px 24px -18px rgba(84, 53, 214, 0.6);
+}
+.highlight svg {
+  grid-row: span 2; width: 42px; height: 42px; padding: 9px; border-radius: 12px; background: #fff;
+  fill: none; stroke: var(--violet); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; box-shadow: 0 0 0 1px var(--line) inset;
+}
+.highlight b { font-size: 15.5px; font-weight: 650; letter-spacing: -0.02em; color: var(--ink); padding-right: 64px; }
+.highlight span { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+.highlight::after {
+  content: "CoCo skill"; position: absolute; top: 12px; right: 12px; padding: 2px 8px; border-radius: 999px;
+  font-family: var(--mono); font-size: 10.5px; color: var(--violet-2); background: #fff; box-shadow: 0 0 0 1px rgba(107, 77, 239, 0.18) inset;
+}
 .bullets { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
 .bullets li { position: relative; padding-left: 22px; color: var(--ink-2); }
 .bullets li::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 8px; height: 8px; border-radius: 3px; background: linear-gradient(135deg, var(--lilac), var(--pink)); transform: rotate(45deg); }
@@ -457,7 +473,7 @@ h3 { margin: 0; font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .grid, .facts, .skillsets { grid-template-columns: 1fr; }
+  .grid, .facts, .skillsets, .highlights { grid-template-columns: 1fr; }
   .hero__name { font-size: clamp(3.6rem, 19vw, 5.4rem); }
   .nav__8bit span { display: none; }
   .nav__8bit { padding: 0 12px; }
@@ -488,6 +504,9 @@ html.pixel .btn, html.pixel .kicker, html.pixel .chips li, html.pixel .nav, html
 }
 html.pixel .btn--dark { background: var(--violet-2); }
 html.pixel .holo__face, html.pixel .holo__photo, html.pixel .holo__inner, html.pixel .holo__glare { border-radius: 0; }
+html.pixel .highlight, html.pixel .highlight svg, html.pixel .highlight::after { border-radius: 0; }
+html.pixel .highlight { box-shadow: 0 0 0 2px #2B2160 inset, 4px 4px 0 rgba(43, 33, 96, 0.9); }
+html.pixel .highlight b { font-family: var(--pixel); letter-spacing: 0; }
 html.pixel .holo__img--px { display: block; }
 html.pixel .holo__img:not(.holo__img--px) { display: none; }
 html.pixel .stage__canvas { image-rendering: pixelated; }

@@ -27,7 +27,7 @@ Every 3D piece is a `.stage` element on the page. One shared WebGL renderer (`js
 | --- | --- | --- |
 | Hero | `hero` | A liquid pearl with tiny versions of everything below in orbit |
 | Education | `education` | A 4.0 built one course at a time, topped with a grad cap |
-| Snowflake | `snowflakeRole` | An ice crystal growing its branches (adoption 3×+) |
+| Snowflake | `snowflakeRole` | An ice crystal growing its branches, orbited by my two CoCo skills: a clapperboard (agentic video editor) and a demo screen (agentic demo maker) |
 | Interview Prepper | `habitLoop` | Practice cards riding a Möbius habit loop |
 | TikTok effects | `arPhone` | My face on a phone; pixel shades drop on cue |
 | AWS | `router` | Events stream in, a λ router drops the noise before on-call |

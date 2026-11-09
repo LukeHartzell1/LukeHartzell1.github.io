@@ -3,7 +3,7 @@
 import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js';
 import {
   THREE, C, M, stage, rig, damp, clamp, lerp, seg, loop, easeOut, easeInOut, easeOutBack, bounce, smooth,
-  rbox, textTex, label, sprite, tag, shadow, sparkles, setInst, setInstQ, enhance, canvasTex, heartShape, rng, dotTex, FONT, MONO,
+  rbox, textTex, label, sprite, tag, shadow, sparkles, setInst, setInstQ, enhance, canvasTex, heartShape, rng, dotTex, roundRectPath, FONT, MONO,
 } from '../kit.js';
 import { crystal, phone, pixelShades, gradCap, person } from './builders.js';
 
@@ -99,17 +99,118 @@ export function education(env) {
   };
 }
 
+/* The two CoCo skills I built, as little props. */
+function clapperboard() {
+  const g = new THREE.Group();
+  const slate = new THREE.Mesh(rbox(1.1, 0.78, 0.09, 0.06), M.gloss('#201a33', { roughness: 0.32 }));
+  const face = label(textTex(['TAKE 01', 'auto-cut ✓'], { w: 512, h: 320, size: 62, weight: 600, mono: true, color: '#ffffff', lineHeight: 1.55 }), 0.95, 0.6);
+  face.position.z = 0.047;
+  const stripes = canvasTex(512, 96, (c, w, h) => {
+    c.fillStyle = '#ffffff';
+    c.fillRect(0, 0, w, h);
+    c.fillStyle = '#201a33';
+    for (let x = -h; x < w + h; x += 96) {
+      c.beginPath();
+      c.moveTo(x, h);
+      c.lineTo(x + 48, h);
+      c.lineTo(x + 48 + h * 0.6, 0);
+      c.lineTo(x + h * 0.6, 0);
+      c.closePath();
+      c.fill();
+    }
+  });
+  const stickMat = new THREE.MeshPhysicalMaterial({ map: stripes, roughness: 0.3, clearcoat: 0.6 });
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.16, 0.1), stickMat);
+  base.position.y = 0.47;
+  const hinge = new THREE.Group();
+  hinge.position.set(-0.56, 0.56, 0);
+  const top = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.16, 0.1), stickMat);
+  top.position.set(0.56, 0.08, 0);
+  hinge.add(top);
+  g.add(slate, face, base, hinge);
+  g.userData.hinge = hinge;
+  return g;
+}
+function demoScreen() {
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(rbox(1.3, 0.9, 0.07, 0.07), M.ceramic('#ffffff', { roughness: 0.28 }));
+  const tex = canvasTex(640, 440, (c, w, h) => {
+    c.fillStyle = '#F6F2FF';
+    c.fillRect(0, 0, w, h);
+    c.fillStyle = '#ffffff';
+    c.fillRect(0, 0, w, 56);
+    ['#FF7EA5', '#FFD27A', '#8FE2C6'].forEach((col, i) => {
+      c.fillStyle = col;
+      c.beginPath();
+      c.arc(30 + i * 26, 28, 8, 0, TAU);
+      c.fill();
+    });
+    c.fillStyle = '#9a90bd';
+    c.font = `500 22px ${MONO}`;
+    c.fillText('demo.app', 120, 36);
+    c.fillStyle = '#DCD1FF';
+    roundRectPath(c, 40, 92, 300, 26, 13);
+    c.fill();
+    c.fillStyle = '#EAE3FF';
+    roundRectPath(c, 40, 132, 220, 18, 9);
+    c.fill();
+    [0.5, 0.8, 0.62, 0.95, 0.72].forEach((v, i) => {
+      c.fillStyle = i === 3 ? '#7254F0' : '#C9B9FF';
+      const bh = v * 160;
+      roundRectPath(c, 40 + i * 58, 400 - bh, 40, bh, 8);
+      c.fill();
+    });
+    c.fillStyle = '#7254F0';
+    c.beginPath();
+    c.arc(500, 250, 66, 0, TAU);
+    c.fill();
+    c.fillStyle = '#ffffff';
+    c.beginPath();
+    c.moveTo(482, 216);
+    c.lineTo(482, 284);
+    c.lineTo(536, 250);
+    c.closePath();
+    c.fill();
+  });
+  const screen = label(tex, 1.2, 0.82);
+  screen.position.z = 0.037;
+  const arrow = canvasTex(128, 128, (c) => {
+    c.fillStyle = '#15111f';
+    c.strokeStyle = '#ffffff';
+    c.lineWidth = 8;
+    c.beginPath();
+    c.moveTo(24, 12);
+    c.lineTo(24, 104);
+    c.lineTo(48, 82);
+    c.lineTo(66, 118);
+    c.lineTo(84, 110);
+    c.lineTo(66, 74);
+    c.lineTo(98, 72);
+    c.closePath();
+    c.stroke();
+    c.fill();
+  });
+  const cursor = label(arrow, 0.22, 0.22);
+  cursor.position.z = 0.05;
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.05, 0.075, 32), M.glow('#7254F0', { opacity: 0 }));
+  ring.position.z = 0.045;
+  g.add(body, screen, ring, cursor);
+  g.userData = { cursor, ring };
+  return g;
+}
+
 /* ======================================================================
-   SNOWFLAKE — a crystal that grows its branches (adoption, 3×)
+   SNOWFLAKE — a crystal that grows its branches (adoption, 3×), orbited by
+   the two agent skills I built for CoCo: a video editor and a demo maker
    ====================================================================== */
 export function snowflakeRole(env) {
   const { scene, camera } = stage(env, { fov: 28 });
-  const cam = rig(camera, { pos: [0, 0.4, 12.2], look: [0, 0, 0] });
+  const cam = rig(camera, { pos: [0, 0.6, 12.6], look: [0, 0.05, 0], fit: 1.05 });
   const holder = new THREE.Group();
   scene.add(holder);
-  const cr = crystal({ arm: 2.15, thick: 0.085, holo: 0.9 });
+  const cr = crystal({ arm: 1.95, thick: 0.08, holo: 0.9 });
   holder.add(cr.group);
-  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.75, 0.01, 8, 256), M.chrome('#cfc3ff', { transparent: true, opacity: 0.45 }));
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.01, 8, 256), M.chrome('#cfc3ff', { transparent: true, opacity: 0.45 }));
   holder.add(halo);
   // Gentle snowfall.
   const N = 140;
@@ -128,9 +229,23 @@ export function snowflakeRole(env) {
     size: 0.075, map: dotTex(), color: '#b7a6ff', transparent: true, opacity: 0.75, depthWrite: false, toneMapped: false,
   }));
   scene.add(snow);
+  const clap = clapperboard();
+  const demo = demoScreen();
+  const sats = [
+    { obj: clap, a0: 0.35, label: tag('agentic video editor', { size: 40, scale: 0.92 }) },
+    { obj: demo, a0: 0.35 + Math.PI, label: tag('agentic demo maker', { size: 40, scale: 0.92 }) },
+  ].map((st) => {
+    const g = new THREE.Group();
+    g.add(st.obj);
+    st.label.position.y = -0.78;
+    g.add(st.label);
+    scene.add(g);
+    return { ...st, g };
+  });
   let spin = 0;
   let tx = 0;
   let ty = 0;
+  let orbit = 0;
   return {
     scene, camera, posterT: 4,
     update(s) {
@@ -143,6 +258,27 @@ export function snowflakeRole(env) {
       halo.rotation.set(tx * 0.6 + 0.2, ty * 0.6, 0);
       halo.scale.setScalar(0.7 + 0.3 * easeOut(seg(s.t, 0.6, 1.6)));
       holder.position.y = Math.sin(s.time * 0.8) * 0.06;
+      orbit += s.dt * (s.hover ? 0.55 : 0.28);
+      sats.forEach((st, i) => {
+        const a = st.a0 + orbit;
+        const k = easeOutBack(seg(s.t, 1.5 + i * 0.25, 0.8));
+        st.g.position.set(Math.cos(a) * 2.5, -0.2 + Math.sin(a + 0.6) * 0.45, Math.sin(a) * 2.1 + 0.4);
+        st.g.scale.setScalar(Math.max(0.0001, k * 0.92));
+        st.obj.lookAt(camera.position);
+        st.obj.rotateY(Math.sin(s.time * 0.9 + i) * 0.18);
+        st.label.material.opacity = easeOut(seg(s.t, 2, 0.6));
+      });
+      // Clapperboard snaps shut every couple of seconds.
+      const cp = s.reduced ? 0.6 : loop(s.time, 2.4);
+      clap.userData.hinge.rotation.z = cp < 0.75 ? 0.5 * easeOut(cp / 0.75) : 0.5 * (1 - easeIn((cp - 0.75) / 0.25));
+      // The demo maker's cursor drives to the play button and clicks.
+      const dp = s.reduced ? 0.8 : loop(s.time + 0.7, 3.2);
+      const tgt = dp < 0.55 ? easeInOut(dp / 0.55) : 1;
+      demo.userData.cursor.position.set(lerp(-0.4, 0.38, tgt), lerp(-0.25, 0.0, tgt) - 0.06, 0.05);
+      const click = clamp((dp - 0.6) / 0.3);
+      demo.userData.ring.position.set(0.32, 0.0, 0.045);
+      demo.userData.ring.scale.setScalar(1 + click * 2.4);
+      demo.userData.ring.material.opacity = dp > 0.6 ? (1 - click) * 0.9 : 0;
       for (let i = 0; i < N; i++) {
         let y = pos[i * 3 + 1] - vel[i] * s.dt;
         if (y < -3.6) y = 3.6;
@@ -409,7 +545,7 @@ export function router(env) {
     },
   };
 }
-const easeIn = (t) => t * t;
+function easeIn(t) { return t * t; }
 
 /* ======================================================================
    CHAMBERLAIN — a garage door of test cases: scan, escalate 2 bugs, ship
