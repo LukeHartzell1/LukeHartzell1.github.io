@@ -413,7 +413,6 @@ html[data-under="projects"] .nav { color: #fff; background: var(--cobalt); box-s
   display: flex; flex-direction: column; justify-content: center;
 }
 .hscroll__track { display: flex; width: max-content; will-change: transform; }
-.hscroll__snap { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; pointer-events: none; }
 .slide {
   position: relative; flex: none; width: 100vw; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: center;
   gap: clamp(12px, 3vw, 52px); padding: 0 max(var(--gutter), calc((100vw - var(--maxw)) / 2));
@@ -431,7 +430,6 @@ html[data-under="projects"] .nav { color: #fff; background: var(--cobalt); box-s
 .hscroll__count b { font-weight: 800; color: #fff; }
 .hscroll__bar, .hscroll__count { transition: opacity 0.4s; }
 .hscroll:not(.is-pinned) .hscroll__bar, .hscroll:not(.is-pinned) .hscroll__count { opacity: 0; }
-html.has-hsnap { scroll-snap-type: y proximity; }
 
 /* 12. Skills, contact, footer ============================================= */
 .keys { position: relative; }

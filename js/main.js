@@ -151,41 +151,66 @@ if (hs) {
   const now = $('[data-proj-now]');
   const slides = $$('.slide', hs);
   const wide = window.matchMedia('(min-width: 961px)');
-  let maxX = 0;
+  const n = slides.length;
+  // Each project holds still for a stretch of scrolling, then the track
+  // glides to the next one, so a placard and its sculpture always arrive
+  // together. HOLD is the share of each step spent holding.
+  const HOLD = 0.3;
+  let slideW = 0;
   let cur = 0;
   let target = 0;
   let running = false;
-  // Invisible snap points (one per slide) so the gallery settles on a project.
-  const snaps = [];
+  let settleTimer = 0;
+  const span = () => hs.offsetHeight - window.innerHeight;
   const measure = () => {
-    snaps.splice(0).forEach((el) => el.remove());
     if (!wide.matches) {
       hs.style.height = '';
       track.style.transform = '';
-      root.classList.remove('has-hsnap');
       return;
     }
-    maxX = Math.max(0, track.scrollWidth - window.innerWidth);
-    hs.style.height = `${window.innerHeight + maxX}px`;
-    const step = slides.length > 1 ? maxX / (slides.length - 1) : 0;
-    slides.forEach((_, i) => {
-      const el = document.createElement('i');
-      el.className = 'hscroll__snap';
-      el.setAttribute('aria-hidden', 'true');
-      el.style.top = `${Math.round(i * step)}px`;
-      hs.appendChild(el);
-      snaps.push(el);
-    });
-    root.classList.toggle('has-hsnap', !reduced);
+    slideW = slides[0]?.offsetWidth || window.innerWidth;
+    hs.style.height = `${window.innerHeight + slideW * Math.max(0, n - 1)}px`;
+  };
+  // How far through the gallery the page has scrolled, in slides (0..n-1).
+  const progress = () => {
+    const s = span();
+    return s > 0 && n > 1 ? Math.min(1, Math.max(0, -hs.getBoundingClientRect().top / s)) * (n - 1) : 0;
+  };
+  // Scroll progress -> track position: hold, ease across, hold.
+  const shape = (u) => {
+    if (n < 2) return 0;
+    const k = Math.min(n - 2, Math.floor(u));
+    const f = u - k;
+    const a = HOLD / 2;
+    if (f <= a) return k;
+    if (f >= 1 - a) return k + 1;
+    const t = (f - a) / (1 - HOLD);
+    return k + t * t * (3 - 2 * t);
   };
   const read = () => {
     const r = hs.getBoundingClientRect();
-    const span = hs.offsetHeight - window.innerHeight;
-    const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-    target = p * maxX;
+    const u = progress();
+    const x = shape(u);
+    target = x * slideW;
     hs.classList.toggle('is-pinned', r.top <= 1 && r.bottom >= window.innerHeight - 1);
-    bar?.style.setProperty('--p', p.toFixed(4));
-    if (now) now.textContent = String(Math.min(slides.length, Math.round(p * (slides.length - 1)) + 1));
+    bar?.style.setProperty('--p', (n > 1 ? u / (n - 1) : 0).toFixed(4));
+    if (now) now.textContent = String(Math.round(x) + 1);
+  };
+  // If the reader stops scrolling partway through a glide, finish the move
+  // in the direction they were going (so a single wheel notch still lands on
+  // the next project instead of bouncing back).
+  let dir = 1;
+  let lastY = window.scrollY;
+  const settle = () => {
+    if (!wide.matches || n < 2 || !hs.classList.contains('is-pinned')) return;
+    const u = progress();
+    const k = Math.min(n - 2, Math.floor(u));
+    const f = u - k;
+    const a = HOLD / 2;
+    if (f <= a + 0.005 || f >= 1 - a - 0.005) return;
+    const goal = dir > 0 ? k + 1 : k;
+    const top = window.scrollY + hs.getBoundingClientRect().top + (goal / (n - 1)) * span();
+    window.scrollTo({ top: Math.round(top), behavior: reduced ? 'auto' : 'smooth' });
   };
   const loop = () => {
     if (!wide.matches) { running = false; return; }
@@ -202,7 +227,14 @@ if (hs) {
   };
   measure();
   kick();
-  window.addEventListener('scroll', kick, { passive: true });
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y !== lastY) dir = y > lastY ? 1 : -1;
+    lastY = y;
+    kick();
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(settle, 180);
+  }, { passive: true });
   window.addEventListener('resize', () => { measure(); kick(); });
   wide.addEventListener?.('change', () => { measure(); kick(); });
   window.addEventListener('load', () => { measure(); kick(); });
